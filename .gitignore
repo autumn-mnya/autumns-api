@@ -1,0 +1,15 @@
+/.git
+/.vs
+/Debug
+/Release
+mod.vcxproj.user
+*.exp
+*.lib
+*.pdb
+*.dll
+
+CaveStory/fps
+CaveStory/mute
+CaveStory/Config.dat
+CaveStory/Profile.dat
+CaveStory/window.rect
