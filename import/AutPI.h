@@ -5,8 +5,6 @@
 
 extern HMODULE autpiDLL;  // Global variable
 
-// LoadGenericData
-typedef void (*GenericDataElementHandler)();
 // Game()
 typedef void (*OpeningBelowFadeElementHandler)();
 typedef void (*OpeningAboveFadeElementHandler)();
@@ -35,11 +33,17 @@ typedef void (*EarlyActionElementHandler)();
 typedef void (*ActionElementHandler)();
 typedef void (*CreditsActionElementHandler)();
 typedef void (*InitElementHandler)();
+// Profile
+typedef void (*SaveProfilePreWriteElementHandler)();
+typedef void (*SaveProfilePostWriteElementHandler)();
+typedef void (*LoadProfilePreCloseElementHandler)();
+typedef void (*LoadProfilePostCloseElementHandler)();
+typedef void (*InitializeGameInitElementHandler)();
+// TransferStage()
+typedef void (*TransferStageInitElementHandler)();
 
 void LoadAutPiDll();
 
-// LoadGenericData() API
-void RegisterGenericDataElement(GenericDataElementHandler handler);
 // Game() API
 void RegisterPreModeElement(PreModeElementHandler handler);
 void RegisterReleaseElement(ReleaseElementHandler handler);
@@ -62,7 +66,17 @@ void RegisterBelowFadeElement(BelowFadeElementHandler handler);
 void RegisterAboveFadeElement(AboveFadeElementHandler handler);
 void RegisterBelowTextBoxElement(BelowTextBoxElementHandler handler);
 void RegisterAboveTextBoxElement(AboveTextBoxElementHandler handler);
+void RegisterBelowPlayerElement(BelowPlayerElementHandler handler);
+void RegisterAbovePlayerElement(AboveTextBoxElementHandler handler);
 void RegisterEarlyActionElement(EarlyActionElementHandler handler);
 void RegisterActionElement(ActionElementHandler handler);
 void RegisterCreditsActionElement(CreditsActionElementHandler handler);
 void RegisterInitElement(InitElementHandler handler);
+// Profile API
+void RegisterSaveProfilePreWriteElement(SaveProfilePreWriteElementHandler handler);
+void RegisterSaveProfilePostWriteElement(SaveProfilePostWriteElementHandler handler);
+void RegisterLoadProfilePreCloseElement(LoadProfilePreCloseElementHandler handler);
+void RegisterLoadProfilePostCloseElement(LoadProfilePostCloseElementHandler handler);
+void RegisterInitializeGameInitElement(InitializeGameInitElementHandler handler);
+// TransferStage() API
+void RegisterTransferStageInitElement(TransferStageInitElementHandler handler);

@@ -40,7 +40,6 @@ void LoadAutPiDll()
     }
 }
 
-std::vector<GenericDataElementHandler> genericdataElementHandlers;
 
 std::vector<PreModeElementHandler> premodeElementHandlers;
 std::vector<ReleaseElementHandler> releaseElementHandlers;
@@ -70,12 +69,13 @@ std::vector<ActionElementHandler> actionElementHandlers;
 std::vector<CreditsActionElementHandler> creditsactionElementHandlers;
 std::vector<InitElementHandler> initElementHandlers;
 
-// LoadGenericData() API
+std::vector<SaveProfilePreWriteElementHandler> saveprofileprewriteElementHandlers;
+std::vector<SaveProfilePostWriteElementHandler> saveprofilepostwriteElementHandlers;
+std::vector<LoadProfilePreCloseElementHandler> loadprofileprecloseElementHandlers;
+std::vector<LoadProfilePostCloseElementHandler> loadprofilepostcloseElementHandlers;
+std::vector<InitializeGameInitElementHandler> intializegameElementHandlers;
 
-void RegisterGenericDataElement(PreModeElementHandler handler)
-{
-    RegisterElement(genericdataElementHandlers, "RegisterGenericDataElement", reinterpret_cast<void (*)()>(handler));
-}
+std::vector<TransferStageInitElementHandler> transferstageinitElementHandlers;
 
 // Game() API
 
@@ -203,4 +203,38 @@ void RegisterCreditsActionElement(CreditsActionElementHandler handler)
 void RegisterInitElement(InitElementHandler handler)
 {
     RegisterElement(initElementHandlers, "RegisterInitElement", reinterpret_cast<void (*)()>(handler));
+}
+
+// Profile API
+
+void RegisterSaveProfilePreWriteElement(SaveProfilePreWriteElementHandler handler)
+{
+    RegisterElement(saveprofileprewriteElementHandlers, "RegisterSaveProfilePreWriteElement", reinterpret_cast<void (*)()>(handler));
+}
+
+void RegisterSaveProfilePostWriteElement(SaveProfilePostWriteElementHandler handler)
+{
+    RegisterElement(saveprofilepostwriteElementHandlers, "RegisterSaveProfilePostWriteElement", reinterpret_cast<void (*)()>(handler));
+}
+
+void RegisterLoadProfilePreCloseElement(LoadProfilePreCloseElementHandler handler)
+{
+    RegisterElement(loadprofileprecloseElementHandlers, "RegisterLoadProfilePreCloseElement", reinterpret_cast<void (*)()>(handler));
+}
+
+void RegisterLoadProfilePostCloseElement(LoadProfilePostCloseElementHandler handler)
+{
+    RegisterElement(loadprofilepostcloseElementHandlers, "RegisterLoadProfilePostCloseElement", reinterpret_cast<void (*)()>(handler));
+}
+
+void RegisterInitializeGameInitElement(InitializeGameInitElementHandler handler)
+{
+    RegisterElement(intializegameElementHandlers, "RegisterInitializeGameInitElement", reinterpret_cast<void (*)()>(handler));
+}
+
+// TransferStage API
+
+void RegisterTransferStageInitElement(TransferStageInitElementHandler handler)
+{
+    RegisterElement(transferstageinitElementHandlers, "RegisterTransferStageInitElement", reinterpret_cast<void (*)()>(handler));
 }
