@@ -44,6 +44,9 @@ typedef void (*TransferStageInitElementHandler)();
 
 void LoadAutPiDll();
 
+// NpcTbl API
+void AutPI_AddEntity(NPCFUNCTION func);
+
 // Game() API
 void RegisterPreModeElement(PreModeElementHandler handler);
 void RegisterReleaseElement(ReleaseElementHandler handler);
