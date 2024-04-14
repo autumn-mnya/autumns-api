@@ -33,5 +33,6 @@ void ExecuteGenericDataElementHandlers()
 void GenericDataCode(int a, int b, SurfaceID c, BOOL d)
 {
 	MakeSurface_Generic(a, b, c, d);
+    printf("%d,%d,%d,%d\n", a, b, c, d);
     ExecuteGenericDataElementHandlers();
 }

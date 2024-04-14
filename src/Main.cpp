@@ -15,6 +15,7 @@
 #include "API_ModeOpening.h"
 #include "API_ModeTitle.h"
 #include "API_ModeAction.h"
+#include "API_NpcTbl.h"
 #include "API_Profile.h"
 #include "API_Tile.h"
 #include "API_TransferStage.h"
@@ -66,4 +67,9 @@ void InitMod(void)
 
     // TransferStage API
     ModLoader_WriteCall((void*)0x420EB5, (void*)TransferStageInitCode);
+
+    // Npc Table API
+    ModLoader_WriteJump((void*)0x46FA00, (void*)Replacement_ActNpChar);
+    ModLoader_WriteJump((void*)0x46FAB0, (void*)Replacement_ChangeNpCharByEvent);
+    ModLoader_WriteJump((void*)0x46FD10, (void*)Replacement_ChangeCheckableNpCharByEvent);
 }

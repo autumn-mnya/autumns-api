@@ -92,6 +92,7 @@
     <ClCompile Include="src\API_ModeAction.cpp" />
     <ClCompile Include="src\API_ModeOpening.cpp" />
     <ClCompile Include="src\API_ModeTitle.cpp" />
+    <ClCompile Include="src\API_NpcTbl.cpp" />
     <ClCompile Include="src\API_Profile.cpp" />
     <ClCompile Include="src\API_TransferStage.cpp" />
     <ClCompile Include="src\Main.cpp" />
@@ -104,6 +105,7 @@
     <ClInclude Include="src\API_ModeAction.h" />
     <ClInclude Include="src\API_ModeOpening.h" />
     <ClInclude Include="src\API_ModeTitle.h" />
+    <ClInclude Include="src\API_NpcTbl.h" />
     <ClInclude Include="src\API_Profile.h" />
     <ClInclude Include="src\API_TransferStage.h" />
     <ClInclude Include="src\cave_story.h" />

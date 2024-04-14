@@ -990,6 +990,7 @@ static int& gSuperYpos = *reinterpret_cast<int*>(0x4BBA28);
 static const char*& gPassPixEve = *reinterpret_cast<const char**>(0x498540);
 
 static NPC_TABLE** gNpcTable = (NPC_TABLE**)0x4BBA34;
+static NPCFUNCTION* gpNpcFuncTbl = (NPCFUNCTION*)0x498548;
 
 static auto& gPermitStage = *reinterpret_cast<PERMIT_STAGE(*)[8]>(0x4A5500);
 
