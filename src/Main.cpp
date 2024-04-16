@@ -27,11 +27,6 @@
 char gModulePath[MAX_PATH];
 char gDataPath[MAX_PATH];
 
-void ActBossChar_0Test(void)
-{
-
-}
-
 void InitMod(void)
 {
     // Get executable's path
@@ -99,8 +94,6 @@ void InitMod(void)
     ModLoader_WriteJump((void*)0x46FA00, (void*)Replacement_ActNpChar);
     ModLoader_WriteJump((void*)0x46FAB0, (void*)Replacement_ChangeNpCharByEvent);
     ModLoader_WriteJump((void*)0x46FD10, (void*)Replacement_ChangeCheckableNpCharByEvent);
-
-    AutPI_AddBoss(ActBossChar_0Test, "autpi", "bosstest");
 
     // Weapons API
     /*
