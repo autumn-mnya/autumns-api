@@ -1,4 +1,5 @@
 #include <windows.h>
+#include <shlwapi.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,6 +11,7 @@
 #include "mod_loader.h"
 #include "cave_story.h"
 
+#include "API_Caret.h"
 #include "API_LoadGenericData.h"
 #include "API_Game.h"
 #include "API_ModeOpening.h"
@@ -19,12 +21,31 @@
 #include "API_Profile.h"
 #include "API_Tile.h"
 #include "API_TransferStage.h"
+#include "API_Weapon.h"
+
+const char* caretTblName = "caret";
+
+char gModulePath[MAX_PATH];
+char gDataPath[MAX_PATH];
 
 void InitMod(void)
 {
+    // Get executable's path
+    GetModuleFileNameA(NULL, gModulePath, MAX_PATH);
+    PathRemoveFileSpecA(gModulePath);
+
+    // Get path of the data folder
+    strcpy(gDataPath, gModulePath);
+    strcat(gDataPath, "\\data");
+
     // Tile Type api (unfinished, is complicated)
     // RegisterDefaultTileTypes();
     // ModLoader_WriteJump((void*)0x417E40, (void*)Replacement_HitMyCharMap);
+
+    // Caret API
+    LoadCaretTable();
+    ModLoader_WriteJump((void*)ActCaret, (void*)Replacement_ActCaret);
+    ModLoader_WriteJump((void*)SetCaret, (void*)Replacement_SetCaret);
 
     // LoadGenericData API
     ModLoader_WriteCall((void*)0x4115DA, (void*)GenericDataCode);
@@ -64,7 +85,6 @@ void InitMod(void)
 
     ModLoader_WriteCall((void*)0x41D576, (void*)InitializeGameCode);
 
-
     // TransferStage API
     ModLoader_WriteCall((void*)0x420EB5, (void*)TransferStageInitCode);
 
@@ -72,4 +92,12 @@ void InitMod(void)
     ModLoader_WriteJump((void*)0x46FA00, (void*)Replacement_ActNpChar);
     ModLoader_WriteJump((void*)0x46FAB0, (void*)Replacement_ChangeNpCharByEvent);
     ModLoader_WriteJump((void*)0x46FD10, (void*)Replacement_ChangeCheckableNpCharByEvent);
+
+
+    // Weapons API
+    /*
+    ModLoader_WriteJump((void*)SetBullet, (void*)Replacement_SetBullet);
+    ModLoader_WriteCall((void*)0x4105AB, (void*)ReplacementForActBullet);
+    ModLoader_WriteCall((void*)0x4105A6, (void*)ReplacementForShootBullet); // used for ShootBullet --> should be able to create new weapons if we can just figure out a way to run code from some form of table/vector..
+    */
 }

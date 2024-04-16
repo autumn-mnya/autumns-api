@@ -10,11 +10,8 @@
 #include "mod_loader.h"
 #include "cave_story.h"
 
-// 5000 atm cause im crazy
-#define MAX_TABLE_SIZE 5000
-
 // Global variables
-NPCFUNCTION gpEntityFuncTbl[MAX_TABLE_SIZE];
+NPCFUNCTION gpEntityFuncTbl[MAX_NPC_TABLE_SIZE];
 size_t entityFuncCount = 0;
 
 void Replacement_ActNpChar(void)
@@ -135,10 +132,11 @@ void Replacement_ChangeCheckableNpCharByEvent(int code_event, int code_char, int
 }
 
 // Function to add a new ActEntity function to the table
-void AutPI_AddEntity(NPCFUNCTION func) {
-    if (entityFuncCount < MAX_TABLE_SIZE) {
+void AutPI_AddEntity(NPCFUNCTION func, char* author, char* name) {
+    if (entityFuncCount < MAX_NPC_TABLE_SIZE) {
         // Add the new function to the end of the array
         gpEntityFuncTbl[entityFuncCount++] = func;
+		printf("Added NPC '%s:%s' to entity function table with ID %d.\n", author, name, entityFuncCount + 360);
     }
     else {
         fprintf(stderr, "Maximum NPC count reached. Cannot add more functions.\n");

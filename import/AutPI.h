@@ -5,6 +5,9 @@
 
 extern HMODULE autpiDLL;  // Global variable
 
+// Caret API
+void AutPI_AddCaret(CARETFUNCTION func, char* author, char* name);
+
 // Game()
 typedef void (*OpeningBelowFadeElementHandler)();
 typedef void (*OpeningAboveFadeElementHandler)();
@@ -45,7 +48,7 @@ typedef void (*TransferStageInitElementHandler)();
 void LoadAutPiDll();
 
 // NpcTbl API
-void AutPI_AddEntity(NPCFUNCTION func);
+void AutPI_AddEntity(NPCFUNCTION func, char* author, char* name);
 
 // Game() API
 void RegisterPreModeElement(PreModeElementHandler handler);

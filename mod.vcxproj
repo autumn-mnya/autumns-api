@@ -64,7 +64,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>ws2_32.lib;winmm.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Shlwapi.lib;ws2_32.lib;winmm.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -82,11 +82,12 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>ws2_32.lib;winmm.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Shlwapi.lib;ws2_32.lib;winmm.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\API_Caret.cpp" />
     <ClCompile Include="src\API_Game.cpp" />
     <ClCompile Include="src\API_LoadGenericData.cpp" />
     <ClCompile Include="src\API_ModeAction.cpp" />
@@ -95,11 +96,13 @@
     <ClCompile Include="src\API_NpcTbl.cpp" />
     <ClCompile Include="src\API_Profile.cpp" />
     <ClCompile Include="src\API_TransferStage.cpp" />
+    <ClCompile Include="src\API_Weapon.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\API_Tile.cpp" />
     <ClCompile Include="src\\mod_loader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\API_Caret.h" />
     <ClInclude Include="src\API_Game.h" />
     <ClInclude Include="src\API_LoadGenericData.h" />
     <ClInclude Include="src\API_ModeAction.h" />
@@ -108,6 +111,7 @@
     <ClInclude Include="src\API_NpcTbl.h" />
     <ClInclude Include="src\API_Profile.h" />
     <ClInclude Include="src\API_TransferStage.h" />
+    <ClInclude Include="src\API_Weapon.h" />
     <ClInclude Include="src\cave_story.h" />
     <ClInclude Include="src\Main.h" />
     <ClInclude Include="src\API_Tile.h" />
