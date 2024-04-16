@@ -11,6 +11,7 @@
 #include "mod_loader.h"
 #include "cave_story.h"
 
+#include "API_Boss.h"
 #include "API_Caret.h"
 #include "API_LoadGenericData.h"
 #include "API_Game.h"
@@ -23,10 +24,13 @@
 #include "API_TransferStage.h"
 #include "API_Weapon.h"
 
-const char* caretTblName = "caret";
-
 char gModulePath[MAX_PATH];
 char gDataPath[MAX_PATH];
+
+void ActBossChar_0Test(void)
+{
+
+}
 
 void InitMod(void)
 {
@@ -41,6 +45,9 @@ void InitMod(void)
     // Tile Type api (unfinished, is complicated)
     // RegisterDefaultTileTypes();
     // ModLoader_WriteJump((void*)0x417E40, (void*)Replacement_HitMyCharMap);
+
+    // Boss API
+    ModLoader_WriteJump((void*)ActBossChar, (void*)Replacement_ActBossChar);
 
     // Caret API
     LoadCaretTable();
@@ -93,6 +100,7 @@ void InitMod(void)
     ModLoader_WriteJump((void*)0x46FAB0, (void*)Replacement_ChangeNpCharByEvent);
     ModLoader_WriteJump((void*)0x46FD10, (void*)Replacement_ChangeCheckableNpCharByEvent);
 
+    AutPI_AddBoss(ActBossChar_0Test, "autpi", "bosstest");
 
     // Weapons API
     /*

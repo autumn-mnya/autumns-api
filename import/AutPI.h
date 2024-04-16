@@ -5,6 +5,9 @@
 
 extern HMODULE autpiDLL;  // Global variable
 
+// Boss API
+void AutPI_AddBoss(BOSSFUNCTION func, char* author, char* name);
+
 // Caret API
 void AutPI_AddCaret(CARETFUNCTION func, char* author, char* name);
 

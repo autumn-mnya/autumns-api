@@ -30,9 +30,22 @@ void RegisterElement(std::vector<void (*)()>& handlers, const char* functionName
     }
 }
 
+void AutPI_AddBoss(BOSSFUNCTION func, char* author, char* name)
+{
+    typedef void (*AutPI_AddBossFunc)(BOSSFUNCTION, char*, char*);
+    AutPI_AddBossFunc addBossFunc = reinterpret_cast<AutPI_AddBossFunc>(
+        GetProcAddress(autpiDLL, "AutPI_AddBoss"));
+
+    if (addBossFunc == nullptr) {
+        std::cerr << "Failed to get the function pointer for AutPI_AddBoss\n";
+        return;
+    }
+
+    addBossFunc(func, author, name);
+}
+
 void AutPI_AddCaret(CARETFUNCTION func, char* author, char* name)
 {
-    // Get function pointer to AutPI_AddEntity from the DLL
     typedef void (*AutPI_AddCaretFunc)(CARETFUNCTION, char*, char*);
     AutPI_AddCaretFunc addCaretFunc = reinterpret_cast<AutPI_AddCaretFunc>(
         GetProcAddress(autpiDLL, "AutPI_AddCaret"));
@@ -42,13 +55,11 @@ void AutPI_AddCaret(CARETFUNCTION func, char* author, char* name)
         return;
     }
 
-    // Call AutPI_AddEntity with the specified function pointer
     addCaretFunc(func, author, name);
 }
 
 void AutPI_AddEntity(NPCFUNCTION func, char* author, char* name)
 {
-    // Get function pointer to AutPI_AddEntity from the DLL
     typedef void (*AutPI_AddEntityFunc)(NPCFUNCTION, char*, char*);
     AutPI_AddEntityFunc addEntityFunc = reinterpret_cast<AutPI_AddEntityFunc>(
         GetProcAddress(autpiDLL, "AutPI_AddEntity"));
@@ -58,7 +69,6 @@ void AutPI_AddEntity(NPCFUNCTION func, char* author, char* name)
         return;
     }
 
-    // Call AutPI_AddEntity with the specified function pointer
     addEntityFunc(func, author, name);
 }
 
