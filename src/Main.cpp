@@ -21,6 +21,7 @@
 #include "API_NpcTbl.h"
 #include "API_Profile.h"
 #include "API_Tile.h"
+#include "API_TextScript.h"
 #include "API_TransferStage.h"
 #include "API_Weapon.h"
 
@@ -94,6 +95,9 @@ void InitMod(void)
     ModLoader_WriteJump((void*)0x46FA00, (void*)Replacement_ActNpChar);
     ModLoader_WriteJump((void*)0x46FAB0, (void*)Replacement_ChangeNpCharByEvent);
     ModLoader_WriteJump((void*)0x46FD10, (void*)Replacement_ChangeCheckableNpCharByEvent);
+
+    // TextScript API
+    ModLoader_WriteCall((void*)0x424DAE, (void*)Replacement_TextScript_SaveProfile_Call);
 
     // Weapons API
     /*

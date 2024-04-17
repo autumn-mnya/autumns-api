@@ -45,6 +45,8 @@ typedef void (*SaveProfilePostWriteElementHandler)();
 typedef void (*LoadProfilePreCloseElementHandler)();
 typedef void (*LoadProfilePostCloseElementHandler)();
 typedef void (*InitializeGameInitElementHandler)();
+// TextScript
+typedef void (*TextScriptSVPElementHandler)();
 // TransferStage()
 typedef void (*TransferStageInitElementHandler)();
 

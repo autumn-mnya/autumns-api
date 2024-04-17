@@ -117,6 +117,8 @@ std::vector<LoadProfilePreCloseElementHandler> loadprofileprecloseElementHandler
 std::vector<LoadProfilePostCloseElementHandler> loadprofilepostcloseElementHandlers;
 std::vector<InitializeGameInitElementHandler> intializegameElementHandlers;
 
+std::vector<TextScriptSVPElementHandler> textscriptsvpElementHandlers;
+
 std::vector<TransferStageInitElementHandler> transferstageinitElementHandlers;
 
 // Game() API
@@ -272,6 +274,13 @@ void RegisterLoadProfilePostCloseElement(LoadProfilePostCloseElementHandler hand
 void RegisterInitializeGameInitElement(InitializeGameInitElementHandler handler)
 {
     RegisterElement(intializegameElementHandlers, "RegisterInitializeGameInitElement", reinterpret_cast<void (*)()>(handler));
+}
+
+// TextScript API
+
+void RegisterSVPElement(TextScriptSVPElementHandler handler)
+{
+    RegisterElement(textscriptsvpElementHandlers, "RegisterSVPElement", reinterpret_cast<void (*)()>(handler));
 }
 
 // TransferStage API
