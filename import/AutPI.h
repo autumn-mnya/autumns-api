@@ -1,6 +1,7 @@
 // AutPI.h
 
 #include <Windows.h>
+#include "cave_story.h"
 #include <vector>
 
 extern HMODULE autpiDLL;  // Global variable
@@ -89,5 +90,7 @@ void RegisterSaveProfilePostWriteElement(SaveProfilePostWriteElementHandler hand
 void RegisterLoadProfilePreCloseElement(LoadProfilePreCloseElementHandler handler);
 void RegisterLoadProfilePostCloseElement(LoadProfilePostCloseElementHandler handler);
 void RegisterInitializeGameInitElement(InitializeGameInitElementHandler handler);
+// TextScript API
+void RegisterSVPElement(TextScriptSVPElementHandler handler);
 // TransferStage() API
 void RegisterTransferStageInitElement(TransferStageInitElementHandler handler);
