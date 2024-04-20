@@ -3,6 +3,9 @@ require("npc")
 ModCS.Mod.SetName("AutPI")
 ModCS.Mod.SetAuthor("autumn")
 
+ModCS.Mod.SetOpening(13, 100, 1)
+ModCS.Mod.SetStart(13, 94, 10, 8)
+
 ModCS.AddEntity("MyNewEntity")
 ModCS.AddCaret("MyNewCaret")
 
@@ -21,6 +24,8 @@ function ModCS.Game.Draw()
 	
 	if ModCS.Game.GetMode() == 3 then
 		ModCS.PutNumber(3, 0, 0)
+		ModCS.Player.Equip(32)
+		ModCS.Arms.Add(13, 0)
 	end
 end
 

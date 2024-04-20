@@ -45,10 +45,10 @@ extern lua_State* gL;
 void PrintStack(lua_State* L);
 void SerenaAlert(lua_State* L, const char* warning);
 
-BOOL ReadStructBasic(lua_State* L, const char* name, STRUCT_TABLE* table, void* data, int length);
-BOOL Write2StructBasic(lua_State* L, const char* name, STRUCT_TABLE* table, void* data, int length);
-static void PushFunctionTable(lua_State* L, const char* name, const FUNCTION_TABLE* table, int length, BOOL pop);
-static void PushSimpleMetatables(lua_State* L, const METATABLE_TABLE* table, int length);
+extern "C" __declspec(dllexport) BOOL ReadStructBasic(lua_State* L, const char* name, STRUCT_TABLE* table, void* data, int length);
+extern "C" __declspec(dllexport) BOOL Write2StructBasic(lua_State* L, const char* name, STRUCT_TABLE* table, void* data, int length);
+extern "C" __declspec(dllexport) void PushFunctionTable(lua_State* L, const char* name, const FUNCTION_TABLE* table, int length, BOOL pop);
+extern "C" __declspec(dllexport) void PushSimpleMetatables(lua_State* L, const METATABLE_TABLE* table, int length);
 
 BOOL InitModScript(void);
 void CloseModScript(void);

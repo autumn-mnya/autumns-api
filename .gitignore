@@ -13,6 +13,7 @@ CaveStory/mute
 CaveStory/Config.dat
 CaveStory/Profile.dat
 CaveStory/window.rect
+CaveStory/error.log
 /ZZ-FinalRelease
 !CaveStory/mods/autpi/autpi.dll
 !CaveStory/lua.dll

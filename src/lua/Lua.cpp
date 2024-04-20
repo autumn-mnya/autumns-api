@@ -251,7 +251,7 @@ static METATABLE_TABLE MetatableTable[] =
 	{"ItemMeta", lua_ItemIndex, lua_ItemNextIndex}
 };
 
-static void PushFunctionTable(lua_State* L, const char* name, const FUNCTION_TABLE* table, int length, BOOL pop)
+void PushFunctionTable(lua_State* L, const char* name, const FUNCTION_TABLE* table, int length, BOOL pop)
 {
 	lua_newtable(L);
 	lua_pushvalue(L, -1);
@@ -267,7 +267,7 @@ static void PushFunctionTable(lua_State* L, const char* name, const FUNCTION_TAB
 		lua_pop(L, 1);
 }
 
-static void PushSimpleMetatables(lua_State* L, const METATABLE_TABLE* table, int length)
+void PushSimpleMetatables(lua_State* L, const METATABLE_TABLE* table, int length)
 {
 	for (int i = 0; i < length; ++i)
 	{
@@ -448,15 +448,13 @@ BOOL InitModScript(void)
 	lua_setfield(gL, -3, "Act");
 	lua_pop(gL, 2);
 
-	/*
+
 
 	PushFunctionTable(gL, "Arms", ArmsFunctionTable, FUNCTION_TABLE_ARMS_SIZE, FALSE);
 	lua_newtable(gL);
 	lua_pushvalue(gL, -1);
 	lua_setfield(gL, -3, "Shoot");
 	lua_pop(gL, 2);
-
-	*/
 
 	PushFunctionTable(gL, "Tsc", TscFunctionTable, FUNCTION_TABLE_TSC_SIZE, FALSE);
 	lua_newtable(gL);

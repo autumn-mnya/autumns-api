@@ -42,8 +42,38 @@ static int lua_ModSetAuthor(lua_State* L)
 	return 0;
 }
 
+static int lua_ModSetOpening(lua_State* L)
+{
+	OpeningMap[0] = (int)luaL_checknumber(L, 1);
+	OpeningMap[3] = (int)luaL_optnumber(L, 2, 0);
+	OpeningMap[4] = (int)luaL_optnumber(L, 3, 500);
+
+	ModLoader_WriteByte((void*)0x40F765, OpeningMap[0]);
+	ModLoader_WriteByte((void*)0x40F763, OpeningMap[3]);
+	ModLoader_WriteLong((void*)0x40F7A0, OpeningMap[4]);
+
+	return 0;
+}
+
+static int lua_ModSetStart(lua_State* L)
+{
+	StartingMap[0] = (int)luaL_checknumber(L, 1);
+	StartingMap[1] = (int)luaL_checknumber(L, 2);
+	StartingMap[2] = (int)luaL_checknumber(L, 3);
+	StartingMap[3] = (int)luaL_optnumber(L, 4, 0);
+
+	ModLoader_WriteByte((void*)0x41D599, StartingMap[0]);
+	ModLoader_WriteByte((void*)0x41D594, StartingMap[1]);
+	ModLoader_WriteByte((void*)0x41D592, StartingMap[2]);
+	ModLoader_WriteByte((void*)0x41D590, StartingMap[3]);
+
+	return 0;
+}
+
 FUNCTION_TABLE ModFunctionTable[FUNCTION_TABLE_MOD_SIZE] =
 {
 	{"SetName", lua_ModSetName},
 	{"SetAuthor", lua_ModSetAuthor},
+	{"SetOpening", lua_ModSetOpening},
+	{"SetStart", lua_ModSetStart}
 };

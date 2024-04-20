@@ -56,3 +56,11 @@ ModCS.Npc.Act[361] = function(npc)
 		npc:SetRect(96 + (npc.ani_no * 24), 160, 120 + (npc.ani_no * 24), 176)
 	end
 end
+
+ModCS.Npc.Act[64] = function(npc)
+    if (npc.act_no == 3 and npc:TouchFloor()) then
+        ModCS.Npc.Spawn(4, npc.x, npc.y)
+    end
+
+    npc:ActCode()
+end

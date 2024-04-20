@@ -227,7 +227,7 @@ static int lua_PlayerEquip(lua_State* L)
 {
 	int bit = (int)luaL_checknumber(L, 1);
 
-	gMC.equip |= 1 << bit;
+	EquipItem(bit, TRUE);
 
 	return 0;
 }
@@ -236,7 +236,7 @@ static int lua_PlayerUnequip(lua_State* L)
 {
 	int bit = (int)luaL_checknumber(L, 1);
 
-	gMC.equip &= ~(1 << bit);
+	EquipItem(bit, FALSE);
 
 	return 0;
 }
