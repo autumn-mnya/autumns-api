@@ -7,6 +7,11 @@ This mod is using [Clownacy's Mod Loader](https://github.com/Clownacy/Cave-Story
 - A port of [ModCS](https://modcavestory.github.io) to Freeware, with most features existing except the Bullet API for now.
 - Ways to "Register" code at different spots in the game, such as adding your own functions to the "Act" part of the Action Mode in Cave Storys code.
 
+# ModCS
+
+Credits to yasinbread, and aikyuu.
+Yasinbread sent the source code of ModCS to me, and gave permission for it. The lua api credits go entirely to them, its awesome.
+
 # Installation
 
 You'll first need a copy of [Visual Studio 2022](https://visualstudio.microsoft.com/downloads/). When you're installing it, go to the individual components tab and select the "C++ Windows XP Support for VS 2017 (v141) tools [Deprecated]".
