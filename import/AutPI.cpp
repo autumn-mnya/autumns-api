@@ -86,6 +86,8 @@ void LoadAutPiDll()
 std::vector<PreModeElementHandler> premodeElementHandlers;
 std::vector<ReleaseElementHandler> releaseElementHandlers;
 
+std::vector<GetTrgElementHandler> gettrgElementHandlers;
+
 std::vector<OpeningBelowFadeElementHandler> Opening_belowfadeElementHandlers;
 std::vector<OpeningAboveFadeElementHandler> Opening_abovefadeElementHandlers;
 std::vector<OpeningBelowTextBoxElementHandler> Opening_belowtextboxElementHandlers;
@@ -131,6 +133,13 @@ void RegisterPreModeElement(PreModeElementHandler handler)
 void RegisterReleaseElement(ReleaseElementHandler handler)
 {
     RegisterElement(releaseElementHandlers, "RegisterReleaseElement", reinterpret_cast<void (*)()>(handler));
+}
+
+// GetTrg() API
+
+void RegisterGetTrgElement(GetTrgElementHandler handler)
+{
+    RegisterElement(gettrgElementHandlers, "RegisterGetTrgElement", reinterpret_cast<void (*)()>(handler));
 }
 
 // ModeOpening() API

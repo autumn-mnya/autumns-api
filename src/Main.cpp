@@ -10,23 +10,45 @@
 
 #include "mod_loader.h"
 #include "cave_story.h"
+#include "ModSettings.h"
+#include "TextScr.h"
 
 #include "API_Boss.h"
 #include "API_Caret.h"
 #include "API_LoadGenericData.h"
 #include "API_Game.h"
+#include "API_GetTrg.h"
 #include "API_ModeOpening.h"
 #include "API_ModeTitle.h"
 #include "API_ModeAction.h"
-#include "API_NpcTbl.h"
+#include "API_Npc.h"
 #include "API_Profile.h"
 #include "API_Tile.h"
 #include "API_TextScript.h"
 #include "API_TransferStage.h"
 #include "API_Weapon.h"
 
+#include "lua/Lua.h"
+
 char gModulePath[MAX_PATH];
 char gDataPath[MAX_PATH];
+
+int gCurrentGameMode = 0;
+
+void SetModeOpening()
+{
+    gCurrentGameMode = 1;
+}
+
+void SetModeTitle()
+{
+    gCurrentGameMode = 2;
+}
+
+void SetModeAction()
+{
+    gCurrentGameMode = 3;
+}
 
 void InitMod(void)
 {
@@ -37,6 +59,8 @@ void InitMod(void)
     // Get path of the data folder
     strcpy(gDataPath, gModulePath);
     strcat(gDataPath, "\\data");
+
+    InitMod_Settings();
 
     // Tile Type api (unfinished, is complicated)
     // RegisterDefaultTileTypes();
@@ -55,6 +79,9 @@ void InitMod(void)
 
     // Game API
     ModLoader_WriteCall((void*)0x40F67C, (void*)PreModeCode);
+
+    // GetTrg API
+    ModLoader_WriteJump((void*)0x4122E0, (void*)Replacement_GetTrg);
 
     // ModeOpening API
     ModLoader_WriteCall((void*)0x40F8E9, (void*)OpeningFadeCode);
@@ -105,4 +132,38 @@ void InitMod(void)
     ModLoader_WriteCall((void*)0x4105AB, (void*)ReplacementForActBullet);
     ModLoader_WriteCall((void*)0x4105A6, (void*)ReplacementForShootBullet); // used for ShootBullet --> should be able to create new weapons if we can just figure out a way to run code from some form of table/vector..
     */
+
+    InitTSC();
+
+    RegisterPreModeElement(InitMod_Lua);
+
+    RegisterOpeningInitElement(SetModeOpening);
+    RegisterTitleInitElement(SetModeTitle);
+    RegisterInitElement(SetModeAction);
+   
+    RegisterOpeningInitElement(Lua_GameInit);
+    RegisterOpeningEarlyActionElement(Lua_GameAct);
+    RegisterOpeningActionElement(Lua_GameUpdate);
+    RegisterOpeningAboveTextBoxElement(Lua_GameDraw);
+
+    RegisterOpeningBelowFadeElement(Lua_GameDrawBelowFade);
+    RegisterOpeningAboveFadeElement(Lua_GameDrawAboveFade);
+    RegisterOpeningBelowTextBoxElement(Lua_GameDrawBelowTextBox);
+    RegisterOpeningAboveTextBoxElement(Lua_GameDrawAboveTextBox);
+
+    RegisterTitleInitElement(Lua_GameInit);
+    RegisterTitleActionElement(Lua_GameAct);
+    RegisterTitleActionElement(Lua_GameUpdate);
+    RegisterTitleBelowCounterElement(Lua_GameDraw);
+
+    RegisterInitElement(Lua_GameInit);
+    RegisterEarlyActionElement(Lua_GameAct);
+    RegisterActionElement(Lua_GameUpdate);
+    RegisterAboveTextBoxElement(Lua_GameDraw);
+
+    RegisterBelowFadeElement(Lua_GameDrawBelowFade);
+    RegisterAboveFadeElement(Lua_GameDrawAboveFade);
+    RegisterBelowTextBoxElement(Lua_GameDrawBelowTextBox);
+    RegisterAboveTextBoxElement(Lua_GameDrawAboveTextBox);
+    RegisterPlayerHudElement(Lua_GameDrawHUD);
 }

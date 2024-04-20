@@ -15,6 +15,8 @@ void AutPI_AddCaret(CARETFUNCTION func, char* author, char* name);
 // Game()
 typedef void (*OpeningBelowFadeElementHandler)();
 typedef void (*OpeningAboveFadeElementHandler)();
+// GetTrg()
+typedef void (*GetTrgElementHandler)();
 // ModeOpening()
 typedef void (*PreModeElementHandler)();
 typedef void (*ReleaseElementHandler)();
@@ -59,6 +61,8 @@ void AutPI_AddEntity(NPCFUNCTION func, char* author, char* name);
 // Game() API
 void RegisterPreModeElement(PreModeElementHandler handler);
 void RegisterReleaseElement(ReleaseElementHandler handler);
+// GetTrg() API
+void RegisterGetTrgElement(GetTrgElementHandler handler);
 // ModeOpening() API
 void RegisterOpeningBelowFadeElement(OpeningBelowFadeElementHandler handler);
 void RegisterOpeningAboveFadeElement(OpeningAboveFadeElementHandler handler);

@@ -1,5 +1,13 @@
-# Cave Story Mod Loader example mod
-This is an example mod that can be compiled using Visual Studio 2022 for making dll mods for Cave Story freeware, using [Clownacy's Mod Loader](https://github.com/Clownacy/Cave-Story-Mod-Loader/releases).
+# Autumns API (AutPI)
+This is an API mod for Cave Story freeware --> Allowing myself or other code modders to add custom code to Cave Story. It can be compiled using Visual Studio 2022.
+This mod is using [Clownacy's Mod Loader](https://github.com/Clownacy/Cave-Story-Mod-Loader/releases).
+
+# Features
+
+- A port of [ModCS](https://modcavestory.github.io) to Freeware, with most features existing except the Bullet API for now.
+- Ways to "Register" code at different spots in the game, such as adding your own functions to the "Act" part of the Action Mode in Cave Storys code.
+
+# Installation
 
 You'll first need a copy of [Visual Studio 2022](https://visualstudio.microsoft.com/downloads/). When you're installing it, go to the individual components tab and select the "C++ Windows XP Support for VS 2017 (v141) tools [Deprecated]".
 

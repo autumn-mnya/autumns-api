@@ -1,4 +1,4 @@
-#include <windows.h>
+#include <Windows.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,10 +11,33 @@
 #include "mod_loader.h"
 #include "cave_story.h"
 
+#include "lua/Lua_Caret.h"
+
 // Global variables
 CARET_TABLE gCaretTableAPI[MAX_CARET_TABLE_SIZE];
 CARETFUNCTION gpCaretAPIFuncTbl[MAX_CARET_FUNC_TABLE_SIZE];
 size_t caretFuncCount = 0;
+
+void ActCaretCode(CARET* crt, int code)
+{
+	gpCaretFuncTbl[code](crt);
+}
+
+void ActCaretNull(CARET* crt)
+{
+	(void)crt;
+}
+
+void SetDefaultCaretTable()
+{
+	int i = 0;
+
+	for (i = 0; i < 18; ++i)
+	{
+		gCaretTableAPI[i].view_left = gCaretTable[i].view_left;
+		gCaretTableAPI[i].view_top = gCaretTable[i].view_top;
+	}
+}
 
 void LoadCaretTable()
 {
@@ -23,11 +46,14 @@ void LoadCaretTable()
 
 	// Construct the file path
 	sprintf(path, "%s\\%s", gDataPath, "caret.tbl");
+	memset(gCaretTableAPI, 0, sizeof(CARET_TABLE));
 
 	// Open the file for writing
 	fp = fopen(path, "rb");
 	if (fp == NULL) {
 		// Handle the error...
+		printf("%s%s", "caret.tbl", " was not found.\nUsing default caret table inside executable instead!\n");
+		SetDefaultCaretTable();
 		return;
 	}
 
@@ -42,16 +68,30 @@ void Replacement_ActCaret(void)
 {
 	int i;
 	int code;
+	int result;
+	char errormsg[256];
 
 	for (i = 0; i < CARET_MAX; ++i)
 	{
 		if (gCrt[i].cond & 0x80)
 		{
 			code = gCrt[i].code;
-			if (code <= 17)
-				gpCaretFuncTbl[code](&gCrt[i]);
-			else
-				gpCaretAPIFuncTbl[code - 18](&gCrt[i]);
+
+			result = CaretActModScript(code, i);
+
+			if (result == 1)
+			{
+				if (code <= 17)
+					gpCaretFuncTbl[code](&gCrt[i]);
+				else
+					gpCaretAPIFuncTbl[code - 18](&gCrt[i]);
+			}
+			else if (result == 0)
+			{
+				sprintf(errormsg, "Couldn't execute Act function of Caret ActNo. %d", code);
+				MessageBoxA(ghWnd, errormsg, "ModScript Error", MB_OK);
+				return;
+			}
 		}
 	}
 }

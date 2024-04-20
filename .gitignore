@@ -14,3 +14,6 @@ CaveStory/Config.dat
 CaveStory/Profile.dat
 CaveStory/window.rect
 /ZZ-FinalRelease
+!CaveStory/mods/autpi/autpi.dll
+!CaveStory/lua.dll
+!external/lua/lib/lua.lib

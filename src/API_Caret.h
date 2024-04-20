@@ -3,8 +3,10 @@
 #include "cave_story.h"
 
 #define MAX_CARET_TABLE_SIZE 5000
-#define MAX_CARET_FUNC_TABLE_SIZE 5000
+#define MAX_CARET_FUNC_TABLE_SIZE 10000
 
+void ActCaretCode(CARET* crt, int code);
+void ActCaretNull(CARET* crt);
 void LoadCaretTable();
 void Replacement_ActCaret(void);
 void Replacement_SetCaret(int x, int y, int code, int dir);

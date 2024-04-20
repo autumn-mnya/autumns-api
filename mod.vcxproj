@@ -53,27 +53,31 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;EXAMPLE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../common;src\external\enet-1.3.17\include;src\external\SDL2-2.0.22\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>external\lua\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <TargetMachine>MachineX86</TargetMachine>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Shlwapi.lib;ws2_32.lib;winmm.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>external\lua\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>lua.lib;Shlwapi.lib;ws2_32.lib;winmm.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;EXAMPLE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../common;src\external\enet-1.3.17\include;src\external\SDL2-2.0.22\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>external\lua\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <TargetMachine>MachineX86</TargetMachine>
@@ -81,8 +85,8 @@
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Shlwapi.lib;ws2_32.lib;winmm.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>external\lua\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>lua.lib;Shlwapi.lib;ws2_32.lib;winmm.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
   </ItemDefinitionGroup>
@@ -90,35 +94,73 @@
     <ClCompile Include="src\API_Boss.cpp" />
     <ClCompile Include="src\API_Caret.cpp" />
     <ClCompile Include="src\API_Game.cpp" />
+    <ClCompile Include="src\API_GetTrg.cpp" />
     <ClCompile Include="src\API_LoadGenericData.cpp" />
     <ClCompile Include="src\API_ModeAction.cpp" />
     <ClCompile Include="src\API_ModeOpening.cpp" />
     <ClCompile Include="src\API_ModeTitle.cpp" />
-    <ClCompile Include="src\API_NpcTbl.cpp" />
+    <ClCompile Include="src\API_Npc.cpp" />
     <ClCompile Include="src\API_Profile.cpp" />
     <ClCompile Include="src\API_TextScript.cpp" />
     <ClCompile Include="src\API_TransferStage.cpp" />
     <ClCompile Include="src\API_Weapon.cpp" />
+    <ClCompile Include="src\lua\API_Lua.cpp" />
+    <ClCompile Include="src\lua\Lua.cpp" />
+    <ClCompile Include="src\lua\Lua_ArmsItem.cpp" />
+    <ClCompile Include="src\lua\Lua_Caret.cpp" />
+    <ClCompile Include="src\lua\Lua_Draw.cpp" />
+    <ClCompile Include="src\lua\Lua_Flags.cpp" />
+    <ClCompile Include="src\lua\Lua_Frame.cpp" />
+    <ClCompile Include="src\lua\Lua_Game.cpp" />
+    <ClCompile Include="src\lua\Lua_KeyControl.cpp" />
+    <ClCompile Include="src\lua\Lua_Main.cpp" />
+    <ClCompile Include="src\lua\Lua_Npc.cpp" />
+    <ClCompile Include="src\lua\Lua_MyChar.cpp" />
+    <ClCompile Include="src\lua\Lua_Profile.cpp" />
+    <ClCompile Include="src\lua\Lua_Sound.cpp" />
+    <ClCompile Include="src\lua\Lua_Stage.cpp" />
+    <ClCompile Include="src\lua\Lua_TextScr.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\API_Tile.cpp" />
+    <ClCompile Include="src\ModSettings.cpp" />
+    <ClCompile Include="src\TextScr.cpp" />
     <ClCompile Include="src\\mod_loader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\API_Boss.h" />
     <ClInclude Include="src\API_Caret.h" />
     <ClInclude Include="src\API_Game.h" />
+    <ClInclude Include="src\API_GetTrg.h" />
     <ClInclude Include="src\API_LoadGenericData.h" />
     <ClInclude Include="src\API_ModeAction.h" />
     <ClInclude Include="src\API_ModeOpening.h" />
     <ClInclude Include="src\API_ModeTitle.h" />
-    <ClInclude Include="src\API_NpcTbl.h" />
+    <ClInclude Include="src\API_Npc.h" />
     <ClInclude Include="src\API_Profile.h" />
     <ClInclude Include="src\API_TextScript.h" />
     <ClInclude Include="src\API_TransferStage.h" />
     <ClInclude Include="src\API_Weapon.h" />
     <ClInclude Include="src\cave_story.h" />
+    <ClInclude Include="src\lua\API_Lua.h" />
+    <ClInclude Include="src\lua\Lua.h" />
+    <ClInclude Include="src\lua\Lua_ArmsItem.h" />
+    <ClInclude Include="src\lua\Lua_Caret.h" />
+    <ClInclude Include="src\lua\Lua_Draw.h" />
+    <ClInclude Include="src\lua\Lua_Flags.h" />
+    <ClInclude Include="src\lua\Lua_Frame.h" />
+    <ClInclude Include="src\lua\Lua_Game.h" />
+    <ClInclude Include="src\lua\Lua_KeyControl.h" />
+    <ClInclude Include="src\lua\Lua_Main.h" />
+    <ClInclude Include="src\lua\Lua_MyChar.h" />
+    <ClInclude Include="src\lua\Lua_Npc.h" />
+    <ClInclude Include="src\lua\Lua_Profile.h" />
+    <ClInclude Include="src\lua\Lua_Sound.h" />
+    <ClInclude Include="src\lua\Lua_Stage.h" />
+    <ClInclude Include="src\lua\Lua_TextScr.h" />
     <ClInclude Include="src\Main.h" />
     <ClInclude Include="src\API_Tile.h" />
+    <ClInclude Include="src\ModSettings.h" />
+    <ClInclude Include="src\TextScr.h" />
     <ClInclude Include="src\\mod_loader.h" />
     <ClInclude Include="src\\mod_loader_hooks.h" />
   </ItemGroup>
