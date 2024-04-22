@@ -25,5 +25,6 @@ void ArmsTablePatches()
 	WriteProcessMemory(GetCurrentProcess(), (void*)(0x419F9F + 3), &autpiArmsLevelTable, 4, NULL);
 	WriteProcessMemory(GetCurrentProcess(), (void*)(0x419FE7 + 3), &autpiArmsLevelTable, 4, NULL);
 
-	WriteProcessMemory(GetCurrentProcess(), (void*)(0x4198FB + 2), (char*)(&autpiArmsLevelTable) + 8, 4, NULL);
+	const void* tableAddressPlus8 = &autpiArmsLevelTable[0].exp[2];
+	WriteProcessMemory(GetCurrentProcess(), (void*)(0x4198FB + 2), &tableAddressPlus8, 4, NULL);
 }

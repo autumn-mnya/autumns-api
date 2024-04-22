@@ -4,7 +4,7 @@ This mod is using [Clownacy's Mod Loader](https://github.com/Clownacy/Cave-Story
 
 # Features
 
-- A port of [ModCS](https://modcavestory.github.io) to Freeware, with most features existing except the Bullet API for now.
+- A port of [ModCS](https://modcavestory.github.io) to Freeware, with newer additions as well.
 - Ways to "Register" code at different spots in the game, such as adding your own functions to the "Act" part of the Action Mode in Cave Storys code.
 
 # ModCS

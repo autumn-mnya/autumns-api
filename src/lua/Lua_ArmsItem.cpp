@@ -51,7 +51,7 @@ static STRUCT_TABLE ArmsTable[] =
 	{"level", offsetof(ARMS, level), TYPE_NUMBER},
 	{"exp", offsetof(ARMS, exp), TYPE_NUMBER},
 	{"ammo", offsetof(ARMS, num), TYPE_NUMBER},
-	{"max_ammo", offsetof(ARMS, max_num), TYPE_NUMBER},
+	{"max_ammo", offsetof(ARMS, max_num), TYPE_NUMBER}
 };
 
 int lua_ArmsIndex(lua_State* L)

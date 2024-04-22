@@ -33,7 +33,6 @@ static STRUCT_TABLE PlayerTable[] =
 	{"cond", offsetof(MYCHAR, cond), TYPE_NUMBER},
 	{"hit_flag", offsetof(MYCHAR, flag), TYPE_NUMBER},
 	{"equip", offsetof(MYCHAR, equip), TYPE_NUMBER},
-	{"fire_rate", offsetof(MYCHAR, equip), TYPE_NUMBER} // this is non functional at the moment, but i dont have enough of an understanding of how this code works to figure out whats wrong !!
 };
 
 int lua_PlayerIndex(lua_State* L)
@@ -46,6 +45,16 @@ int lua_PlayerIndex(lua_State* L)
 	if (strcmp(x, "air") == 0)
 	{
 		lua_pushnumber(L, gMC.air / 10);
+		return 1;
+	}
+	else if (strcmp(x, "fire_rate") == 0)
+	{
+		lua_pushnumber(L, gMC.rensha);
+		return 1;
+	}
+	else if (strcmp(x, "ammo_empty") == 0)
+	{
+		lua_pushnumber(L, empty_caret_timer);
 		return 1;
 	}
 
@@ -62,6 +71,16 @@ int lua_PlayerNextIndex(lua_State* L)
 	if (strcmp(x, "air") == 0)
 	{
 		gMC.air = (int)luaL_checknumber(L, 3) * 10;
+		return 0;
+	}
+	else if (strcmp(x, "fire_rate") == 0)
+	{
+		gMC.rensha = (int)luaL_checknumber(L, 3);
+		return 0;
+	}
+	else if (strcmp(x, "ammo_empty") == 0)
+	{
+		empty_caret_timer = (int)luaL_checknumber(L, 3);
 		return 0;
 	}
 
