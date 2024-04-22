@@ -104,9 +104,11 @@
     <ClCompile Include="src\API_TextScript.cpp" />
     <ClCompile Include="src\API_TransferStage.cpp" />
     <ClCompile Include="src\API_Weapon.cpp" />
+    <ClCompile Include="src\ASM_Patches.cpp" />
     <ClCompile Include="src\lua\API_Lua.cpp" />
     <ClCompile Include="src\lua\Lua.cpp" />
     <ClCompile Include="src\lua\Lua_ArmsItem.cpp" />
+    <ClCompile Include="src\lua\Lua_Bullet.cpp" />
     <ClCompile Include="src\lua\Lua_Caret.cpp" />
     <ClCompile Include="src\lua\Lua_Draw.cpp" />
     <ClCompile Include="src\lua\Lua_Flags.cpp" />
@@ -140,10 +142,12 @@
     <ClInclude Include="src\API_TextScript.h" />
     <ClInclude Include="src\API_TransferStage.h" />
     <ClInclude Include="src\API_Weapon.h" />
+    <ClInclude Include="src\ASM_Patches.h" />
     <ClInclude Include="src\cave_story.h" />
     <ClInclude Include="src\lua\API_Lua.h" />
     <ClInclude Include="src\lua\Lua.h" />
     <ClInclude Include="src\lua\Lua_ArmsItem.h" />
+    <ClInclude Include="src\lua\Lua_Bullet.h" />
     <ClInclude Include="src\lua\Lua_Caret.h" />
     <ClInclude Include="src\lua\Lua_Draw.h" />
     <ClInclude Include="src\lua\Lua_Flags.h" />

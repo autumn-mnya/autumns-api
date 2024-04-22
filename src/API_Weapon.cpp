@@ -9,10 +9,163 @@
 
 #include "mod_loader.h"
 #include "cave_story.h"
+#include "Main.h"
 
-static int empty;
+#include "lua/Lua_ArmsItem.h"
+#include "lua/Lua_Bullet.h"
 
-BULLET_TABLE gBulTblExtra[MAX_BULLET_TABLE];
+ARMS_LEVEL* autpiArmsLevelTable;
+BULLET_TABLE* autpiBulTbl;
+
+void LoadLevelsTable(void)
+{
+	FILE* fp;
+	char path[MAX_PATH];
+	size_t size;
+	int entries;
+
+	sprintf(path, "%s\\arms_level.tbl", gDataPath);
+
+	size = GetFileSizeLong(path);
+	if (size == INVALID_FILE_SIZE)
+	{
+		return;
+	}
+
+	entries = (int)(size / 12);
+
+	fp = fopen(path, "rb");
+	if (fp == NULL)
+	{
+		return;
+	}
+
+	autpiArmsLevelTable = (ARMS_LEVEL*)malloc(entries * sizeof(ARMS_LEVEL));
+
+	if (autpiArmsLevelTable == NULL)
+	{
+		fclose(fp);
+		free(autpiArmsLevelTable);
+		autpiArmsLevelTable = NULL;
+		return;
+	}
+
+	for (int i = 0; i < entries; ++i)
+		fread(&autpiArmsLevelTable[i].exp, 12, 1, fp);
+
+	fclose(fp);
+	return;
+}
+
+void LoadBulletTable(void)
+{
+	FILE* fp;
+	char path[MAX_PATH];
+	size_t size;
+	unsigned int entries;
+
+	sprintf(path, "%s\\bullet.tbl", gDataPath);
+
+	size = GetFileSizeLong(path);
+	if (size == INVALID_FILE_SIZE)
+		return;
+
+	entries = (int)(size / 42);
+
+	fp = fopen(path, "rb");
+	if (fp == NULL)
+		return;
+
+	autpiBulTbl = (BULLET_TABLE*)malloc(entries * sizeof(BULLET_TABLE));
+
+	if (autpiBulTbl == NULL)
+	{
+		fclose(fp);
+		free(autpiBulTbl);
+		autpiBulTbl = NULL;
+		return;
+	}
+
+	for (int i = 0; i < entries; ++i)
+	{
+		fread(&autpiBulTbl[i].damage, 1, 1, fp);
+		fread(&autpiBulTbl[i].life, 1, 1, fp);
+		fread(&autpiBulTbl[i].life_count, 4, 1, fp);
+		fread(&autpiBulTbl[i].bbits, 4, 1, fp);
+		fread(&autpiBulTbl[i].enemyXL, 4, 1, fp);
+		fread(&autpiBulTbl[i].enemyYL, 4, 1, fp);
+		fread(&autpiBulTbl[i].blockXL, 4, 1, fp);
+		fread(&autpiBulTbl[i].blockYL, 4, 1, fp);
+		fread(&autpiBulTbl[i].view, 16, 1, fp);
+	}
+
+	fclose(fp);
+	return;
+}
+
+void Replacement_AddExpMyChar(int x)
+{
+	int lv = gArmsData[gSelectedArms].level - 1;
+	int arms_code = gArmsData[gSelectedArms].code;
+
+	gArmsData[gSelectedArms].exp += x;
+
+	if (lv == 2)
+	{
+		if (gArmsData[gSelectedArms].exp >= autpiArmsLevelTable[arms_code].exp[lv])
+		{
+			gArmsData[gSelectedArms].exp = autpiArmsLevelTable[arms_code].exp[lv];
+
+			if (gMC.equip & EQUIP_WHIMSICAL_STAR)
+			{
+				if (gMC.star < 3)
+					++gMC.star;
+			}
+		}
+	}
+	else
+	{
+		for (; lv < 2; ++lv)
+		{
+			if (gArmsData[gSelectedArms].exp >= autpiArmsLevelTable[arms_code].exp[lv])
+			{
+				++gArmsData[gSelectedArms].level;
+				gArmsData[gSelectedArms].exp = 0;
+
+				if (gArmsData[gSelectedArms].code != 13)
+				{
+					PlaySoundObject(27, SOUND_MODE_PLAY);
+					SetCaret(gMC.x, gMC.y, CARET_LEVEL_UP, DIR_LEFT);
+				}
+			}
+		}
+	}
+
+	if (gArmsData[gSelectedArms].code != 13)
+	{
+		gMC.exp_count += x;
+		gMC.exp_wait = 30;
+	}
+	else
+	{
+		gMC.exp_wait = 10;
+	}
+}
+
+BOOL ReplacementIsMaxExpMyChar(void)
+{
+	int arms_code;
+
+	if (gArmsData[gSelectedArms].level == 3)
+	{
+		arms_code = gArmsData[gSelectedArms].code;
+
+		if (gArmsData[gSelectedArms].exp >= autpiArmsLevelTable[arms_code].exp[2])
+			return TRUE;
+	}
+
+	return FALSE;
+}
 
 void Replacement_SetBullet(int no, int x, int y, int dir)
 {
@@ -27,226 +180,223 @@ void Replacement_SetBullet(int no, int x, int y, int dir)
 	gBul[i].code_bullet = no;
 	gBul[i].cond = 0x80;
 	gBul[i].direct = dir;
-	if (no < 47)
-	{
-		gBul[i].damage = gBulTbl[no].damage;
-		gBul[i].life = gBulTbl[no].life;
-		gBul[i].life_count = gBulTbl[no].life_count;
-		gBul[i].bbits = gBulTbl[no].bbits;
-		gBul[i].enemyXL = gBulTbl[no].enemyXL * 0x200;
-		gBul[i].enemyYL = gBulTbl[no].enemyYL * 0x200;
-		gBul[i].blockXL = gBulTbl[no].blockXL * 0x200;
-		gBul[i].blockYL = gBulTbl[no].blockYL * 0x200;
-		gBul[i].view.back = gBulTbl[no].view.back * 0x200;
-		gBul[i].view.front = gBulTbl[no].view.front * 0x200;
-		gBul[i].view.top = gBulTbl[no].view.top * 0x200;
-		gBul[i].view.bottom = gBulTbl[no].view.bottom * 0x200;
-	}
-	else
-	{
-		gBul[i].damage = gBulTblExtra[no - 47].damage;
-		gBul[i].life = gBulTblExtra[no - 47].life;
-		gBul[i].life_count = gBulTblExtra[no - 47].life_count;
-		gBul[i].bbits = gBulTblExtra[no - 47].bbits;
-		gBul[i].enemyXL = gBulTblExtra[no - 47].enemyXL * 0x200;
-		gBul[i].enemyYL = gBulTblExtra[no - 47].enemyYL * 0x200;
-		gBul[i].blockXL = gBulTblExtra[no - 47].blockXL * 0x200;
-		gBul[i].blockYL = gBulTblExtra[no - 47].blockYL * 0x200;
-		gBul[i].view.back = gBulTblExtra[no - 47].view.back * 0x200;
-		gBul[i].view.front = gBulTblExtra[no - 47].view.front * 0x200;
-		gBul[i].view.top = gBulTblExtra[no - 47].view.top * 0x200;
-		gBul[i].view.bottom = gBulTblExtra[no - 47].view.bottom * 0x200;
-	}
-
+	gBul[i].damage = autpiBulTbl[no].damage;
+	gBul[i].life = autpiBulTbl[no].life;
+	gBul[i].life_count = autpiBulTbl[no].life_count;
+	gBul[i].bbits = autpiBulTbl[no].bbits;
+	gBul[i].enemyXL = autpiBulTbl[no].enemyXL * 0x200;
+	gBul[i].enemyYL = autpiBulTbl[no].enemyYL * 0x200;
+	gBul[i].blockXL = autpiBulTbl[no].blockXL * 0x200;
+	gBul[i].blockYL = autpiBulTbl[no].blockYL * 0x200;
+	gBul[i].view.back = autpiBulTbl[no].view.back * 0x200;
+	gBul[i].view.front = autpiBulTbl[no].view.front * 0x200;
+	gBul[i].view.top = autpiBulTbl[no].view.top * 0x200;
+	gBul[i].view.bottom = autpiBulTbl[no].view.bottom * 0x200;
 	gBul[i].x = x;
 	gBul[i].y = y;
 }
 
-void addNewEntryToBulTblExtra(signed char damage, signed char life, int life_count, int bbits, int enemyXL, int enemyYL, int blockXL, int blockYL, OTHER_RECT view) {
-	static int nextIndex = 0;
+void ReplacementForShootBullet()
+{
+	char errormsg[256];
+	int result;
 
-	if (nextIndex < 3000) {
-		gBulTblExtra[nextIndex].damage = damage;
-		gBulTblExtra[nextIndex].life = life;
-		gBulTblExtra[nextIndex].life_count = life_count;
-		gBulTblExtra[nextIndex].bbits = bbits;
-		gBulTblExtra[nextIndex].enemyXL = enemyXL;
-		gBulTblExtra[nextIndex].enemyYL = enemyYL;
-		gBulTblExtra[nextIndex].blockXL = blockXL;
-		gBulTblExtra[nextIndex].blockYL = blockYL;
-		gBulTblExtra[nextIndex].view = view;
-		nextIndex++;
-	}
-	else {
-		// Handle error: gBulTblExtra array is full
-		printf("Error: Cannot add more entries, gBulTblExtra is full.\n");
+	result = ShootActModScript(gArmsData[gSelectedArms].code);
+
+	if (result == 1)
+		ShootBullet();
+	else if (result == 0)
+	{
+		sprintf(errormsg, "Couldn't execute Shoot function of Weapon %d", gArmsData[gSelectedArms].code);
+		MessageBoxA(ghWnd, errormsg, "ModScript Error", MB_OK);
 	}
 }
 
-void ShootBullet_Custom(int level)
+void ActBulletCode(BULLET* bul, int code)
 {
-	int bul_no;
-	static int wait;
-
-	if (CountArmsBullet(14) > 4)
-		return;
-
-	switch (level)
+	switch (code)
 	{
+			// Snake
 		case 1:
-			bul_no = 47;
+			ActBullet_Frontia1(bul);
 			break;
-
 		case 2:
-			bul_no = 48;
+			ActBullet_Frontia2(bul, 2);
 			break;
-
 		case 3:
-			bul_no = 49;
+			ActBullet_Frontia2(bul, 3);
 			break;
-	}
 
-	if (!(gKey & gKeyShot))
-		gMC.rensha = 6;
+			// Polar Star
+		case 4:
+			ActBullet_PoleStar(bul, 1);
+			break;
+		case 5:
+			ActBullet_PoleStar(bul, 2);
+			break;
+		case 6:
+			ActBullet_PoleStar(bul, 3);
+			break;
 
-	if (gKey & gKeyShot)
-	{
-		if (++gMC.rensha < 6)
-			return;
+			// Fireball
+		case 7:
+			ActBullet_FireBall(bul, 1);
+			break;
+		case 8:
+			ActBullet_FireBall(bul, 2);
+			break;
+		case 9:
+			ActBullet_FireBall(bul, 3);
+			break;
 
-		gMC.rensha = 0;
+			// Machine Gun
+		case 10:
+			ActBullet_MachineGun(bul, 1);
+			break;
+		case 11:
+			ActBullet_MachineGun(bul, 2);
+			break;
+		case 12:
+			ActBullet_MachineGun(bul, 3);
+			break;
 
-		if (!UseArmsEnergy(1))
-		{
-			PlaySoundObject(37, SOUND_MODE_PLAY);
-
-			if (empty == 0)
-			{
-				SetCaret(gMC.x, gMC.y, CARET_EMPTY, DIR_LEFT);
-				empty = 50;
-			}
-
-			return;
-		}
-
-		if (gMC.up)
-		{
-			if (level == 3)
-				gMC.ym += 0x100;
-
-			if (gMC.direct == 0)
-			{
-				SetBullet(bul_no, gMC.x - (3 * 0x200), gMC.y - (8 * 0x200), 1);
-				SetCaret(gMC.x - (3 * 0x200), gMC.y - (8 * 0x200), CARET_SHOOT, DIR_LEFT);
-			}
-			else
-			{
-				SetBullet(bul_no, gMC.x + (3 * 0x200), gMC.y - (8 * 0x200), 1);
-				SetCaret(gMC.x + (3 * 0x200), gMC.y - (8 * 0x200), CARET_SHOOT, DIR_LEFT);
-			}
-		}
-		else if (gMC.down)
-		{
-			if (level == 3)
-			{
-				if (gMC.ym > 0)
-					gMC.ym /= 2;
-
-				if (gMC.ym > -0x400)
-				{
-					gMC.ym -= 0x200;
-					if (gMC.ym < -0x400)
-						gMC.ym = -0x400;
-				}
-			}
-
-			if (gMC.direct == 0)
-			{
-				SetBullet(bul_no, gMC.x - (3 * 0x200), gMC.y + (8 * 0x200), 3);
-				SetCaret(gMC.x - (3 * 0x200), gMC.y + (8 * 0x200), CARET_SHOOT, DIR_LEFT);
-			}
-			else
-			{
-				SetBullet(bul_no, gMC.x + (3 * 0x200), gMC.y + (8 * 0x200), 3);
-				SetCaret(gMC.x + (3 * 0x200), gMC.y + (8 * 0x200), CARET_SHOOT, DIR_LEFT);
-			}
-		}
-		else
-		{
-			if (gMC.direct == 0)
-			{
-				SetBullet(bul_no, gMC.x - (12 * 0x200), gMC.y + (3 * 0x200), 0);
-				SetCaret(gMC.x - (12 * 0x200), gMC.y + (3 * 0x200), CARET_SHOOT, DIR_LEFT);
-			}
-			else
-			{
-				SetBullet(bul_no, gMC.x + (12 * 0x200), gMC.y + (3 * 0x200), 2);
-				SetCaret(gMC.x + (12 * 0x200), gMC.y + (3 * 0x200), CARET_SHOOT, DIR_LEFT);
-			}
-		}
-
-		if (level == 3)
-			PlaySoundObject(49, SOUND_MODE_PLAY);
-		else
-			PlaySoundObject(32, SOUND_MODE_PLAY);
-	}
-	else
-	{
-		++wait;
-
-		if (gMC.equip & EQUIP_TURBOCHARGE)
-		{
-			if (wait > 1)
-			{
-				wait = 0;
-				ChargeArmsEnergy(1);
-			}
-		}
-		else
-		{
-			if (wait > 4)
-			{
-				wait = 0;
-				ChargeArmsEnergy(1);
-			}
-		}
-	}
-}
-
-void ShootBulletAutPI()
-{
-	static int soft_rensha;	// 'rensha' is Japanese for 'rapid-fire', apparently
-
-	if (empty != 0)
-		--empty;
-
-	// Only let the player shoot every 4 frames
-	if (soft_rensha != 0)
-		--soft_rensha;
-
-	if (gKeyTrg & gKeyShot)
-	{
-		if (soft_rensha != 0)
-			return;
-
-		soft_rensha = 4;
-	}
-
-	// Run functions
-	if (gMC.cond & 2)
-		return;
-
-	switch (gArmsData[gSelectedArms].code)
-	{
+			// Missile Launcher
+		case 13:
+			ActBullet_Missile(bul, 1);
+			break;
 		case 14:
-			ShootBullet_Custom(1);
+			ActBullet_Missile(bul, 2);
+			break;
+		case 15:
+			ActBullet_Missile(bul, 3);
+			break;
+
+			// Missile Launcher explosion
+		case 16:
+			ActBullet_Bom(bul, 1);
+			break;
+		case 17:
+			ActBullet_Bom(bul, 2);
+			break;
+		case 18:
+			ActBullet_Bom(bul, 3);
+			break;
+
+			// Bubbler
+		case 19:
+			ActBullet_Bubblin1(bul);
+			break;
+		case 20:
+			ActBullet_Bubblin2(bul);
+			break;
+		case 21:
+			ActBullet_Bubblin3(bul);
+			break;
+
+			// Bubbler level 3 spines
+		case 22:
+			ActBullet_Spine(bul);
+			break;
+
+			// Blade slashes
+		case 23:
+			ActBullet_Edge(bul);
+			break;
+
+			// Falling spike that deals 127 damage
+		case 24:
+			ActBullet_Drop(bul);
+			break;
+
+			// Blade
+		case 25:
+			ActBullet_Sword1(bul);
+			break;
+		case 26:
+			ActBullet_Sword2(bul);
+			break;
+		case 27:
+			ActBullet_Sword3(bul);
+			break;
+
+			// Super Missile Launcher
+		case 28:
+			ActBullet_SuperMissile(bul, 1);
+			break;
+		case 29:
+			ActBullet_SuperMissile(bul, 2);
+			break;
+		case 30:
+			ActBullet_SuperMissile(bul, 3);
+			break;
+
+			// Super Missile Launcher explosion
+		case 31:
+			ActBullet_SuperBom(bul, 1);
+			break;
+		case 32:
+			ActBullet_SuperBom(bul, 2);
+			break;
+		case 33:
+			ActBullet_SuperBom(bul, 3);
+			break;
+
+			// Nemesis
+		case 34:	// Identical to case 43
+			ActBullet_Nemesis(bul, 1);
+			break;
+		case 35:
+			ActBullet_Nemesis(bul, 2);
+			break;
+		case 36:
+			ActBullet_Nemesis(bul, 3);
+			break;
+
+			// Spur
+		case 37:
+			ActBullet_Spur(bul, 1);
+			break;
+		case 38:
+			ActBullet_Spur(bul, 2);
+			break;
+		case 39:
+			ActBullet_Spur(bul, 3);
+			break;
+
+			// Spur trail
+		case 40:
+			ActBullet_SpurTail(bul, 1);
+			break;
+		case 41:
+			ActBullet_SpurTail(bul, 2);
+			break;
+		case 42:
+			ActBullet_SpurTail(bul, 3);
+			break;
+
+			// Curly's Nemesis
+		case 43:	// Identical to case 34
+			ActBullet_Nemesis(bul, 1);
+			break;
+
+			// Screen-nuke that kills all enemies
+		case 44:
+			ActBullet_EnemyClear(bul);
+			break;
+
+			// Whimsical Star
+		case 45:
+			ActBullet_Star(bul);
 			break;
 	}
 }
 
-void ActBulletAutPI()
+BOOL Replacement_ActBullet(void)
 {
 	int i;
+	int code;
+	int result;
+	char errormsg[256];
 
 	for (i = 0; i < BULLET_MAX; ++i)
 	{
@@ -258,35 +408,20 @@ void ActBulletAutPI()
 				continue;
 			}
 
-			switch (gBul[i].code_bullet)
+			code = gBul[i].code_bullet;
+
+			result = BulletActModScript(code, i);
+
+			if (result == 1)
+				ActBulletCode(&gBul[i], code);
+			else if (result == 0)
 			{
-				// Snake
-			case 47:
-				ActBullet_Frontia1(&gBul[i]);
-				break;
-			case 48:
-				ActBullet_Frontia1(&gBul[i]);
-				break;
-			case 49:
-				ActBullet_Frontia1(&gBul[i]);
-				break;
+				sprintf(errormsg, "Couldn't execute Act function of Bullet ActNo. %d", code);
+				MessageBoxA(ghWnd, errormsg, "ModScript Error", MB_OK);
+				return FALSE;
 			}
 		}
 	}
-}
 
-// 0x4105A6
-void ReplacementForShootBullet()
-{
-	if (gArmsData[gSelectedArms].code < 14)
-		ShootBullet();
-	else
-		ShootBulletAutPI();
-}
-
-// 0x4105AB
-void ReplacementForActBullet()
-{
-	ActBullet();
-	ActBulletAutPI();
+	return TRUE;
 }

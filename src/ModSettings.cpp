@@ -13,8 +13,10 @@
 #include "cave_story.h"
 
 bool ignore_main_lua_error = true;
+bool debug_write_tables = false;
 
 void InitMod_Settings()
 {
 	ignore_main_lua_error = ModLoader_GetSettingBool("Ignore 'Missing main.lua' error", true);
+	debug_write_tables = ModLoader_GetSettingBool("Write Tables on Boot", false);
 }

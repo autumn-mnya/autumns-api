@@ -27,6 +27,30 @@ lua_State* GetLuaL()
 		return nullptr;
 }
 
+// Pre Global ModCS
+
+std::vector<PreGlobalModCSElementHandler> preglobalmodcsElementHandlers;
+
+void RegisterLuaPreGlobalModCSElement(PreGlobalModCSElementHandler handler)
+{
+    preglobalmodcsElementHandlers.push_back(handler);
+}
+
+void ExecuteLuaPreGlobalModCSElementHandlers()
+{
+    for (const auto& handler : preglobalmodcsElementHandlers)
+    {
+        handler();
+    }
+}
+
+void RunLuaPreGlobalModCSCode()
+{
+    ExecuteLuaPreGlobalModCSElementHandlers();
+}
+
+// Metadata
+
 std::vector<LuaMetadataElementHandler> luametadataElementHandlers;
 std::vector<LuaFuncElementHandler> luafuncElementHandlers;
 
@@ -47,6 +71,8 @@ void RunLuaMetadataCode()
 {
     ExecuteLuaMetadataElementHandlers();
 }
+
+// Lua Func
 
 void RegisterLuaFuncElement(LuaFuncElementHandler handler)
 {

@@ -48,6 +48,7 @@ void SerenaAlert(lua_State* L, const char* warning);
 extern "C" __declspec(dllexport) BOOL ReadStructBasic(lua_State* L, const char* name, STRUCT_TABLE* table, void* data, int length);
 extern "C" __declspec(dllexport) BOOL Write2StructBasic(lua_State* L, const char* name, STRUCT_TABLE* table, void* data, int length);
 extern "C" __declspec(dllexport) void PushFunctionTable(lua_State* L, const char* name, const FUNCTION_TABLE* table, int length, BOOL pop);
+extern "C" __declspec(dllexport) void PushFunctionTableModName(lua_State* L, const char* modname, const char* name, const FUNCTION_TABLE* table, int length, BOOL pop);
 extern "C" __declspec(dllexport) void PushSimpleMetatables(lua_State* L, const METATABLE_TABLE* table, int length);
 
 BOOL InitModScript(void);

@@ -2,10 +2,14 @@
 
 #include "cave_story.h"
 
-#define MAX_BULLET_TABLE 3000
-extern BULLET_TABLE gBulTblExtra[MAX_BULLET_TABLE];
-
+void LoadLevelsTable(void);
+void LoadBulletTable(void);
+void Replacement_AddExpMyChar(int x);
+BOOL ReplacementIsMaxExpMyChar(void);
 void Replacement_SetBullet(int no, int x, int y, int dir);
-void addNewEntryToBulTblExtra(signed char damage, signed char life, int life_count, int bbits, int enemyXL, int enemyYL, int blockXL, int blockYL, OTHER_RECT view);
+void ActBulletCode(BULLET* bul, int code);
 void ReplacementForShootBullet();
-void ReplacementForActBullet();
+BOOL Replacement_ActBullet(void);
+
+extern ARMS_LEVEL* autpiArmsLevelTable;
+extern BULLET_TABLE* autpiBulTbl;

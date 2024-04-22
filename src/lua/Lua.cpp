@@ -26,6 +26,7 @@ extern "C"
 #include "../API_Npc.h"
 
 #include "Lua_ArmsItem.h"
+#include "Lua_Bullet.h"
 #include "Lua_Caret.h"
 #include "Lua_Draw.h"
 #include "Lua_Flags.h"
@@ -245,7 +246,7 @@ static METATABLE_TABLE MetatableTable[] =
 	{"ColorMeta", lua_ColorIndex, lua_ColorNextIndex},
 	{"NpcMeta", lua_NpcIndex, lua_NpcNextIndex},
 	{"CaretMeta", lua_CaretIndex, lua_CaretNextIndex},
-	// {"BulletMeta", lua_BulletIndex, lua_BulletNextIndex},
+	{"BulletMeta", lua_BulletIndex, lua_BulletNextIndex},
 	{"PlayerMeta", lua_PlayerIndex, lua_PlayerNextIndex},
 	{"ArmsMeta", lua_ArmsIndex, lua_ArmsNextIndex},
 	{"ItemMeta", lua_ItemIndex, lua_ItemNextIndex}
@@ -267,6 +268,26 @@ void PushFunctionTable(lua_State* L, const char* name, const FUNCTION_TABLE* tab
 		lua_pop(L, 1);
 }
 
+void PushFunctionTableModName(lua_State* L, const char* modname, const char* name, const FUNCTION_TABLE* table, int length, BOOL pop)
+{
+	lua_newtable(L);
+
+	lua_pushvalue(L, -1);
+	lua_setfield(L, -3, modname);
+
+	lua_pushvalue(L, -1);
+	lua_setfield(L, -2, name);
+
+	for (int i = 0; i < length; ++i)
+	{
+		lua_pushcfunction(L, table[i].f);
+		lua_setfield(L, -2, table[i].name);
+	}
+
+	// Pop the tables created if pop is set
+	if (pop)
+		lua_pop(L, 1);
+}
 void PushSimpleMetatables(lua_State* L, const METATABLE_TABLE* table, int length)
 {
 	for (int i = 0; i < length; ++i)
@@ -353,6 +374,29 @@ static int lua_ModPrintVal(lua_State* L)
 	return 0;
 }
 
+static int Print2Console(lua_State* L) {
+	int nargs = lua_gettop(L);
+
+	for (int i = 1; i <= nargs; ++i) {
+		if (i > 1) {
+			printf("\t");
+		}
+
+		const char* str = lua_tostring(L, i);
+		if (str == NULL) {
+			lua_getglobal(L, "tostring");
+			lua_pushvalue(L, i);
+			lua_call(L, 1, 1);
+			str = lua_tostring(L, -1);
+		}
+
+		printf("%s", str);
+	}
+	printf("\n");
+
+	return 0;
+}
+
 BOOL InitModScript(void)
 {
 	char scriptpath[MAX_PATH];
@@ -363,6 +407,10 @@ BOOL InitModScript(void)
 	sprintf(scriptpath, "%s\\Scripts\\?.lua", gDataPath);
 
 	luaL_openlibs(gL);
+
+	// Replace the standard Lua 'print' function with customPrint
+	lua_pushcfunction(gL, Print2Console);
+	lua_setglobal(gL, "print");
 
 	lua_getglobal(gL, "package");
 	lua_pushstring(gL, scriptpath);
@@ -376,6 +424,9 @@ BOOL InitModScript(void)
 	lua_pushstring(gL, "__index");
 	lua_pushcfunction(gL, lua_SurfaceIndex);
 	lua_settable(gL, -3);
+
+	// Allow other dlls to inject code *before* setting the global gL to "ModCS".
+	RunLuaPreGlobalModCSCode();
 
 	lua_newtable(gL);
 	lua_pushvalue(gL, -1);
@@ -434,21 +485,17 @@ BOOL InitModScript(void)
 	lua_setfield(gL, -3, "Act");
 	lua_pop(gL, 2);
 
-	/*
 	PushFunctionTable(gL, "Bullet", BulletFunctionTable, FUNCTION_TABLE_BULLET_SIZE, FALSE);
 	lua_newtable(gL);
 	lua_pushvalue(gL, -1);
 	lua_setfield(gL, -3, "Act");
 	lua_pop(gL, 2);
-	*/
 
 	PushFunctionTable(gL, "Caret", CaretFunctionTable, FUNCTION_TABLE_CARET_SIZE, FALSE);
 	lua_newtable(gL);
 	lua_pushvalue(gL, -1);
 	lua_setfield(gL, -3, "Act");
 	lua_pop(gL, 2);
-
-
 
 	PushFunctionTable(gL, "Arms", ArmsFunctionTable, FUNCTION_TABLE_ARMS_SIZE, FALSE);
 	lua_newtable(gL);

@@ -14,7 +14,7 @@
 #include "lua/Lua_Caret.h"
 
 // Global variables
-CARET_TABLE gCaretTableAPI[MAX_CARET_TABLE_SIZE];
+CARET_TABLE autpiCaretTable[MAX_CARET_TABLE_SIZE];
 CARETFUNCTION gpCaretAPIFuncTbl[MAX_CARET_FUNC_TABLE_SIZE];
 size_t caretFuncCount = 0;
 
@@ -34,8 +34,8 @@ void SetDefaultCaretTable()
 
 	for (i = 0; i < 18; ++i)
 	{
-		gCaretTableAPI[i].view_left = gCaretTable[i].view_left;
-		gCaretTableAPI[i].view_top = gCaretTable[i].view_top;
+		autpiCaretTable[i].view_left = gCaretTable[i].view_left;
+		autpiCaretTable[i].view_top = gCaretTable[i].view_top;
 	}
 }
 
@@ -46,9 +46,9 @@ void LoadCaretTable()
 
 	// Construct the file path
 	sprintf(path, "%s\\%s", gDataPath, "caret.tbl");
-	memset(gCaretTableAPI, 0, sizeof(CARET_TABLE));
+	memset(autpiCaretTable, 0, sizeof(CARET_TABLE));
 
-	// Open the file for writing
+	// Open the file for reading
 	fp = fopen(path, "rb");
 	if (fp == NULL) {
 		// Handle the error...
@@ -58,7 +58,7 @@ void LoadCaretTable()
 	}
 
 	// Read the data to the file
-	fread(gCaretTableAPI, sizeof(CARET_TABLE), MAX_CARET_TABLE_SIZE, fp);
+	fread(autpiCaretTable, sizeof(CARET_TABLE), MAX_CARET_TABLE_SIZE, fp);
 
 	// Close the file
 	fclose(fp);
@@ -111,8 +111,8 @@ void Replacement_SetCaret(int x, int y, int code, int dir)
 	gCrt[c].code = code;
 	gCrt[c].x = x;
 	gCrt[c].y = y;
-	gCrt[c].view_left = gCaretTableAPI[code].view_left;
-	gCrt[c].view_top = gCaretTableAPI[code].view_top;
+	gCrt[c].view_left = autpiCaretTable[code].view_left;
+	gCrt[c].view_top = autpiCaretTable[code].view_top;
 	gCrt[c].direct = dir;
 }
 

@@ -67,6 +67,10 @@
       <Filter>lua</Filter>
     </ClCompile>
     <ClCompile Include="src\ModSettings.cpp" />
+    <ClCompile Include="src\lua\Lua_Bullet.cpp">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ASM_Patches.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\API_Boss.h" />
@@ -137,6 +141,10 @@
       <Filter>lua</Filter>
     </ClInclude>
     <ClInclude Include="src\ModSettings.h" />
+    <ClInclude Include="src\lua\Lua_Bullet.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ASM_Patches.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="lua">

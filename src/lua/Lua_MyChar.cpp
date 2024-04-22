@@ -32,7 +32,8 @@ static STRUCT_TABLE PlayerTable[] =
 	// don't use
 	{"cond", offsetof(MYCHAR, cond), TYPE_NUMBER},
 	{"hit_flag", offsetof(MYCHAR, flag), TYPE_NUMBER},
-	{"equip", offsetof(MYCHAR, equip), TYPE_NUMBER}
+	{"equip", offsetof(MYCHAR, equip), TYPE_NUMBER},
+	{"fire_rate", offsetof(MYCHAR, rensha), TYPE_NUMBER}
 };
 
 int lua_PlayerIndex(lua_State* L)
@@ -245,7 +246,7 @@ static int lua_PlayerHasEquipped(lua_State* L)
 {
 	int bit = (int)luaL_checknumber(L, 1);
 
-	if (gMC.equip & (1 << bit))
+	if (gMC.equip & bit)
 		lua_pushboolean(L, 1);
 	else
 		lua_pushboolean(L, 0);
@@ -323,6 +324,16 @@ static int lua_PlayerTouchTile(lua_State* L)
 	return 1;
 }
 
+static int lua_PlayerTouchWater(lua_State* L)
+{
+	if (gMC.flag & 0x100)
+		lua_pushboolean(L, 1);
+	else
+		lua_pushboolean(L, 0);
+
+	return 1;
+}
+
 FUNCTION_TABLE PlayerFunctionTable[FUNCTION_TABLE_PLAYER_SIZE] =
 {
 	{"IsHit", lua_PlayerIsHit},
@@ -348,5 +359,6 @@ FUNCTION_TABLE PlayerFunctionTable[FUNCTION_TABLE_PLAYER_SIZE] =
 	{"TouchFloor", lua_PlayerTouchFloor},
 	{"TouchSlopeRight", lua_PlayerTouchSlopeRight},
 	{"TouchSlopeLeft", lua_PlayerTouchSlopeLeft},
-	{"TouchTile", lua_PlayerTouchTile}
+	{"TouchTile", lua_PlayerTouchTile},
+	{"TouchWater", lua_PlayerTouchWater}
 };

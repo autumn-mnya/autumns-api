@@ -27,6 +27,7 @@
 #include "API_TextScript.h"
 #include "API_TransferStage.h"
 #include "API_Weapon.h"
+#include "ASM_Patches.h"
 
 #include "lua/Lua.h"
 
@@ -48,6 +49,82 @@ void SetModeTitle()
 void SetModeAction()
 {
     gCurrentGameMode = 3;
+}
+
+// Write Arms Table debug function
+void SaveArmsTable()
+{
+    FILE* fp;
+    char path[MAX_PATH];
+
+    // Construct the file path
+    sprintf(path, "%s\\%s", gModulePath, "arms_level.tbl");
+
+    // Open the file for writing
+    fp = fopen(path, "wb");
+    if (fp == NULL) {
+        // Handle the error...
+        return;
+    }
+
+    // Read the data to the file
+    fwrite(gArmsLevelTable, sizeof(ARMS_LEVEL), 14, fp);
+
+    // Close the file
+    fclose(fp);
+}
+
+// Write Bullet Table debug function
+void SaveBulletTable()
+{
+    FILE* fp;
+    char path[MAX_PATH];
+    size_t size;
+
+    sprintf(path, "%s\\bullet.tbl", gModulePath);
+
+    fp = fopen(path, "wb");
+    if (fp == NULL)
+        return;
+
+    for (int i = 0; i < 46; ++i)
+    {
+        fwrite(&gBulTbl[i].damage, 1, 1, fp);
+        fwrite(&gBulTbl[i].life, 1, 1, fp);
+        fwrite(&gBulTbl[i].life_count, 4, 1, fp);
+        fwrite(&gBulTbl[i].bbits, 4, 1, fp);
+        fwrite(&gBulTbl[i].enemyXL, 4, 1, fp);
+        fwrite(&gBulTbl[i].enemyYL, 4, 1, fp);
+        fwrite(&gBulTbl[i].blockXL, 4, 1, fp);
+        fwrite(&gBulTbl[i].blockYL, 4, 1, fp);
+        fwrite(&gBulTbl[i].view, 16, 1, fp);
+    }
+
+    fclose(fp);
+    return;
+}
+
+// Write Caret Table debug function
+void SaveCaretTable()
+{
+    FILE* fp;
+    char path[MAX_PATH];
+
+    // Construct the file path
+    sprintf(path, "%s\\%s", gModulePath, "caret.tbl");
+
+    // Open the file for writing
+    fp = fopen(path, "wb");
+    if (fp == NULL) {
+        // Handle the error...
+        return;
+    }
+
+    // Read the data to the file
+    fwrite(gCaretTable, sizeof(CARET_TABLE), 18, fp);
+
+    // Close the file
+    fclose(fp);
 }
 
 void InitMod(void)
@@ -127,11 +204,16 @@ void InitMod(void)
     ModLoader_WriteCall((void*)0x424DAE, (void*)Replacement_TextScript_SaveProfile_Call);
 
     // Weapons API
+    LoadLevelsTable();
+    LoadBulletTable();
+    ArmsTablePatches();
     /*
-    ModLoader_WriteJump((void*)SetBullet, (void*)Replacement_SetBullet);
-    ModLoader_WriteCall((void*)0x4105AB, (void*)ReplacementForActBullet);
-    ModLoader_WriteCall((void*)0x4105A6, (void*)ReplacementForShootBullet); // used for ShootBullet --> should be able to create new weapons if we can just figure out a way to run code from some form of table/vector..
+    ModLoader_WriteJump((void*)0x4196F0, (void*)AddExpMyChar);
+    ModLoader_WriteJump((void*)0x4198C0, (void*)IsMaxExpMyChar);
     */
+    ModLoader_WriteJump((void*)0x403F80, (void*)Replacement_SetBullet);
+    ModLoader_WriteJump((void*)0x408FC0, (void*)Replacement_ActBullet);
+    ModLoader_WriteCall((void*)0x4105A6, (void*)ReplacementForShootBullet);
 
     InitTSC();
 
@@ -166,4 +248,12 @@ void InitMod(void)
     RegisterBelowTextBoxElement(Lua_GameDrawBelowTextBox);
     RegisterAboveTextBoxElement(Lua_GameDrawAboveTextBox);
     RegisterPlayerHudElement(Lua_GameDrawHUD);
+
+    // If a modder needs the tables from their exe, they can enable that.
+    if (debug_write_tables)
+    {
+        SaveArmsTable();
+        SaveBulletTable();
+        SaveCaretTable();
+    }
 }
