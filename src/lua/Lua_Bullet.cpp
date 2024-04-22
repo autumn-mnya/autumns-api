@@ -25,8 +25,8 @@ static STRUCT_TABLE BulletTable[] =
 {
 	{"x", offsetof(BULLET, x), TYPE_PIXEL},
 	{"y", offsetof(BULLET, y), TYPE_PIXEL},
-	{"xm", offsetof(BULLET, xm), TYPE_PIXEL},
-	{"ym", offsetof(BULLET, ym), TYPE_PIXEL},
+	{"xm", offsetof(BULLET, xm), TYPE_NUMBER},
+	{"ym", offsetof(BULLET, ym), TYPE_NUMBER},
 	{"tgt_x", offsetof(BULLET, tgt_x), TYPE_PIXEL},
 	{"tgt_y", offsetof(BULLET, tgt_y), TYPE_PIXEL},
 	{"id", offsetof(BULLET, code_bullet), TYPE_NUMBER},

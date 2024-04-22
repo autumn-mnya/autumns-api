@@ -23,8 +23,8 @@ static STRUCT_TABLE PlayerTable[] =
 {
 	{"x", offsetof(MYCHAR, x), TYPE_PIXEL},
 	{"y", offsetof(MYCHAR, y), TYPE_PIXEL},
-	{"xm", offsetof(MYCHAR, xm), TYPE_PIXEL},
-	{"ym", offsetof(MYCHAR, ym), TYPE_PIXEL},
+	{"xm", offsetof(MYCHAR, xm), TYPE_NUMBER},
+	{"ym", offsetof(MYCHAR, ym), TYPE_NUMBER},
 	{"ani_no", offsetof(MYCHAR, ani_no), TYPE_NUMBER},
 	{"ani_wait", offsetof(MYCHAR, ani_wait), TYPE_NUMBER},
 	{"boost_fuel", offsetof(MYCHAR, boost_cnt), TYPE_NUMBER},
@@ -33,7 +33,7 @@ static STRUCT_TABLE PlayerTable[] =
 	{"cond", offsetof(MYCHAR, cond), TYPE_NUMBER},
 	{"hit_flag", offsetof(MYCHAR, flag), TYPE_NUMBER},
 	{"equip", offsetof(MYCHAR, equip), TYPE_NUMBER},
-	{"fire_rate", offsetof(MYCHAR, rensha), TYPE_NUMBER}
+	{"fire_rate", offsetof(MYCHAR, equip), TYPE_NUMBER} // this is non functional at the moment, but i dont have enough of an understanding of how this code works to figure out whats wrong !!
 };
 
 int lua_PlayerIndex(lua_State* L)

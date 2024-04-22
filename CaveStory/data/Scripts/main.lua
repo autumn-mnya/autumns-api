@@ -15,7 +15,21 @@ ModCS.AddCaret("MyNewCaret")
 
 local number = 0 -- Define local variable number
 
+glidecooldown = 0
+glidestate = 0
+
 ModCS.Arms.Shoot[1] = function()
+	-- glider from Modfest36 Mod
+	if ModCS.Key.Shoot(true) then
+		print("shooting")
+		glidestate = 1
+	else
+		glidestate = 0
+	end
+end
+
+-- Machine Gun as weapon 14 port
+ModCS.Arms.Shoot[14] = function()
 local bul = 0
 local level = 0
 local wait = 0
@@ -30,17 +44,17 @@ local wait = 0
 	
 	level = ModCS.Arms.GetCurrent().level
 	
-	if not ModCS.Key.Shoot() then
-		ModCS.Player.fire_rate = 6
-	end
+	--if not ModCS.Key.Shoot() then
+		--ModCS.Player.fire_rate = 6
+	--end
 	
 	if (ModCS.Key.Shoot(true)) then
-		if ModCS.Player.fire_rate < 6 then
-			ModCS.Player.fire_rate = ModCS.Player.fire_rate + 1
-			return
-		end
+		--if ModCS.Player.fire_rate < 6 then
+			--ModCS.Player.fire_rate = ModCS.Player.fire_rate + 1
+			--return
+		--end
 
-		ModCS.Player.fire_rate = 0
+		--ModCS.Player.fire_rate = 0
 			
 		if not ModCS.Arms.UseAmmo(1) then
 			ModCS.Sound.Play(37)
@@ -115,8 +129,30 @@ end
 function ModCS.Game.Act()
     if (ModCS.Key.Map()) then -- If map key is pressed...
         number = number + 1 -- Add 1 to number
+		ModCS.Player.AddMaxLife(44)
         print(number) -- Print the result
     end
+	
+	if glidestate == 1 then
+		if ModCS.Player.ym > 0 then
+			if not glidecooldown == 60 then
+				if ModCS.Player.direct == 0 then
+					ModCS.Caret.Spawn(13, ModCS.Player.x + 16, ModCS.Player.y, 0)
+				else
+					ModCS.Caret.Spawn(13, ModCS.Player.x - 16, ModCS.Player.y, 0)
+				end
+				
+				print("THE GLIDER ACTIVATE")
+				
+				glidecooldown = glidecooldown + 1
+				ModCS.Player.ym = 128
+			end
+		end
+	end
+	
+	if ModCS.Player.TouchFloor() then
+		glidecooldown = 0
+	end
 end
 
 function ModCS.Game.Draw()
@@ -134,7 +170,7 @@ function ModCS.Game.Draw()
 		ModCS.Arms.Add(13, 0)
 	end
 	
-	ModCS.PutNumber(number, 0, 128) -- Draw the number to the screen
+	ModCS.PutNumber(math.abs(ModCS.Player.ym), 0, 128) 
 end
 
 function ModCS.Tsc.Command.FOO() -- Launch Geometry Dash via Steam
