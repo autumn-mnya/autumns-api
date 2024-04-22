@@ -27,8 +27,8 @@ static STRUCT_TABLE CaretTable[] =
 {
 	{"x", offsetof(CARET, x), TYPE_PIXEL},
 	{"y", offsetof(CARET, y), TYPE_PIXEL},
-	{"xm", offsetof(CARET, xm), TYPE_NUMBER},
-	{"ym", offsetof(CARET, ym), TYPE_NUMBER},
+	{"xm", offsetof(CARET, xm), TYPE_PIXEL},
+	{"ym", offsetof(CARET, ym), TYPE_PIXEL},
 	{"id", offsetof(CARET, code), TYPE_NUMBER},
 	{"direct", offsetof(CARET, direct), TYPE_NUMBER},
 	{"ani_wait", offsetof(CARET, ani_wait), TYPE_NUMBER},

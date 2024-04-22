@@ -17,18 +17,56 @@
 ARMS_LEVEL* autpiArmsLevelTable;
 BULLET_TABLE* autpiBulTbl;
 
-void LoadLevelsTable(void)
+void SetDefaultArmsTable()
+{
+	int i = 0;
+
+	autpiArmsLevelTable = (ARMS_LEVEL*)malloc(15 * sizeof(ARMS_LEVEL));
+
+	for (i = 0; i < 15; ++i)
+	{
+		autpiArmsLevelTable[i].exp[0] = gArmsLevelTable[i].exp[0];
+		autpiArmsLevelTable[i].exp[1] = gArmsLevelTable[i].exp[1];
+		autpiArmsLevelTable[i].exp[2] = gArmsLevelTable[i].exp[2];
+	}
+}
+
+void SetDefaultBulletTable()
+{
+	int i = 0;
+
+	autpiBulTbl = (BULLET_TABLE*)malloc(47 * sizeof(BULLET_TABLE));
+
+	for (i = 0; i < 47; ++i)
+	{
+		autpiBulTbl[i].damage = gBulTbl[i].damage;
+		autpiBulTbl[i].life = gBulTbl[i].life;
+		autpiBulTbl[i].life_count = gBulTbl[i].life_count;
+		autpiBulTbl[i].bbits = gBulTbl[i].bbits;
+		autpiBulTbl[i].enemyXL = gBulTbl[i].enemyXL;
+		autpiBulTbl[i].enemyYL = gBulTbl[i].enemyYL;
+		autpiBulTbl[i].blockXL = gBulTbl[i].blockXL;
+		autpiBulTbl[i].blockYL = gBulTbl[i].blockYL;
+		autpiBulTbl[i].view.front = gBulTbl[i].view.front;
+		autpiBulTbl[i].view.top = gBulTbl[i].view.top;
+		autpiBulTbl[i].view.back = gBulTbl[i].view.back;
+		autpiBulTbl[i].view.bottom = gBulTbl[i].view.bottom;
+	}
+}
+
+void LoadLevelsTable()
 {
 	FILE* fp;
 	char path[MAX_PATH];
 	size_t size;
 	int entries;
 
-	sprintf(path, "%s\\arms_level.tbl", gDataPath);
+	sprintf(path, "%s\\%s", gDataPath, "arms_level.tbl");
 
 	size = GetFileSizeLong(path);
 	if (size == INVALID_FILE_SIZE)
 	{
+		SetDefaultArmsTable();
 		return;
 	}
 
@@ -37,6 +75,7 @@ void LoadLevelsTable(void)
 	fp = fopen(path, "rb");
 	if (fp == NULL)
 	{
+		SetDefaultArmsTable();
 		return;
 	}
 
@@ -46,7 +85,7 @@ void LoadLevelsTable(void)
 	{
 		fclose(fp);
 		free(autpiArmsLevelTable);
-		autpiArmsLevelTable = NULL;
+		SetDefaultArmsTable();
 		return;
 	}
 
@@ -68,13 +107,19 @@ void LoadBulletTable(void)
 
 	size = GetFileSizeLong(path);
 	if (size == INVALID_FILE_SIZE)
+	{
+		SetDefaultBulletTable();
 		return;
+	}
 
 	entries = (int)(size / 42);
 
 	fp = fopen(path, "rb");
 	if (fp == NULL)
+	{
+		SetDefaultBulletTable();
 		return;
+	}
 
 	autpiBulTbl = (BULLET_TABLE*)malloc(entries * sizeof(BULLET_TABLE));
 
@@ -82,7 +127,7 @@ void LoadBulletTable(void)
 	{
 		fclose(fp);
 		free(autpiBulTbl);
-		autpiBulTbl = NULL;
+		SetDefaultBulletTable();
 		return;
 	}
 

@@ -208,6 +208,30 @@ static int lua_ArmsGetLevels(lua_State* L)
 	return 1;
 }
 
+static int lua_ArmsCountArmsBullet(lua_State* L)
+{
+	int x = (int)luaL_checknumber(L, 1);
+	lua_pushnumber(L, CountArmsBullet(x));
+	return 1;
+}
+
+static int lua_ArmsZeroExp(lua_State* L)
+{
+	ZeroExpMyChar();
+
+	return 0;
+}
+
+static int lua_ArmsCurrentMax(lua_State* L)
+{
+	if (IsMaxExpMyChar())
+		lua_pushboolean(L, 1);
+	else
+		lua_pushboolean(L, 0);
+
+	return 1;
+}
+
 FUNCTION_TABLE ArmsFunctionTable[FUNCTION_TABLE_ARMS_SIZE] =
 {
 	{"Add", lua_ArmsAdd},
@@ -223,7 +247,10 @@ FUNCTION_TABLE ArmsFunctionTable[FUNCTION_TABLE_ARMS_SIZE] =
 	{"SwitchFirst", lua_ArmsSwitchFirst},
 	{"AddExp", lua_ArmsAddExp},
 	{"RemoveExp", lua_ArmsRemoveExp},
-	{"GetLevels", lua_ArmsGetLevels}
+	{"GetLevels", lua_ArmsGetLevels},
+	{"CountBullet", lua_ArmsCountArmsBullet},
+	{"ResetCurrentExp", lua_ArmsZeroExp},
+	{"IsCurrentMaxExp", lua_ArmsCurrentMax}
 };
 
 int ShootActModScript(int chr)

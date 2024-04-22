@@ -13,7 +13,7 @@ extern "C"
 int lua_ArmsIndex(lua_State* L);
 int lua_ArmsNextIndex(lua_State* L);
 
-#define FUNCTION_TABLE_ARMS_SIZE 14
+#define FUNCTION_TABLE_ARMS_SIZE 17
 extern FUNCTION_TABLE ArmsFunctionTable[FUNCTION_TABLE_ARMS_SIZE];
 
 int ShootActModScript(int chr);
