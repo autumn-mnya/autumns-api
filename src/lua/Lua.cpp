@@ -521,9 +521,11 @@ BOOL InitModScript(void)
 	{
 		const char* error = lua_tostring(gL, -1);
 
-		ErrorLog(error, 0);
 		if (ignore_main_lua_error == false)
+		{
+			ErrorLog(error, 0);
 			printf("ERROR: %s\n", error);
+		}
 		return FALSE;
 	}
 

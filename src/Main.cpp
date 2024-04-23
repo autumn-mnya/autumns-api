@@ -201,7 +201,7 @@ void InitMod(void)
     ModLoader_WriteJump((void*)0x46FD10, (void*)Replacement_ChangeCheckableNpCharByEvent);
 
     // TextScript API
-    ModLoader_WriteCall((void*)0x424DAE, (void*)Replacement_TextScript_SaveProfile_Call);
+    ModLoader_WriteCall((void*)0x424DAE, (void*)TextScriptSVPCode);
 
     // Weapons API
     LoadLevelsTable();

@@ -13,10 +13,6 @@
 #include "cave_story.h"
 
 // 0x424DAE
-void Replacement_TextScript_SaveProfile_Call(const char* name)
-{
-	SaveProfile(name);
-}
 
 std::vector<TextScriptSVPElementHandler> textscriptsvpElementHandlers;
 
