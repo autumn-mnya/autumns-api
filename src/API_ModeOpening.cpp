@@ -180,3 +180,41 @@ void OpeningInitCode()
     InitBossLife();
     ExecuteOpeningInitElementHandlers();
 }
+
+// PutCaret //
+
+std::vector<OpeningBelowPutCaretElementHandler> Opening_belowputcaretElementHandlers;
+std::vector<OpeningAbovePutCaretElementHandler> Opening_aboveputcaretElementHandlers;
+
+void RegisterOpeningBelowPutCaretElement(OpeningBelowPutCaretElementHandler handler)
+{
+    Opening_belowputcaretElementHandlers.push_back(handler);
+}
+
+void RegisterOpeningAbovePutCaretElement(OpeningAbovePutCaretElementHandler handler)
+{
+    Opening_aboveputcaretElementHandlers.push_back(handler);
+}
+
+void ExecuteOpeningBelowPutCaretElementHandlers()
+{
+    for (const auto& handler : Opening_belowputcaretElementHandlers)
+    {
+        handler();
+    }
+}
+
+void ExecuteOpeningAbovePutCaretElementHandlers()
+{
+    for (const auto& handler : Opening_aboveputcaretElementHandlers)
+    {
+        handler();
+    }
+}
+
+void OpeningCaretCode(int fx, int fy)
+{
+    ExecuteOpeningBelowPutCaretElementHandlers();
+    PutCaret(fx, fy);
+    ExecuteOpeningAbovePutCaretElementHandlers();
+}

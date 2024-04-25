@@ -46,6 +46,14 @@ typedef void (*OpeningInitElementHandler)();
 // Declare the global list to store registered Init element handlers
 extern std::vector<OpeningInitElementHandler> Opening_initElementHandlers;
 
+typedef void (*OpeningBelowPutCaretElementHandler)();
+
+extern std::vector<OpeningBelowPutCaretElementHandler> Opening_belowfadeElementHandlers;
+
+typedef void (*OpeningAbovePutCaretElementHandler)();
+
+extern std::vector<OpeningAbovePutCaretElementHandler> Opening_abovefadeElementHandlers;
+
 extern "C" __declspec(dllexport) void RegisterOpeningBelowFadeElement(OpeningBelowFadeElementHandler handler); // Function for registering a BelowFade element
 void ExecuteOpeningBelowFadeElementHandlers();
 extern "C" __declspec(dllexport) void RegisterOpeningAboveFadeElement(OpeningAboveFadeElementHandler handler); // Function for registering a AboveFade element
@@ -69,3 +77,9 @@ void OpeningActionCode();
 extern "C" __declspec(dllexport) void RegisterOpeningInitElement(OpeningInitElementHandler handler); // Function for registering a Init Element
 void ExecuteOpeningInitElementHandlers();
 void OpeningInitCode();
+
+extern "C" __declspec(dllexport) void RegisterOpeningBelowPutCaretElement(OpeningBelowPutCaretElementHandler handler);
+void ExecuteOpeningBelowPutCaretElementHandlers();
+extern "C" __declspec(dllexport) void RegisterOpeningAbovePutCaretElement(OpeningAboveFadeElementHandler handler);
+void ExecuteOpeningAbovePutCaretElementHandlers();
+void OpeningCaretCode(int fx, int fy);

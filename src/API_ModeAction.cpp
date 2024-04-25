@@ -305,3 +305,41 @@ void InitCode()
     InitBossLife();
     ExecuteInitElementHandlers();
 }
+
+// PutCaret //
+
+std::vector<BelowPutCaretElementHandler> belowputcaretElementHandlers;
+std::vector<AbovePutCaretElementHandler> aboveputcaretElementHandlers;
+
+void RegisterBelowPutCaretElement(BelowPutCaretElementHandler handler)
+{
+    belowputcaretElementHandlers.push_back(handler);
+}
+
+void RegisterAbovePutCaretElement(AbovePutCaretElementHandler handler)
+{
+    aboveputcaretElementHandlers.push_back(handler);
+}
+
+void ExecuteBelowPutCaretElementHandlers()
+{
+    for (const auto& handler : belowputcaretElementHandlers)
+    {
+        handler();
+    }
+}
+
+void ExecuteAbovePutCaretElementHandlers()
+{
+    for (const auto& handler : aboveputcaretElementHandlers)
+    {
+        handler();
+    }
+}
+
+void ActionCaretCode(int fx, int fy)
+{
+    ExecuteBelowPutCaretElementHandlers();
+    PutCaret(fx, fy);
+    ExecuteAbovePutCaretElementHandlers();
+}

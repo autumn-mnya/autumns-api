@@ -76,6 +76,14 @@ typedef void (*InitElementHandler)();
 // Declare the global list to store registered Init element handlers
 extern std::vector<InitElementHandler> initElementHandlers;
 
+typedef void (*BelowPutCaretElementHandler)();
+
+extern std::vector<BelowPutCaretElementHandler> belowputcaretElementHandlers;
+
+typedef void (*AbovePutCaretElementHandler)();
+
+extern std::vector<AbovePutCaretElementHandler> aboveputcaretElementHandlers;
+
 extern "C" __declspec(dllexport) void RegisterPlayerHudElement(PlayerHudElementHandler handler); // Function for registering a hud element for the Players UI
 void ExecutePlayerHudElementHandlers();
 void PlayerHUDCode();
@@ -117,3 +125,9 @@ void CreditsActionCode();
 extern "C" __declspec(dllexport) void RegisterInitElement(InitElementHandler handler); // Function for registering a Init Element
 void ExecuteInitElementHandlers();
 void InitCode();
+
+extern "C" __declspec(dllexport) void RegisterBelowPutCaretElement(BelowPutCaretElementHandler handler);
+void ExecuteBelowPutCaretElementHandlers();
+extern "C" __declspec(dllexport) void RegisterAbovePutCaretElement(AboveFadeElementHandler handler);
+void ExecuteAbovePutCaretElementHandlers();
+void ActionCaretCode(int fx, int fy);

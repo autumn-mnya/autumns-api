@@ -23,6 +23,7 @@
 #include "API_ModeAction.h"
 #include "API_Npc.h"
 #include "API_Profile.h"
+#include "API_PutFPS.h"
 #include "API_Tile.h"
 #include "API_TextScript.h"
 #include "API_TransferStage.h"
@@ -166,6 +167,7 @@ void InitMod(void)
     ModLoader_WriteCall((void*)0x40F809, (void*)OpeningEarlyActionCode);
     ModLoader_WriteCall((void*)0x40F840, (void*)OpeningActionCode);
     ModLoader_WriteCall((void*)0x40F74F, (void*)OpeningInitCode);
+    ModLoader_WriteCall((void*)0x40F8E1, (void*)OpeningCaretCode);
 
     // ModeTitle API
     ModLoader_WriteCall((void*)0x40FD85, (void*)TitleInitCode);
@@ -182,6 +184,7 @@ void InitMod(void)
     ModLoader_WriteCall((void*)0x4105B5, (void*)ActionCode);
     ModLoader_WriteCall((void*)0x410600, (void*)CreditsActionCode);
     ModLoader_WriteCall((void*)0x410477, (void*)InitCode);
+    ModLoader_WriteCall((void*)0x4106D8, (void*)ActionCaretCode);
 
     // Profile API (unfinished, need a way for the user to use the FILE* fp pointer, and i dont know how ,)
 
@@ -191,6 +194,9 @@ void InitMod(void)
     */
 
     ModLoader_WriteCall((void*)0x41D576, (void*)InitializeGameCode);
+
+    // PutFPS API
+    ModLoader_WriteJump((void*)0x412370, (void*)Replacement_PutFPS);
 
     // TransferStage API
     ModLoader_WriteCall((void*)0x420EB5, (void*)TransferStageInitCode);

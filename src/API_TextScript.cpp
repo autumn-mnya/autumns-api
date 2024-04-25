@@ -14,6 +14,7 @@
 
 // 0x424DAE
 
+typedef void (*TextScriptSVPElementHandler)();
 std::vector<TextScriptSVPElementHandler> textscriptsvpElementHandlers;
 
 void RegisterSVPElement(TextScriptSVPElementHandler handler)
@@ -29,6 +30,7 @@ void ExecuteSVPElementHandlers()
     }
 }
 
+// Replace the SaveProfile() call that gets ran when doing <SVP with this
 void TextScriptSVPCode(const char* name)
 {
     SaveProfile(name);

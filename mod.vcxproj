@@ -101,6 +101,7 @@
     <ClCompile Include="src\API_ModeTitle.cpp" />
     <ClCompile Include="src\API_Npc.cpp" />
     <ClCompile Include="src\API_Profile.cpp" />
+    <ClCompile Include="src\API_PutFPS.cpp" />
     <ClCompile Include="src\API_TextScript.cpp" />
     <ClCompile Include="src\API_TransferStage.cpp" />
     <ClCompile Include="src\API_Weapon.cpp" />
@@ -139,6 +140,7 @@
     <ClInclude Include="src\API_ModeTitle.h" />
     <ClInclude Include="src\API_Npc.h" />
     <ClInclude Include="src\API_Profile.h" />
+    <ClInclude Include="src\API_PutFPS.h" />
     <ClInclude Include="src\API_TextScript.h" />
     <ClInclude Include="src\API_TransferStage.h" />
     <ClInclude Include="src\API_Weapon.h" />
