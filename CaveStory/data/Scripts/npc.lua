@@ -1,3 +1,31 @@
+-- Sparkle port by Autumn
+ModCS.Npc.Act[70] = function(npc)
+	-- define the rect for our entity
+    local rect = {
+        {96, 48, 112, 64},
+        {112, 48, 128, 64},
+        {128, 48, 144, 64},
+        {144, 48, 160, 64}
+    }
+
+	-- increase npc.ani_wait every frame
+    npc.ani_wait = npc.ani_wait + 1
+	
+	-- if wait is above 3, then we set wait back to 0 and increase rect frame by 1
+    if npc.ani_wait > 3 then
+        npc.ani_wait = 0
+        npc.ani_no = npc.ani_no + 1
+    end
+
+	-- if our *frame* is above 3, then we reset back to rect 0
+    if npc.ani_no > 3 then
+        npc.ani_no = 0
+    end
+	
+	-- set the rect to the npc --> the [1], [2], [3], and [4] part should just always be at the end.
+	npc:SetRect(rect[npc.ani_no + 1][1], rect[npc.ani_no + 1][2], rect[npc.ani_no + 1][3], rect[npc.ani_no + 1][4])
+end
+
 ModCS.Npc.Act[361] = function(npc)
 
 	-- Init

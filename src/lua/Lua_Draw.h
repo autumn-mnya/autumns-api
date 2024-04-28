@@ -32,7 +32,7 @@ extern FUNCTION_TABLE ColorFunctionTable[FUNCTION_TABLE_COLOR_SIZE];
 
 int lua_SurfaceIndex(lua_State* L);
 
-#define FUNCTION_TABLE_SURFACE_SIZE 3
+#define FUNCTION_TABLE_SURFACE_SIZE 4
 extern FUNCTION_TABLE SurfaceFunctionTable[FUNCTION_TABLE_SURFACE_SIZE];
 
 int lua_PutText(lua_State* L);

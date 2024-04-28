@@ -29,9 +29,16 @@ static int ModVersion[4] = { 1, 0, 0, 6 };
 static int OpeningMap[5] = { 72, 3, 3, 100, 500 };
 static int StartingMap[4] = { 13, 10, 8, 200 };
 
+void SetCustomWindowTitle(char* window_name)
+{
+	SetWindowTextA(ghWnd, window_name);
+}
+
 static int lua_ModSetName(lua_State* L)
 {
 	strcpy(gModName, luaL_checkstring(L, 1));
+
+	SetCustomWindowTitle(gModName);
 
 	return 0;
 }

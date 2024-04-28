@@ -346,11 +346,20 @@ static int lua_Screenshot2Surface(lua_State* L)
 	return 0;
 }
 
+static int lua_ReleaseSurface(lua_State* L)
+{
+	int surf_no = (int)luaL_checknumber(L, 1);
+
+	ReleaseSurface(surf_no);
+	return 0;
+}
+
 FUNCTION_TABLE SurfaceFunctionTable[FUNCTION_TABLE_SURFACE_SIZE] =
 {
 	{"Create", lua_CreateSurface},
 	{"LoadBitmap", lua_LoadBitmap2Surface},
-	{"Screenshot", lua_Screenshot2Surface}
+	{"Screenshot", lua_Screenshot2Surface},
+	{"Release", lua_ReleaseSurface}
 };
 
 /* Text */
