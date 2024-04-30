@@ -23,6 +23,10 @@ function ModCS.Game.Act()
 		end
 	end
 	
+	if ModCS.Key.Shoot(true) then
+		ModCS.Arms.AddExp(1)
+	end
+	
 	-- This needs to be here, just incase
 	if ModCS.Game.CanControl() then
 		if ModCS.Key.Arms() then

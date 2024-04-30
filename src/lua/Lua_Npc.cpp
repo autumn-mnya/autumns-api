@@ -449,6 +449,18 @@ static int lua_NpcMove2(lua_State* L)
 	return 0;
 }
 
+static int lua_NpcMove3(lua_State* L)
+{
+	NPCHAR* npc = *(NPCHAR**)luaL_checkudata(L, 1, "NpcMeta");
+	int x = (int)luaL_checknumber(L, 2);
+	int y = (int)luaL_checknumber(L, 3);
+
+	npc->x += x;
+	npc->y += y;
+
+	return 0;
+}
+
 static int lua_NpcTriggerBox(lua_State* L)
 {
 	NPCHAR* npc = *(NPCHAR**)luaL_checkudata(L, 1, "NpcMeta");
@@ -559,6 +571,7 @@ FUNCTION_TABLE NpcFunctionTable[FUNCTION_TABLE_NPC_SIZE] =
 	{"TouchPlayer", lua_NpcTouchPlayer},
 	{"Move", lua_NpcMove},
 	{"Move2", lua_NpcMove2},
+	{"Move3", lua_NpcMove3},
 	{"TriggerBox", lua_NpcTriggerBox},
 	{"Change", lua_ChangeNpc},
 	{"Spawn", lua_SpawnNpc},

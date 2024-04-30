@@ -1,3 +1,30 @@
+-- H/V Trigger recreation by Autumn
+ModCS.Npc.Act[46] = function(npc)
+	-- define the rect for our entity
+    local rect = {0, 0, 16, 16}
+ 
+	
+	-- movement code
+	if npc.direct == 0 then
+		if npc.x < ModCS.Player.x then
+			npc:Move3(1535, 0)
+		else
+			npc:Move3(-1535, 0)
+		end
+	else
+		if npc.y < ModCS.Player.y then
+			npc:Move3(0, 1535)
+		else
+			npc:Move3(0, -1535)
+		end
+	end
+	
+	--npc:Move()
+	
+	-- set the rect to the npc --> the [1], [2], [3], and [4] part should just always be at the end.
+	npc:SetRect(rect[1], rect[2], rect[3], rect[4])
+end
+
 -- Sparkle port by Autumn
 ModCS.Npc.Act[70] = function(npc)
 	-- define the rect for our entity
