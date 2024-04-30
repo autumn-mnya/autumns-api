@@ -19,6 +19,8 @@ ModCS.Npc.Act[46] = function(npc)
 		end
 	end
 	
+	ModCS.Npc.SetHitbox(npc, 9, 8, 8, 8)
+	
 	--npc:Move()
 	
 	-- set the rect to the npc --> the [1], [2], [3], and [4] part should just always be at the end.
