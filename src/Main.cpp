@@ -31,6 +31,7 @@
 #include "ASM_Patches.h"
 
 #include "lua/Lua.h"
+#include "lua/Lua_Profile.h"
 
 char gModulePath[MAX_PATH];
 char gDataPath[MAX_PATH];
@@ -187,11 +188,8 @@ void InitMod(void)
     ModLoader_WriteCall((void*)0x4106D8, (void*)ActionCaretCode);
 
     // Profile API (unfinished, need a way for the user to use the FILE* fp pointer, and i dont know how ,)
-
-    /*
-    ModLoader_WriteCall((void*)0x41D22D, (void*)SaveProfileCode);
+    ModLoader_WriteCall((void*)0x41D239, (void*)SaveProfileCode);
     ModLoader_WriteCall((void*)0x41D353, (void*)LoadProfileCode);
-    */
 
     ModLoader_WriteCall((void*)0x41D576, (void*)InitializeGameCode);
 
@@ -255,6 +253,8 @@ void InitMod(void)
     RegisterBelowTextBoxElement(Lua_GameDrawBelowTextBox);
     RegisterAboveTextBoxElement(Lua_GameDrawAboveTextBox);
     RegisterPlayerHudElement(Lua_GameDrawHUD);
+
+    RegisterSaveAndLoad();
 
     // If a modder needs the tables from their exe, they can enable that.
     if (debug_write_tables)

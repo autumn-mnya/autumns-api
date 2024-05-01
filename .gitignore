@@ -18,3 +18,4 @@ CaveStory/error.log
 !CaveStory/mods/autpi/autpi.dll
 !CaveStory/lua.dll
 !external/lua/lib/lua.lib
+CaveStory/lua_savefile.txt

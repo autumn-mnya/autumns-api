@@ -397,6 +397,20 @@ static int Print2Console(lua_State* L) {
 	return 0;
 }
 
+static int lua_GetModulePath(lua_State* L) {
+	// Push the value of gModulePath onto the Lua stack
+	lua_pushstring(L, gModulePath);
+	// Return 1 to indicate that 1 value has been pushed onto the stack
+	return 1;
+}
+
+static int lua_GetDataPath(lua_State* L) {
+	// Push the value of gModulePath onto the Lua stack
+	lua_pushstring(L, gDataPath);
+	// Return 1 to indicate that 1 value has been pushed onto the stack
+	return 1;
+}
+
 BOOL InitModScript(void)
 {
 	char scriptpath[MAX_PATH];
@@ -458,6 +472,12 @@ BOOL InitModScript(void)
 
 	lua_pushcfunction(gL, lua_AddEntity);
 	lua_setfield(gL, -2, "AddEntity");
+
+	lua_pushcfunction(gL, lua_GetModulePath);
+	lua_setfield(gL, -2, "GetModulePath");
+
+	lua_pushcfunction(gL, lua_GetDataPath);
+	lua_setfield(gL, -2, "GetDataPath");
 
 	PushFunctionTable(gL, "RangeRect", OtherRectFunctionTable, FUNCTION_TABLE_OTHER_RECT_SIZE, TRUE);
 	PushFunctionTable(gL, "Game", GameFunctionTable, FUNCTION_TABLE_GAME_SIZE, TRUE);

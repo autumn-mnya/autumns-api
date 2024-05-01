@@ -12,3 +12,5 @@ extern "C"
 
 #define FUNCTION_TABLE_PROFILE_SIZE 3
 extern FUNCTION_TABLE ProfileFunctionTable[FUNCTION_TABLE_PROFILE_SIZE];
+
+void RegisterSaveAndLoad();

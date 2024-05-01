@@ -66,6 +66,7 @@ void LoadLevelsTable()
 	size = GetFileSizeLong(path);
 	if (size == INVALID_FILE_SIZE)
 	{
+		printf("%s%s", "arms_level.tbl", " had invalid size.\nUsing default arms_level table inside executable instead!\n");
 		SetDefaultArmsTable();
 		return;
 	}
@@ -75,6 +76,7 @@ void LoadLevelsTable()
 	fp = fopen(path, "rb");
 	if (fp == NULL)
 	{
+		printf("%s%s", "arms_level.tbl", " was not found.\nUsing default arms_level table inside executable instead!\n");
 		SetDefaultArmsTable();
 		return;
 	}
@@ -85,6 +87,7 @@ void LoadLevelsTable()
 	{
 		fclose(fp);
 		free(autpiArmsLevelTable);
+		printf("%s%s", "arms_level.tbl", " was null.\nUsing default arms_level table inside executable instead!\n");
 		SetDefaultArmsTable();
 		return;
 	}
@@ -96,7 +99,7 @@ void LoadLevelsTable()
 	return;
 }
 
-void LoadBulletTable(void)
+void LoadBulletTable()
 {
 	FILE* fp;
 	char path[MAX_PATH];
@@ -108,6 +111,7 @@ void LoadBulletTable(void)
 	size = GetFileSizeLong(path);
 	if (size == INVALID_FILE_SIZE)
 	{
+		printf("%s%s", "bullet.tbl", " had invalid size.\nUsing default bullet table inside executable instead!\n");
 		SetDefaultBulletTable();
 		return;
 	}
@@ -117,6 +121,7 @@ void LoadBulletTable(void)
 	fp = fopen(path, "rb");
 	if (fp == NULL)
 	{
+		printf("%s%s", "bullet.tbl", " was not found.\nUsing default bullet table inside executable instead!\n");
 		SetDefaultBulletTable();
 		return;
 	}
@@ -127,6 +132,7 @@ void LoadBulletTable(void)
 	{
 		fclose(fp);
 		free(autpiBulTbl);
+		printf("%s%s", "bullet.tbl", " was null.\nUsing default bullet table inside executable instead!\n");
 		SetDefaultBulletTable();
 		return;
 	}

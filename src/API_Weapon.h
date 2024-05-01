@@ -3,7 +3,7 @@
 #include "cave_story.h"
 
 void LoadLevelsTable();
-void LoadBulletTable(void);
+void LoadBulletTable();
 void Replacement_AddExpMyChar(int x);
 BOOL ReplacementIsMaxExpMyChar(void);
 void Replacement_SetBullet(int no, int x, int y, int dir);

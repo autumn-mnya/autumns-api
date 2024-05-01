@@ -1,6 +1,9 @@
 require("arms")
 require("npc")
 
+print(ModCS.GetModulePath())
+print("Hello World!")
+
 ModCS.Mod.SetName("AutPI")
 ModCS.Mod.SetAuthor("autumn")
 
@@ -60,4 +63,35 @@ end
 function ModCS.Tsc.Command.FOO() -- Launch Geometry Dash via Steam
 	if (os.execute("start steam://rungameid/322170") ~= 0) then os.execute('"C:/Program Files (x86)/Steam/steam.exe" steam://rungameid/322170')
 	end
+end
+
+function GetModuleFilePath(filename)
+    local Path = ModCS.GetModulePath()
+    return Path .. "/" .. filename
+end
+
+function GetDataFilePath(filename)
+    local Path = ModCS.GetDataPath()
+    return Path .. "/" .. filename
+end
+
+function luaSaveFile()
+    local file = io.open(GetModuleFilePath("lua_savefile.txt"), "w")
+    if not file then
+        log_to_sd_card("Error: Cannot open cse2_playerhp.dat for writing.\n")
+        return
+    end
+    
+    file:write(ModCS.Player.GetLife())
+    
+    file:close()
+end
+
+function ModCS.Profile.DuringSave()
+	print("Saving Game")
+	luaSaveFile()
+end
+
+function ModCS.Profile.DuringLoad()
+	print("Loading Game")
 end

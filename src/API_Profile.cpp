@@ -15,45 +15,42 @@
 // SAVE PROFILE //
 
 // Define the global list to store registered Pre/Post SaveProfile element handlers
-std::vector<SaveProfilePreWriteElementHandler> saveprofileprewriteElementHandlers;
-std::vector<SaveProfilePostWriteElementHandler> saveprofilepostwriteElementHandlers;
+std::vector<SaveProfilePreCloseElementHandler> saveprofileprecloseElementHandlers;
+std::vector<SaveProfilePostCloseElementHandler> saveprofilepostcloseElementHandlers;
 
-// Function to register a PreWrite HUD element handler
-void RegisterSaveProfilePreWriteElement(SaveProfilePreWriteElementHandler handler)
+void RegisterSaveProfilePreCloseElement(SaveProfilePreCloseElementHandler handler)
 {
-    saveprofileprewriteElementHandlers.push_back(handler);
+    saveprofileprecloseElementHandlers.push_back(handler);
 }
 
-// Function to register a PostWrite HUD element handler
-void RegisterSaveProfilePostWriteElement(SaveProfilePostWriteElementHandler handler)
+void RegisterSaveProfilePostCloseElement(SaveProfilePostCloseElementHandler handler)
 {
-    saveprofilepostwriteElementHandlers.push_back(handler);
+    saveprofilepostcloseElementHandlers.push_back(handler);
 }
 
-// Function to execute all registered PreWrite element handlers
-void ExecuteSaveProfilePreWriteElementHandlers()
+void ExecuteSaveProfilePreCloseElementHandlers()
 {
-    for (const auto& handler : saveprofileprewriteElementHandlers)
+    for (const auto& handler : saveprofileprecloseElementHandlers)
     {
         handler();
     }
 }
 
-// Function to execute all registered PostWrite element handlers
-void ExecuteSaveProfilePostWriteElementHandlers()
+void ExecuteSaveProfilePostCloseElementHandlers()
 {
-    for (const auto& handler : saveprofilepostwriteElementHandlers)
+    for (const auto& handler : saveprofilepostcloseElementHandlers)
     {
         handler();
     }
 }
 
 // Used for SaveProfile
-void SaveProfileCode(void* buf, size_t eleS, size_t eleC, FILE* fp)
+// 0x41D239
+void SaveProfileCode(FILE* fp)
 {
-    ExecuteSaveProfilePreWriteElementHandlers();
-    Freeware_fwrite(buf, eleS, eleC, fp);
-    ExecuteSaveProfilePostWriteElementHandlers();
+    ExecuteSaveProfilePreCloseElementHandlers();
+    Freeware_fclose(fp);
+    ExecuteSaveProfilePostCloseElementHandlers();
 }
 
 // LOAD PROFILE //

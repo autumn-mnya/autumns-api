@@ -20,6 +20,8 @@ extern "C"
 #include "../mod_loader.h"
 #include "../cave_story.h"
 
+#include "../API_Profile.h"
+
 BOOL IsProfileCustom(const char* name)
 {
 	char path[MAX_PATH];
@@ -65,3 +67,75 @@ FUNCTION_TABLE ProfileFunctionTable[FUNCTION_TABLE_PROFILE_SIZE] =
 	{"Load", lua_ProfileLoad},
 	{"Exists", lua_ProfileExists},
 };
+
+BOOL ProfileSavingModScript(void)
+{
+	lua_getglobal(gL, "ModCS");
+	lua_getfield(gL, -1, "Profile");
+	lua_getfield(gL, -1, "DuringSave");
+
+	if (lua_isnil(gL, -1))
+	{
+		lua_settop(gL, 0); // Clear stack
+		return TRUE;
+	}
+
+	if (lua_pcall(gL, 0, 0, 0) != LUA_OK)
+	{
+		const char* error = lua_tostring(gL, -1);
+
+		ErrorLog(error, 0);
+		printf("ERROR: %s\n", error);
+		MessageBoxA(ghWnd, "Couldn't execute game init function", "ModScript Error", MB_OK);
+		return FALSE;
+	}
+
+	lua_settop(gL, 0); // Clear stack
+
+	return TRUE;
+}
+
+BOOL ProfileLoadingModScript(void)
+{
+	lua_getglobal(gL, "ModCS");
+	lua_getfield(gL, -1, "Profile");
+	lua_getfield(gL, -1, "DuringLoad");
+
+	if (lua_isnil(gL, -1))
+	{
+		lua_settop(gL, 0); // Clear stack
+		return TRUE;
+	}
+
+	if (lua_pcall(gL, 0, 0, 0) != LUA_OK)
+	{
+		const char* error = lua_tostring(gL, -1);
+
+		ErrorLog(error, 0);
+		printf("ERROR: %s\n", error);
+		MessageBoxA(ghWnd, "Couldn't execute game init function", "ModScript Error", MB_OK);
+		return FALSE;
+	}
+
+	lua_settop(gL, 0); // Clear stack
+
+	return TRUE;
+}
+
+void RegisterSaving()
+{
+	if (!ProfileSavingModScript())
+		return;
+}
+
+void RegisterLoading()
+{
+	if (!ProfileLoadingModScript())
+		return;
+}
+
+void RegisterSaveAndLoad()
+{
+	RegisterSaveProfilePostCloseElement(RegisterSaving);
+	RegisterLoadProfilePostCloseElement(RegisterLoading);
+}
