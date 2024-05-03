@@ -46,20 +46,6 @@ function ModCS.Game.Act()
 	end
 end
 
-function ModCS.Game.Draw()
-	if ModCS.Game.GetMode() == 1 then
-		ModCS.PutNumber(1, 0, 0)
-	end
-	
-	if ModCS.Game.GetMode() == 2 then
-		ModCS.PutNumber(2, 0, 0)
-	end
-	
-	if ModCS.Game.GetMode() == 3 then
-		ModCS.PutNumber(3, 0, 0)
-	end
-end
-
 function ModCS.Tsc.Command.FOO() -- Launch Geometry Dash via Steam
 	if (os.execute("start steam://rungameid/322170") ~= 0) then os.execute('"C:/Program Files (x86)/Steam/steam.exe" steam://rungameid/322170')
 	end
@@ -75,16 +61,34 @@ function GetDataFilePath(filename)
     return Path .. "/" .. filename
 end
 
+function GetModuleFilePath(filename)
+    local Path = ModCS.GetModulePath()
+    return Path .. "/" .. filename
+end
+
 function luaSaveFile()
     local file = io.open(GetModuleFilePath("lua_savefile.txt"), "w")
     if not file then
-        log_to_sd_card("Error: Cannot open cse2_playerhp.dat for writing.\n")
+        print("Error: Cannot open lua_savefile.txt for writing.")
         return
     end
     
-    file:write(ModCS.Player.GetLife())
+    file:write("Wow, its a save file!")
     
     file:close()
+end
+
+function luaLoadFile(filePath)
+    local file = io.open(filePath, "r") -- Open the file in read mode
+    if not file then
+        print("Error: Cannot open file for reading.")
+        return nil
+    end
+    
+    local contents = file:read("*all") -- Read the entire contents of the file
+    file:close() -- Close the file
+    
+    return contents
 end
 
 function ModCS.Profile.DuringSave()
@@ -94,4 +98,16 @@ end
 
 function ModCS.Profile.DuringLoad()
 	print("Loading Game")
+	local file = luaLoadFile(GetModuleFilePath("lua_savefile.txt"))
+	print(file)
+end
+
+local texttoput = "No data!"
+
+function ModCS.Game.Draw()
+	ModCS.PutText(texttoput, 0, 0)
+end
+
+function ModCS.Tsc.Command.STR()
+	texttoput = ModCS.Tsc.GetString() -- get string data :3
 end

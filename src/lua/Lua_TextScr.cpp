@@ -71,6 +71,46 @@ static int lua_TscWait(lua_State* L)
 	return 0;
 }
 
+void GetTextScriptString(char** returnData, int start)
+{
+	int i = 0;
+	while (gTS.data[start] != '$') {
+		(*returnData)[i] = gTS.data[start];
+		start++;
+		i++;
+	}
+	// Insert the null terminator overtop the $
+	(*returnData)[i] = '\0';
+}
+
+static int lua_TscGetString(lua_State* L)
+{
+	int start = gTS.p_read + 4; // required
+
+	// Find the length of the string
+	int length = 0;
+	while (gTS.data[start + length] != '$') {
+		length++;
+	}
+
+	// Allocate memory dynamically based on the length of the string
+	char* string2 = (char*)malloc((length + 1) * sizeof(char));
+	if (string2 == NULL) {
+		// Handle memory allocation failure
+		return 0; // or appropriate error code
+	}
+
+	// Call GetTextScriptString and pass the dynamically allocated memory
+	GetTextScriptString(&string2, start);
+
+	lua_pushstring(L, string2);
+	
+	free(string2); // Free dynamically allocated memory
+
+	gTS.p_read += (length + 1); // silly way to fix the command to skip the string after we've read it
+	return 1;
+}
+
 static int lua_TscGetArgument(lua_State* L)
 {
 	int no = (int)luaL_checknumber(L, 1);
@@ -109,6 +149,7 @@ FUNCTION_TABLE TscFunctionTable[FUNCTION_TABLE_TSC_SIZE] =
 	{"Jump", lua_TscJump},
 	{"Wait", lua_TscWait},
 	{"GetArgument", lua_TscGetArgument},
+	{"GetString", lua_TscGetString},
 	{"IsRunning", lua_TscIsRunning}
 };
 
