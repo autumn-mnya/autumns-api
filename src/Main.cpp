@@ -32,6 +32,7 @@
 
 #include "lua/Lua.h"
 #include "lua/Lua_Profile.h"
+#include "lua/Lua_Stage.h"
 
 char gModulePath[MAX_PATH];
 char gDataPath[MAX_PATH];
@@ -255,6 +256,7 @@ void InitMod(void)
     RegisterPlayerHudElement(Lua_GameDrawHUD);
 
     RegisterSaveAndLoad();
+    RegisterOnTransferStage();
 
     // If a modder needs the tables from their exe, they can enable that.
     if (debug_write_tables)

@@ -86,7 +86,7 @@ BOOL ProfileSavingModScript(void)
 
 		ErrorLog(error, 0);
 		printf("ERROR: %s\n", error);
-		MessageBoxA(ghWnd, "Couldn't execute game init function", "ModScript Error", MB_OK);
+		MessageBoxA(ghWnd, "Couldn't execute during save function", "ModScript Error", MB_OK);
 		return FALSE;
 	}
 
@@ -113,7 +113,7 @@ BOOL ProfileLoadingModScript(void)
 
 		ErrorLog(error, 0);
 		printf("ERROR: %s\n", error);
-		MessageBoxA(ghWnd, "Couldn't execute game init function", "ModScript Error", MB_OK);
+		MessageBoxA(ghWnd, "Couldn't execute during load function", "ModScript Error", MB_OK);
 		return FALSE;
 	}
 

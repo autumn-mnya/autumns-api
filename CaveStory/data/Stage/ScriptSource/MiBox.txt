@@ -27,4 +27,4 @@
 <ZAM<EQ+0008<END
 
 #0351
-<KEY<STR0064:0008:This is a test$<END
+<KEY<STRThis is a test$<END

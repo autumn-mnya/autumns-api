@@ -21,6 +21,10 @@ extern "C"
 #include "../mod_loader.h"
 #include "../cave_story.h"
 
+#include "../API_ModeOpening.h"
+#include "../API_ModeAction.h"
+#include "../API_TransferStage.h"
+
 static int lua_StageGetCurrentNo(lua_State* L)
 {
 	lua_pushnumber(L, (lua_Number)gStageNo);
@@ -170,3 +174,63 @@ FUNCTION_TABLE MapFunctionTable[FUNCTION_TABLE_MAP_SIZE] =
 	{"GetAttribute", lua_MapGetAttribute},
 	{"ChangeTile", lua_MapChangeTile},
 };
+
+BOOL StageOnTransferModScript(void)
+{
+	lua_getglobal(gL, "ModCS");
+	lua_getfield(gL, -1, "Stage");
+	lua_getfield(gL, -1, "OnTransfer");
+
+	if (lua_isnil(gL, -1))
+	{
+		lua_settop(gL, 0); // Clear stack
+		return TRUE;
+	}
+
+	if (lua_pcall(gL, 0, 0, 0) != LUA_OK)
+	{
+		const char* error = lua_tostring(gL, -1);
+
+		ErrorLog(error, 0);
+		printf("ERROR: %s\n", error);
+		MessageBoxA(ghWnd, "Couldn't execute stage transfer function", "ModScript Error", MB_OK);
+		return FALSE;
+	}
+
+	lua_settop(gL, 0); // Clear stack
+
+	return TRUE;
+}
+
+bool modcs_has_transferred_stage;
+
+void OnTransfer_Init()
+{
+	modcs_has_transferred_stage = false;
+}
+
+void OnTransfer()
+{
+	modcs_has_transferred_stage = true;
+}
+
+void OnTransfer_Act()
+{
+	if (modcs_has_transferred_stage)
+	{
+		if (!StageOnTransferModScript())
+			return;
+
+		modcs_has_transferred_stage = false;
+	}
+}
+
+// To run lua code during a TransferStage call
+void RegisterOnTransferStage()
+{
+	RegisterTransferStageInitElement(OnTransfer);
+	RegisterOpeningInitElement(OnTransfer_Init);
+	RegisterInitElement(OnTransfer_Init);
+	RegisterOpeningActionElement(OnTransfer_Act);
+	RegisterActionElement(OnTransfer_Act);
+}

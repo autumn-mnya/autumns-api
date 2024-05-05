@@ -14,3 +14,5 @@ extern "C"
 extern FUNCTION_TABLE StageFunctionTable[FUNCTION_TABLE_STAGE_SIZE];
 #define FUNCTION_TABLE_MAP_SIZE 4
 extern FUNCTION_TABLE MapFunctionTable[FUNCTION_TABLE_MAP_SIZE];
+
+void RegisterOnTransferStage();

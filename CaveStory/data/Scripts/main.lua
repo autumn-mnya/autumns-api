@@ -111,3 +111,8 @@ end
 function ModCS.Tsc.Command.STR()
 	texttoput = ModCS.Tsc.GetString() -- get string data :3
 end
+
+-- prints everytime a transferstage call happens
+function ModCS.Stage.OnTransfer()
+	print("Transferred stage")
+end
