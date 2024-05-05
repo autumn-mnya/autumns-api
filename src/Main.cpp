@@ -232,7 +232,7 @@ void InitMod(void)
     RegisterOpeningInitElement(Lua_GameInit);
     RegisterOpeningEarlyActionElement(Lua_GameAct);
     RegisterOpeningActionElement(Lua_GameUpdate);
-    RegisterOpeningAboveTextBoxElement(Lua_GameDraw);
+    RegisterPutFPSElement(Lua_GameDraw);
 
     RegisterOpeningBelowFadeElement(Lua_GameDrawBelowFade);
     RegisterOpeningAboveFadeElement(Lua_GameDrawAboveFade);
