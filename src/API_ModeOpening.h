@@ -80,6 +80,20 @@ void OpeningInitCode();
 
 extern "C" __declspec(dllexport) void RegisterOpeningBelowPutCaretElement(OpeningBelowPutCaretElementHandler handler);
 void ExecuteOpeningBelowPutCaretElementHandlers();
-extern "C" __declspec(dllexport) void RegisterOpeningAbovePutCaretElement(OpeningAboveFadeElementHandler handler);
+extern "C" __declspec(dllexport) void RegisterOpeningAbovePutCaretElement(OpeningAbovePutCaretElementHandler handler);
 void ExecuteOpeningAbovePutCaretElementHandlers();
 void OpeningCaretCode(int fx, int fy);
+
+typedef void (*MOBelowPutFPSElementHandler)();
+
+extern std::vector<MOBelowPutFPSElementHandler> MObelowputfpsElementHandlers;
+
+typedef void (*MOAbovePutFPSElementHandler)();
+
+extern std::vector<MOAbovePutFPSElementHandler> MOaboveputfpsElementHandlers;
+
+extern "C" __declspec(dllexport) void RegisterModeOpeningBelowPutFPSElement(MOBelowPutFPSElementHandler handler);
+void ExecuteModeOpeningBelowPutFPSElementHandlers();
+extern "C" __declspec(dllexport) void RegisterModeOpeningAbovePutFPSElement(MOAbovePutFPSElementHandler handler);
+void ExecuteModeOpeningAbovePutFPSElementHandlers();
+void ModeOpeningPutFPSCode();

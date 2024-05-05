@@ -170,11 +170,13 @@ void InitMod(void)
     ModLoader_WriteCall((void*)0x40F840, (void*)OpeningActionCode);
     ModLoader_WriteCall((void*)0x40F74F, (void*)OpeningInitCode);
     ModLoader_WriteCall((void*)0x40F8E1, (void*)OpeningCaretCode);
+    ModLoader_WriteCall((void*)0x40F924, (void*)ModeOpeningPutFPSCode);
 
     // ModeTitle API
     ModLoader_WriteCall((void*)0x40FD85, (void*)TitleInitCode);
     ModLoader_WriteCall((void*)0x40FFDC, (void*)TitleActionCode);
     ModLoader_WriteCall((void*)0x41034C, (void*)TitleBelowCounterCode);
+    ModLoader_WriteCall((void*)0x410369, (void*)ModeTitlePutFPSCode);
 
     // ModeAction API
     ModLoader_WriteCall((void*)0x410856, (void*)PlayerHUDCode);
@@ -187,6 +189,7 @@ void InitMod(void)
     ModLoader_WriteCall((void*)0x410600, (void*)CreditsActionCode);
     ModLoader_WriteCall((void*)0x410477, (void*)InitCode);
     ModLoader_WriteCall((void*)0x4106D8, (void*)ActionCaretCode);
+    ModLoader_WriteCall((void*)0x410874, (void*)ModeActionPutFPSCode);
 
     // Profile API (unfinished, need a way for the user to use the FILE* fp pointer, and i dont know how ,)
     ModLoader_WriteCall((void*)0x41D239, (void*)SaveProfileCode);
@@ -232,7 +235,7 @@ void InitMod(void)
     RegisterOpeningInitElement(Lua_GameInit);
     RegisterOpeningEarlyActionElement(Lua_GameAct);
     RegisterOpeningActionElement(Lua_GameUpdate);
-    RegisterPutFPSElement(Lua_GameDraw);
+    RegisterModeOpeningAbovePutFPSElement(Lua_GameDraw);
 
     RegisterOpeningBelowFadeElement(Lua_GameDrawBelowFade);
     RegisterOpeningAboveFadeElement(Lua_GameDrawAboveFade);
@@ -242,12 +245,12 @@ void InitMod(void)
     RegisterTitleInitElement(Lua_GameInit);
     RegisterTitleActionElement(Lua_GameAct);
     RegisterTitleActionElement(Lua_GameUpdate);
-    RegisterTitleBelowCounterElement(Lua_GameDraw);
+    RegisterModeTitleAbovePutFPSElement(Lua_GameDraw);
 
     RegisterInitElement(Lua_GameInit);
     RegisterEarlyActionElement(Lua_GameAct);
     RegisterActionElement(Lua_GameUpdate);
-    RegisterAboveTextBoxElement(Lua_GameDraw);
+    RegisterModeActionAbovePutFPSElement(Lua_GameDraw);
 
     RegisterBelowFadeElement(Lua_GameDrawBelowFade);
     RegisterAboveFadeElement(Lua_GameDrawAboveFade);

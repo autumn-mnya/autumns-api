@@ -106,7 +106,7 @@ void TextBoxCode();
 
 extern "C" __declspec(dllexport) void RegisterBelowPlayerElement(BelowPlayerElementHandler handler); // Function for registering a BelowPlayer element
 void ExecuteBelowPlayerElementHandlers();
-extern "C" __declspec(dllexport) void RegisterAbovePlayerElement(AboveTextBoxElementHandler handler); // Function for registering a AbovePlayer element
+extern "C" __declspec(dllexport) void RegisterAbovePlayerElement(AbovePlayerElementHandler handler); // Function for registering a AbovePlayer element
 void ExecuteAbovePlayerElementHandlers();
 void DrawPlayerCode(int fx, int fy);
 
@@ -128,6 +128,20 @@ void InitCode();
 
 extern "C" __declspec(dllexport) void RegisterBelowPutCaretElement(BelowPutCaretElementHandler handler);
 void ExecuteBelowPutCaretElementHandlers();
-extern "C" __declspec(dllexport) void RegisterAbovePutCaretElement(AboveFadeElementHandler handler);
+extern "C" __declspec(dllexport) void RegisterAbovePutCaretElement(AbovePutCaretElementHandler handler);
 void ExecuteAbovePutCaretElementHandlers();
 void ActionCaretCode(int fx, int fy);
+
+typedef void (*MABelowPutFPSElementHandler)();
+
+extern std::vector<MABelowPutFPSElementHandler> MAbelowputfpsElementHandlers;
+
+typedef void (*MAAbovePutFPSElementHandler)();
+
+extern std::vector<MAAbovePutFPSElementHandler> MAaboveputfpsElementHandlers;
+
+extern "C" __declspec(dllexport) void RegisterModeActionBelowPutFPSElement(MABelowPutFPSElementHandler handler);
+void ExecuteModeActionBelowPutFPSElementHandlers();
+extern "C" __declspec(dllexport) void RegisterModeActionAbovePutFPSElement(MAAbovePutFPSElementHandler handler);
+void ExecuteModeActionAbovePutFPSElementHandlers();
+void ModeActionPutFPSCode();

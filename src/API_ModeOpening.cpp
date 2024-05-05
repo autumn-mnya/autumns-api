@@ -218,3 +218,41 @@ void OpeningCaretCode(int fx, int fy)
     PutCaret(fx, fy);
     ExecuteOpeningAbovePutCaretElementHandlers();
 }
+
+// ModeOpening PutFPS //
+
+std::vector<MOBelowPutFPSElementHandler> MObelowputfpsElementHandlers;
+std::vector<MOAbovePutFPSElementHandler> MOaboveputfpsElementHandlers;
+
+void RegisterModeOpeningBelowPutFPSElement(MOBelowPutFPSElementHandler handler)
+{
+    MObelowputfpsElementHandlers.push_back(handler);
+}
+
+void RegisterModeOpeningAbovePutFPSElement(MOAbovePutFPSElementHandler handler)
+{
+    MOaboveputfpsElementHandlers.push_back(handler);
+}
+
+void ExecuteModeOpeningBelowPutFPSElementHandlers()
+{
+    for (const auto& handler : MObelowputfpsElementHandlers)
+    {
+        handler();
+    }
+}
+
+void ExecuteModeOpeningAbovePutFPSElementHandlers()
+{
+    for (const auto& handler : MOaboveputfpsElementHandlers)
+    {
+        handler();
+    }
+}
+
+void ModeOpeningPutFPSCode()
+{
+    ExecuteModeOpeningBelowPutFPSElementHandlers();
+    PutFramePerSecound();
+    ExecuteModeOpeningAbovePutFPSElementHandlers();
+}

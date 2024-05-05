@@ -92,3 +92,41 @@ void TitleBelowCounterCode(int x, int y)
     PutCaret(x, y);
     ExecuteTitleBelowCounterElementHandlers();
 }
+
+// ModeTitle PutFPS //
+
+std::vector<MTBelowPutFPSElementHandler> MTbelowputfpsElementHandlers;
+std::vector<MTAbovePutFPSElementHandler> MTaboveputfpsElementHandlers;
+
+void RegisterModeTitleBelowPutFPSElement(MTBelowPutFPSElementHandler handler)
+{
+    MTbelowputfpsElementHandlers.push_back(handler);
+}
+
+void RegisterModeTitleAbovePutFPSElement(MTAbovePutFPSElementHandler handler)
+{
+    MTaboveputfpsElementHandlers.push_back(handler);
+}
+
+void ExecuteModeTitleBelowPutFPSElementHandlers()
+{
+    for (const auto& handler : MTbelowputfpsElementHandlers)
+    {
+        handler();
+    }
+}
+
+void ExecuteModeTitleAbovePutFPSElementHandlers()
+{
+    for (const auto& handler : MTaboveputfpsElementHandlers)
+    {
+        handler();
+    }
+}
+
+void ModeTitlePutFPSCode()
+{
+    ExecuteModeTitleBelowPutFPSElementHandlers();
+    PutFramePerSecound();
+    ExecuteModeTitleAbovePutFPSElementHandlers();
+}

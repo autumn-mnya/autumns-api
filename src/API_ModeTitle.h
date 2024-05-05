@@ -33,3 +33,17 @@ void TitleActionCode();
 extern "C" __declspec(dllexport) void RegisterTitleBelowCounterElement(TitleBelowCounterElementHandler handler); // Function for registering a Action Element
 void ExecuteTitleBelowCounterElementHandlers();
 void TitleBelowCounterCode(int x, int y);
+
+typedef void (*MTBelowPutFPSElementHandler)();
+
+extern std::vector<MTBelowPutFPSElementHandler> MTbelowputfpsElementHandlers;
+
+typedef void (*MTAbovePutFPSElementHandler)();
+
+extern std::vector<MTAbovePutFPSElementHandler> MTaboveputfpsElementHandlers;
+
+extern "C" __declspec(dllexport) void RegisterModeTitleBelowPutFPSElement(MTBelowPutFPSElementHandler handler);
+void ExecuteModeTitleBelowPutFPSElementHandlers();
+extern "C" __declspec(dllexport) void RegisterModeTitleAbovePutFPSElement(MTAbovePutFPSElementHandler handler);
+void ExecuteModeTitleAbovePutFPSElementHandlers();
+void ModeTitlePutFPSCode();

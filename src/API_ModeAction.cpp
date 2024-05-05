@@ -343,3 +343,41 @@ void ActionCaretCode(int fx, int fy)
     PutCaret(fx, fy);
     ExecuteAbovePutCaretElementHandlers();
 }
+
+// ModeAction PutFPS //
+
+std::vector<MABelowPutFPSElementHandler> MAbelowputfpsElementHandlers;
+std::vector<MAAbovePutFPSElementHandler> MAaboveputfpsElementHandlers;
+
+void RegisterModeActionBelowPutFPSElement(MABelowPutFPSElementHandler handler)
+{
+    MAbelowputfpsElementHandlers.push_back(handler);
+}
+
+void RegisterModeActionAbovePutFPSElement(MAAbovePutFPSElementHandler handler)
+{
+    MAaboveputfpsElementHandlers.push_back(handler);
+}
+
+void ExecuteModeActionBelowPutFPSElementHandlers()
+{
+    for (const auto& handler : MAbelowputfpsElementHandlers)
+    {
+        handler();
+    }
+}
+
+void ExecuteModeActionAbovePutFPSElementHandlers()
+{
+    for (const auto& handler : MAaboveputfpsElementHandlers)
+    {
+        handler();
+    }
+}
+
+void ModeActionPutFPSCode()
+{
+    ExecuteModeActionBelowPutFPSElementHandlers();
+    PutFramePerSecound();
+    ExecuteModeActionAbovePutFPSElementHandlers();
+}
