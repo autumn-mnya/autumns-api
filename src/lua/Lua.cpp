@@ -559,50 +559,60 @@ void CloseModScript(void)
 
 void InitMod_Lua()
 {
-	InitModScript();
+	if (!InitModScript())
+		return;
 }
 
 void Lua_GameInit()
 {
-	GameInitModScript();
+	if (!GameInitModScript())
+		return;
 }
 
 void Lua_GameAct()
 {
-	GameActModScript();
+	if (!GameActModScript())
+		return;
 }
 
 void Lua_GameUpdate()
 {
-	GameUpdateModScript();
+	if (!GameUpdateModScript())
+		return;
 }
 
 void Lua_GameDraw()
 {
-	GameDrawModScript();
+	if (!GameDrawModScript())
+		return;
 }
 
 void Lua_GameDrawBelowFade()
 {
-	GameDrawBelowFadeModScript();
+	if (!GameDrawBelowFadeModScript())
+		return;
 }
 
 void Lua_GameDrawAboveFade()
 {
-	GameDrawAboveFadeModScript();
+	if (!GameDrawAboveFadeModScript())
+		return;
 }
 
 void Lua_GameDrawBelowTextBox()
 {
-	GameDrawBelowTextBoxModScript();
+	if (!GameDrawBelowTextBoxModScript())
+		return;
 }
 
 void Lua_GameDrawAboveTextBox()
 {
-	GameDrawAboveTextBoxModScript();
+	if (!GameDrawAboveTextBoxModScript())
+		return;
 }
 
 void Lua_GameDrawHUD()
 {
-	GameDrawHUDModScript();
+	if (!GameDrawHUDModScript())
+		return;
 }

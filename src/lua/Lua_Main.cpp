@@ -84,3 +84,36 @@ FUNCTION_TABLE ModFunctionTable[FUNCTION_TABLE_MOD_SIZE] =
 	{"SetOpening", lua_ModSetOpening},
 	{"SetStart", lua_ModSetStart}
 };
+
+BOOL PreModeInitModScript(void)
+{
+	lua_getglobal(gL, "ModCS");
+	lua_getfield(gL, -1, "Mod");
+	lua_getfield(gL, -1, "Init");
+
+	if (lua_isnil(gL, -1))
+	{
+		lua_settop(gL, 0); // Clear stack
+		return TRUE;
+	}
+
+	if (lua_pcall(gL, 0, 0, 0) != LUA_OK)
+	{
+		const char* error = lua_tostring(gL, -1);
+
+		ErrorLog(error, 0);
+		printf("ERROR: %s\n", error);
+		MessageBoxA(ghWnd, "Couldn't execute mod init function", "ModScript Error", MB_OK);
+		return FALSE;
+	}
+
+	lua_settop(gL, 0); // Clear stack
+
+	return TRUE;
+}
+
+void RegisterPreModeModScript()
+{
+	if (!PreModeInitModScript())
+		return;
+}

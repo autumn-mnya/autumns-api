@@ -31,6 +31,7 @@
 #include "ASM_Patches.h"
 
 #include "lua/Lua.h"
+#include "lua/Lua_Main.h"
 #include "lua/Lua_Profile.h"
 #include "lua/Lua_Stage.h"
 
@@ -227,6 +228,7 @@ void InitMod(void)
     InitTSC();
 
     RegisterPreModeElement(InitMod_Lua);
+    RegisterPreModeElement(RegisterPreModeModScript);
 
     RegisterOpeningInitElement(SetModeOpening);
     RegisterTitleInitElement(SetModeTitle);

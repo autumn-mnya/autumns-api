@@ -7,7 +7,7 @@ print("Hello World!")
 ModCS.Mod.SetName("AutPI")
 ModCS.Mod.SetAuthor("autumn")
 
-ModCS.Mod.SetOpening(13, 100, 1)
+ModCS.Mod.SetOpening(0x10, 100, 0x1000)
 ModCS.Mod.SetStart(13, 94, 10, 8)
 
 ModCS.AddEntity("MyNewEntity")
@@ -110,6 +110,11 @@ end
 
 function ModCS.Tsc.Command.STR()
 	texttoput = ModCS.Tsc.GetString() -- get string data :3
+end
+
+-- Just incase code needs to be ran before ModeOpening
+function ModCS.Mod.Init()
+	print("Mod is loading..")
 end
 
 -- prints everytime a transferstage call happens
