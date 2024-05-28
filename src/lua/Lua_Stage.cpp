@@ -21,6 +21,7 @@ extern "C"
 #include "../mod_loader.h"
 #include "../cave_story.h"
 
+#include "../API_GetTrg.h"
 #include "../API_ModeOpening.h"
 #include "../API_ModeAction.h"
 #include "../API_TransferStage.h"
@@ -231,6 +232,9 @@ void RegisterOnTransferStage()
 	RegisterTransferStageInitElement(OnTransfer);
 	RegisterOpeningInitElement(OnTransfer_Init);
 	RegisterInitElement(OnTransfer_Init);
+	RegisterGetTrgElement(OnTransfer_Act);
+	/*
 	RegisterOpeningActionElement(OnTransfer_Act);
 	RegisterActionElement(OnTransfer_Act);
+	*/
 }

@@ -58,6 +58,7 @@ void InitMod_Lua();
 
 void Lua_GameInit();
 void Lua_GameAct();
+void Lua_GameActTrg();
 void Lua_GameUpdate();
 void Lua_GameDraw();
 void Lua_GameDrawBelowFade();
@@ -65,3 +66,5 @@ void Lua_GameDrawAboveFade();
 void Lua_GameDrawBelowTextBox();
 void Lua_GameDrawAboveTextBox();
 void Lua_GameDrawHUD();
+void Lua_GameDrawBelowPlayer();
+void Lua_GameDrawAbovePlayer();

@@ -28,3 +28,5 @@ BOOL GameDrawAboveFadeModScript(void);
 BOOL GameDrawBelowTextBoxModScript(void);
 BOOL GameDrawAboveTextBoxModScript(void);
 BOOL GameDrawHUDModScript(void);
+BOOL GameDrawBelowPlayerModScript(void);
+BOOL GameDrawAbovePlayerModScript(void);

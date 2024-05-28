@@ -397,17 +397,24 @@ static int Print2Console(lua_State* L) {
 	return 0;
 }
 
-static int lua_GetModulePath(lua_State* L) {
-	// Push the value of gModulePath onto the Lua stack
+static int lua_GetModulePath(lua_State* L)
+{
 	lua_pushstring(L, gModulePath);
-	// Return 1 to indicate that 1 value has been pushed onto the stack
 	return 1;
 }
 
 static int lua_GetDataPath(lua_State* L) {
-	// Push the value of gModulePath onto the Lua stack
 	lua_pushstring(L, gDataPath);
-	// Return 1 to indicate that 1 value has been pushed onto the stack
+	return 1;
+}
+
+static int lua_FlipSystemTask(lua_State* L)
+{
+	if (Flip_SystemTask(ghWnd))
+		lua_pushboolean(L, 1);
+	else
+		lua_pushboolean(L, 0);
+
 	return 1;
 }
 
@@ -478,6 +485,9 @@ BOOL InitModScript(void)
 
 	lua_pushcfunction(gL, lua_GetDataPath);
 	lua_setfield(gL, -2, "GetDataPath");
+
+	lua_pushcfunction(gL, lua_FlipSystemTask);
+	lua_setfield(gL, -2, "SystemTask");
 
 	PushFunctionTable(gL, "RangeRect", OtherRectFunctionTable, FUNCTION_TABLE_OTHER_RECT_SIZE, TRUE);
 	PushFunctionTable(gL, "Game", GameFunctionTable, FUNCTION_TABLE_GAME_SIZE, TRUE);
@@ -575,6 +585,14 @@ void Lua_GameAct()
 		return;
 }
 
+void Lua_GameActTrg()
+{
+	GetTrg();
+
+	if (!GameActModScript())
+		return;
+}
+
 void Lua_GameUpdate()
 {
 	if (!GameUpdateModScript())
@@ -614,5 +632,17 @@ void Lua_GameDrawAboveTextBox()
 void Lua_GameDrawHUD()
 {
 	if (!GameDrawHUDModScript())
+		return;
+}
+
+void Lua_GameDrawBelowPlayer()
+{
+	if (!GameDrawBelowPlayerModScript())
+		return;
+}
+
+void Lua_GameDrawAbovePlayer()
+{
+	if (!GameDrawAbovePlayerModScript())
 		return;
 }

@@ -304,3 +304,57 @@ BOOL GameDrawHUDModScript(void)
 
 	return TRUE;
 }
+
+BOOL GameDrawBelowPlayerModScript(void)
+{
+	lua_getglobal(gL, "ModCS");
+	lua_getfield(gL, -1, "Game");
+	lua_getfield(gL, -1, "DrawBelowPlayer");
+
+	if (lua_isnil(gL, -1))
+	{
+		lua_settop(gL, 0); // Clear stack
+		return TRUE;
+	}
+
+	if (lua_pcall(gL, 0, 0, 0) != LUA_OK)
+	{
+		const char* error = lua_tostring(gL, -1);
+
+		ErrorLog(error, 0);
+		printf("ERROR: %s\n", error);
+		MessageBoxA(ghWnd, "Couldn't execute game draw below player function", "ModScript Error", MB_OK);
+		return FALSE;
+	}
+
+	lua_settop(gL, 0); // Clear stack
+
+	return TRUE;
+}
+
+BOOL GameDrawAbovePlayerModScript(void)
+{
+	lua_getglobal(gL, "ModCS");
+	lua_getfield(gL, -1, "Game");
+	lua_getfield(gL, -1, "DrawAbovePlayer");
+
+	if (lua_isnil(gL, -1))
+	{
+		lua_settop(gL, 0); // Clear stack
+		return TRUE;
+	}
+
+	if (lua_pcall(gL, 0, 0, 0) != LUA_OK)
+	{
+		const char* error = lua_tostring(gL, -1);
+
+		ErrorLog(error, 0);
+		printf("ERROR: %s\n", error);
+		MessageBoxA(ghWnd, "Couldn't execute game draw above player function", "ModScript Error", MB_OK);
+		return FALSE;
+	}
+
+	lua_settop(gL, 0); // Clear stack
+
+	return TRUE;
+}

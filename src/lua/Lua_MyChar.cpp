@@ -234,14 +234,13 @@ static int lua_PlayerGetViewbox(lua_State* L)
 	return 1;
 }
 
-/*
 static int lua_PlayerSetArmsYOffset(lua_State* L)
 {
-	gMC.arms_offset_y = (int)luaL_checknumber(L, 1);
-
+	int offset = (int)luaL_checknumber(L, 1);
+	ModLoader_WriteLong((void*)0x415302, -offset);
+	ModLoader_WriteLong((void*)0x415330, offset);
 	return 0;
 }
-*/
 
 static int lua_PlayerEquip(lua_State* L)
 {
@@ -368,7 +367,7 @@ FUNCTION_TABLE PlayerFunctionTable[FUNCTION_TABLE_PLAYER_SIZE] =
 	{"SetViewbox", lua_PlayerSetViewbox},
 	{"GetRect", lua_PlayerGetRect},
 	{"GetViewbox", lua_PlayerGetViewbox},
-	// {"SetArmsYOffset", lua_PlayerSetArmsYOffset},
+	{"SetArmsYOffset", lua_PlayerSetArmsYOffset},
 	{"Equip", lua_PlayerEquip},
 	{"Unequip", lua_PlayerUnequip},
 	{"HasEquipped", lua_PlayerHasEquipped},

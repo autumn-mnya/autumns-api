@@ -16,14 +16,18 @@
 
 // Define the global list to store registered PreMode element handlers
 std::vector<PreModeElementHandler> premodeElementHandlers;
+std::vector<PrePreModeElementHandler> prepremodeElementHandlers; //trust me
 
-// Function to register a PreMode element handler
 void RegisterPreModeElement(PreModeElementHandler handler)
 {
     premodeElementHandlers.push_back(handler);
 }
 
-// Function to execute all registered PreMode element handlers
+void RegisterPrePreModeElement(PrePreModeElementHandler handler)
+{
+    prepremodeElementHandlers.push_back(handler);
+}
+
 void ExecutePreModeElementHandlers()
 {
     for (const auto& handler : premodeElementHandlers)
@@ -32,9 +36,17 @@ void ExecutePreModeElementHandlers()
     }
 }
 
-// Used for PreMode
+void ExecutePrePreModeElementHandlers()
+{
+    for (const auto& handler : prepremodeElementHandlers)
+    {
+        handler();
+    }
+}
+
 void PreModeCode()
 {
+    ExecutePrePreModeElementHandlers(); // this name sucks lol but just trust me on it for now
     InitTextScript2();
     ExecutePreModeElementHandlers();
 }

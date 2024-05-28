@@ -250,10 +250,14 @@ void InitMod(void)
     RegisterModeTitleAbovePutFPSElement(Lua_GameDraw);
 
     RegisterInitElement(Lua_GameInit);
-    RegisterEarlyActionElement(Lua_GameAct);
+    ModLoader_WriteCall((void*)0x4104D0, (void*)Lua_GameActTrg);
+    // RegisterEarlyActionElement(Lua_GameAct); // This needs to change in the future (Acting should occur in the ModeAction GetTrg() call)
     RegisterActionElement(Lua_GameUpdate);
     RegisterModeActionAbovePutFPSElement(Lua_GameDraw);
 
+
+    RegisterBelowPlayerElement(Lua_GameDrawBelowPlayer);
+    RegisterAbovePlayerElement(Lua_GameDrawAbovePlayer);
     RegisterBelowFadeElement(Lua_GameDrawBelowFade);
     RegisterAboveFadeElement(Lua_GameDrawAboveFade);
     RegisterBelowTextBoxElement(Lua_GameDrawBelowTextBox);

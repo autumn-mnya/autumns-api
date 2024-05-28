@@ -4,7 +4,6 @@ require("npc")
 print(ModCS.GetModulePath())
 print("Hello World!")
 
-ModCS.Mod.SetName("AutPI")
 ModCS.Mod.SetAuthor("autumn")
 
 ModCS.Mod.SetOpening(0x10, 100, 0x1000)
@@ -43,6 +42,13 @@ function ModCS.Game.Act()
 	
 	if ModCS.Key.Map() then
 		ModCS.Arms.GetCurrent().id = ModCS.Arms.GetCurrent().id - 1
+	end
+	
+	-- Lunar Shadow swimming
+	if ModCS.Player.TouchWater() then
+		if ModCS.Key.Jump(true) then
+			ModCS.Player.ym = ModCS.Player.ym - 88
+		end
 	end
 end
 
@@ -114,10 +120,11 @@ end
 
 -- Just incase code needs to be ran before ModeOpening
 function ModCS.Mod.Init()
+	ModCS.Mod.SetName("AutPI")
 	print("Mod is loading..")
 end
 
 -- prints everytime a transferstage call happens
 function ModCS.Stage.OnTransfer()
-	print("Transferred stage")
+	print("Transferred to stage ID: " .. ModCS.Stage.GetCurrentNo())
 end
