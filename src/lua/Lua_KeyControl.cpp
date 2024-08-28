@@ -19,7 +19,7 @@ extern "C"
 #include "../mod_loader.h"
 #include "../cave_story.h"
 
-static void KeyCheck(lua_State* L, int button)
+void KeyCheck(lua_State* L, int Key, int KeyTrg, int button)
 {
 	BOOL hold = FALSE;
 
@@ -31,7 +31,7 @@ static void KeyCheck(lua_State* L, int button)
 
 	if (hold)
 	{
-		if (gKey & button)
+		if (Key & button)
 		{
 			lua_pushboolean(L, 1);
 			return;
@@ -40,7 +40,7 @@ static void KeyCheck(lua_State* L, int button)
 	}
 	else
 	{
-		if (gKeyTrg & button)
+		if (KeyTrg & button)
 		{
 			lua_pushboolean(L, 1);
 			return;
@@ -52,93 +52,127 @@ static void KeyCheck(lua_State* L, int button)
 
 static int lua_KeyJump(lua_State* L)
 {
-	KeyCheck(L, gKeyJump);
+	KeyCheck(L, gKey, gKeyTrg, gKeyJump);
 
 	return 1;
 }
 
 static int lua_KeyShot(lua_State* L)
 {
-	KeyCheck(L, gKeyShot);
+	KeyCheck(L, gKey, gKeyTrg, gKeyShot);
 
 	return 1;
 }
 
 static int lua_KeyArms(lua_State* L)
 {
-	KeyCheck(L, gKeyArms);
+	KeyCheck(L, gKey, gKeyTrg, gKeyArms);
 
 	return 1;
 }
 
 static int lua_KeyArmsRev(lua_State* L)
 {
-	KeyCheck(L, gKeyArmsRev);
+	KeyCheck(L, gKey, gKeyTrg, gKeyArmsRev);
 
 	return 1;
 }
 
 static int lua_KeyItem(lua_State* L)
 {
-	KeyCheck(L, gKeyItem);
+	KeyCheck(L, gKey, gKeyTrg, gKeyItem);
 
 	return 1;
 }
 
 static int lua_KeyMap(lua_State* L)
 {
-	KeyCheck(L, gKeyMap);
+	KeyCheck(L, gKey, gKeyTrg, gKeyMap);
 
 	return 1;
 }
 
 static int lua_KeyOk(lua_State* L)
 {
-	KeyCheck(L, gKeyOk);
+	KeyCheck(L, gKey, gKeyTrg, gKeyOk);
 
 	return 1;
 }
 
 static int lua_KeyCancel(lua_State* L)
 {
-	KeyCheck(L, gKeyCancel);
+	KeyCheck(L, gKey, gKeyTrg, gKeyCancel);
 
 	return 1;
 }
 
 static int lua_KeyLeft(lua_State* L)
 {
-	KeyCheck(L, gKeyLeft);
+	KeyCheck(L, gKey, gKeyTrg, gKeyLeft);
 
 	return 1;
 }
 
 static int lua_KeyUp(lua_State* L)
 {
-	KeyCheck(L, gKeyUp);
+	KeyCheck(L, gKey, gKeyTrg, gKeyUp);
 
 	return 1;
 }
 
 static int lua_KeyRight(lua_State* L)
 {
-	KeyCheck(L, gKeyRight);
+	KeyCheck(L, gKey, gKeyTrg, gKeyRight);
 
 	return 1;
 }
 
 static int lua_KeyDown(lua_State* L)
 {
-	KeyCheck(L, gKeyDown);
+	KeyCheck(L, gKey, gKeyTrg, gKeyDown);
 
 	return 1;
 }
 
 static int lua_KeyShift(lua_State* L)
 {
-	KeyCheck(L, 0x200);
+	KeyCheck(L, gKey, gKeyTrg, 0x200);
 
 	return 1;
+}
+
+static int lua_GetKey(lua_State* L)
+{
+	lua_pushnumber(L, gKey);
+
+	return 1;
+}
+
+static int lua_GetKeyTrg(lua_State* L)
+{
+	lua_pushnumber(L, gKeyTrg);
+
+	return 1;
+}
+
+static int lua_ClearKey(lua_State* L)
+{
+	gKey = 0;
+
+	return 0;
+}
+
+static int lua_ClearKeyTrg(lua_State* L)
+{
+	gKeyTrg = 0;
+
+	return 0;
+}
+
+static int lua_GetTrg(lua_State* L)
+{
+	GetTrg();
+	return 0;
 }
 
 FUNCTION_TABLE KeyFunctionTable[FUNCTION_TABLE_KEY_SIZE] =
@@ -155,5 +189,10 @@ FUNCTION_TABLE KeyFunctionTable[FUNCTION_TABLE_KEY_SIZE] =
 	{"Up", lua_KeyUp},
 	{"Right", lua_KeyRight},
 	{"Down", lua_KeyDown},
-	{"Shift", lua_KeyShift}
+	{"Shift", lua_KeyShift},
+	{"GetKey", lua_GetKey},
+	{"GetKeyTrg", lua_GetKeyTrg},
+	{"ClearKey", lua_ClearKey},
+	{"ClearKeyTrg", lua_ClearKeyTrg},
+	{"GetTrg", lua_GetTrg},
 };

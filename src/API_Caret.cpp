@@ -64,6 +64,29 @@ void LoadCaretTable()
 	fclose(fp);
 }
 
+#pragma runtime_checks("s", off)
+void CallCaretActFunction(int code, CARET* crt)
+{
+	// MSVC syntax
+	__asm {
+		push ebx
+		push esi
+		push edi
+	}
+
+	if (code <= 17)
+		gpCaretFuncTbl[code](crt);
+	else
+		gpCaretAPIFuncTbl[code - 18](crt);
+
+	__asm {
+		pop edi
+		pop esi
+		pop ebx
+	}
+}
+#pragma runtime_checks("s", restore)
+
 void Replacement_ActCaret(void)
 {
 	int i;
@@ -81,10 +104,7 @@ void Replacement_ActCaret(void)
 
 			if (result == 1)
 			{
-				if (code <= 17)
-					gpCaretFuncTbl[code](&gCrt[i]);
-				else
-					gpCaretAPIFuncTbl[code - 18](&gCrt[i]);
+				CallCaretActFunction(code, &gCrt[i]);
 			}
 			else if (result == 0)
 			{

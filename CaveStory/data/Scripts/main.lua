@@ -50,16 +50,8 @@ function ModCS.Game.Act()
 			ModCS.Player.ym = ModCS.Player.ym - 88
 		end
 	end
-end
-
-function ModCS.Tsc.Command.FOO() -- Launch Geometry Dash via Steam
-	if (os.execute("start steam://rungameid/322170") ~= 0) then os.execute('"C:/Program Files (x86)/Steam/steam.exe" steam://rungameid/322170')
-	end
-end
-
-function GetModuleFilePath(filename)
-    local Path = ModCS.GetModulePath()
-    return Path .. "/" .. filename
+	
+	ModCS.Npc.Spawn(1, ModCS.Mouse.GetWorldX() / 512, ModCS.Mouse.GetWorldY() / 512)
 end
 
 function GetDataFilePath(filename)
@@ -106,16 +98,6 @@ function ModCS.Profile.DuringLoad()
 	print("Loading Game")
 	local file = luaLoadFile(GetModuleFilePath("lua_savefile.txt"))
 	print(file)
-end
-
-local texttoput = "No data!"
-
-function ModCS.Game.Draw()
-	ModCS.PutText(texttoput, 0, 0)
-end
-
-function ModCS.Tsc.Command.STR()
-	texttoput = ModCS.Tsc.GetString() -- get string data :3
 end
 
 -- Just incase code needs to be ran before ModeOpening

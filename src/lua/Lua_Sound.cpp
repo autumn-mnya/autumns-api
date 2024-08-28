@@ -94,6 +94,13 @@ static int lua_OrganyaPlay(lua_State* L)
 	return 0;
 }
 
+static int lua_OrganyaRecall(lua_State* L)
+{
+	ReCallMusic();
+
+	return 0;
+}
+
 static int lua_OrganyaGetCurrent(lua_State* L)
 {
 	lua_pushnumber(L, (lua_Number)gMusicNo);
@@ -140,13 +147,22 @@ static int lua_OrganyaSetVolume(lua_State* L)
 	return 0;
 }
 
+static int lua_OrganyaFadeOut(lua_State* L)
+{
+	SetOrganyaFadeout();
+
+	return 0;
+}
+
 FUNCTION_TABLE OrgFunctionTable[FUNCTION_TABLE_ORG_SIZE] =
 {
 	{"Play", lua_OrganyaPlay},
+	{"Recall", lua_OrganyaRecall},
 	{"GetCurrent", lua_OrganyaGetCurrent},
 	{"GetOld", lua_OrganyaGetOld},
 	{"GetPosition", lua_OrganyaGetPosition},
 	{"GetOldPosition", lua_OrganyaGetOldPosition},
 	{"SetPosition", lua_OrganyaSetPosition},
-	{"SetVolume", lua_OrganyaSetVolume}
+	{"SetVolume", lua_OrganyaSetVolume},
+	{"FadeOut", lua_OrganyaFadeOut}
 };

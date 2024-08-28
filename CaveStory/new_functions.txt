@@ -1,0 +1,26 @@
+- ModCS.Key.GetKey() ~ Returns the value of "gKey".
+- ModCS.Key.GetKeyTrg() ~ Returns the value of "gKeyTrg".
+- ModCS.Key.ClearKey() ~ Clear "gKey".
+- ModCS.Key.ClearKeyTrg() ~ Clear "gKeyTrg".
+- ModCS.Key.GetTrg() ~ Run game input functions.
+
+- sleep(num) ~ Run the Win32 "Sleep(int num)" function.
+- ModCS.ShutDown() ~ Shut down the game.
+- ModCS.CallEscape() ~ Bring up the "Escape" menu.
+- ModCS.SetMag(num) ~ Set the games "Magnification".
+- ModCS.GetMag() ~ Get the games "Magnification" - The window size.
+
+- ModCS.Organya.Recall() ~ Same as <RMU, plays the previous song played.
+- ModCS.Organya.FadeOut() ~ Same as <FMU, fades out the current song.
+
+- ModCS.Mouse.LeftClick(hold) ~ Detect input from left click. Works the same as "ModCS.Key" functions.
+- ModCS.Mouse.RightClick(hold)  ~ Detect input from right click. Works the same as "ModCS.Key" functions.
+- ModCS.Mouse.MiddleClick(hold) ~ Detect input from middle click. Works the same as "ModCS.Key" functions.
+- ModCS.Mouse.GetX() ~ Get the mouse cursors X position on the screen.
+- ModCS.Mouse.GetY() ~ Get the mouse cursors Y position on the screen.
+- ModCS.Mouse.GetWorldX() ~ Get the mouse cursors X position in the world.
+- ModCS.Mouse.GetWorldY() ~ Get the mouse cursors Y position in the world.
+- ModCS.Mouse.GetTileX() ~ Get the tile X position that the cursor is touching.
+- ModCS.Mouse.GetTileY() ~ Get the tile Y position that the cursor is touching.
+- ModCS.Mouse.CursorTouching(x, y, size_x, size_y) ~ Returns "true" if the cursor is touching a spot on the screen starting at (x,y) with the width/height of size x/y.
+- ModCS.Mouse.WorldCursorTouching(x, y, size_x, size_y) ~ Returns "true" if the cursor is touching a spot in the world starting at (x,y) with the width/height of size x/y.

@@ -51,6 +51,11 @@ extern "C" __declspec(dllexport) void PushFunctionTable(lua_State* L, const char
 extern "C" __declspec(dllexport) void PushFunctionTableModName(lua_State* L, const char* modname, const char* name, const FUNCTION_TABLE* table, int length, BOOL pop);
 extern "C" __declspec(dllexport) void PushSimpleMetatables(lua_State* L, const METATABLE_TABLE* table, int length);
 
+extern long mouseKey;
+extern long mouseKeyTrg;
+
+void AutPI_GetTrg_ForInput();
+
 BOOL InitModScript(void);
 void CloseModScript(void);
 

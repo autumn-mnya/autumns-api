@@ -46,6 +46,30 @@ void ChangeNpChar(NPCHAR* npc, int code_char)
 		gpEntityFuncTbl[code_char](npc);
 }
 
+// Call this instead of calling any NPC act function directly
+#pragma runtime_checks("s", off)
+void CallNPCActFunction(NPCHAR* npc)
+{
+	// MSVC syntax
+	__asm {
+		push ebx
+		push esi
+		push edi
+	}
+
+	if (npc->code_char <= 360)
+		gpNpcFuncTbl[npc->code_char](npc);
+	else
+		gpEntityFuncTbl[npc->code_char - 361](npc);
+
+	__asm {
+		pop edi
+		pop esi
+		pop ebx
+	}
+}
+#pragma runtime_checks("s", restore)
+
 void Replacement_ActNpChar(void)
 {
 	int i;
@@ -63,10 +87,7 @@ void Replacement_ActNpChar(void)
 
 			if (result == 1)
 			{
-				if (code_char <= 360)
-					gpNpcFuncTbl[code_char](&gNPC[i]);
-				else
-					gpEntityFuncTbl[code_char - 361](&gNPC[i]);
+				CallNPCActFunction(&gNPC[i]);
 			}
 			else if (result == 0)
 			{

@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <string>
+#include <vector>
 
 extern "C"
 {
@@ -418,6 +419,233 @@ static int lua_FlipSystemTask(lua_State* L)
 	return 1;
 }
 
+// Define the macro for checking the state of a key
+#define CHECK_KEY_STATE(keyInteger, keyButton, keyCheck) \
+    do { \
+        if (GetAsyncKeyState(keyButton) & 0x8000) \
+            keyInteger |= keyCheck; \
+        else \
+            keyInteger &= ~keyCheck; \
+    } while (0)
+
+long mouseKey;
+long mouseKeyTrg;
+
+void AutPI_MouseGetTrg()
+{
+	static int key_old;
+	mouseKeyTrg = mouseKey ^ key_old;
+	mouseKeyTrg = mouseKey & mouseKeyTrg;
+	key_old = mouseKey;
+}
+
+enum KeyBindMouse
+{
+	KEY_LMOUSE = 0x00000001,
+	KEY_RMOUSE = 0x00000002,
+	KEY_MMOUSE = 0x00000004,
+};
+
+POINT cursorPos;
+
+void GetCursorPosition(HWND hWnd)
+{
+	if (GetCursorPos(&cursorPos))
+	{
+		if (ScreenToClient(hWnd, &cursorPos))
+		{
+			// printf("Cursor Position is: X = %ld, Y = %ld\n", cursorPos.x, cursorPos.y);
+		}
+	}
+}
+
+void UpdateAutPIInput()
+{
+	// Check if the current window is the active window
+	if (GetForegroundWindow() == ghWnd)
+	{
+		CHECK_KEY_STATE(mouseKey, VK_LBUTTON, KEY_LMOUSE);
+		CHECK_KEY_STATE(mouseKey, VK_RBUTTON, KEY_RMOUSE);
+		CHECK_KEY_STATE(mouseKey, VK_MBUTTON, KEY_MMOUSE);
+		// Create a vector that runs CHECK_KEY_STATE with user-inputed variables
+	}
+}
+
+static int lua_KeyMouseLeft(lua_State* L)
+{
+	KeyCheck(L, mouseKey, mouseKeyTrg, KEY_LMOUSE);
+
+	return 1;
+}
+
+static int lua_KeyMouseRight(lua_State* L)
+{
+	KeyCheck(L, mouseKey, mouseKeyTrg, KEY_RMOUSE);
+
+	return 1;
+}
+
+static int lua_KeyMouseMiddle(lua_State* L)
+{
+	KeyCheck(L, mouseKey, mouseKeyTrg, KEY_MMOUSE);
+
+	return 1;
+}
+
+#define cursorX (cursorPos.x / window_magnification)
+#define cursorY (cursorPos.y / window_magnification)
+
+#define worldcursorX ((cursorX * 0x200) + gFrame.x)
+#define worldcursorY ((cursorY * 0x200) + gFrame.y)
+
+#define tilecursorX ((worldcursorX / 0x200) + 8) / 0x10
+#define tilecursorY ((worldcursorY / 0x200) + 8) / 0x10
+
+#define CursorTouchingFreeForm(x, y, sizeX, sizeY) \
+    (cursorX >= (x) && cursorX <= (x) + (sizeX) && \
+     cursorY >= (y) && cursorY <= (y) + (sizeY))
+
+#define WorldCursorTouchingFreeForm(x, y, sizeX, sizeY) \
+    (worldcursorX >= (x) && worldcursorX <= (x) + (sizeX) && \
+     worldcursorY >= (y) && worldcursorY <= (y) + (sizeY))
+
+static int lua_GetScreenCursorX(lua_State* L)
+{
+	lua_pushnumber(L, (lua_Number)cursorX);
+
+	return 1;
+}
+
+static int lua_GetScreenCursorY(lua_State* L)
+{
+	lua_pushnumber(L, (lua_Number)cursorY);
+
+	return 1;
+}
+
+static int lua_GetWorldCursorX(lua_State* L)
+{
+	lua_pushnumber(L, (lua_Number)worldcursorX);
+
+	return 1;
+}
+
+static int lua_GetWorldCursorY(lua_State* L)
+{
+	lua_pushnumber(L, (lua_Number)worldcursorY);
+
+	return 1;
+}
+
+static int lua_GetTileCursorX(lua_State* L)
+{
+	lua_pushnumber(L, (lua_Number)tilecursorX);
+
+	return 1;
+}
+
+static int lua_GetTileCursorY(lua_State* L)
+{
+	lua_pushnumber(L, (lua_Number)tilecursorY);
+
+	return 1;
+}
+
+static int lua_IfScreenCursorTouching(lua_State* L)
+{
+	int x = (int)luaL_checknumber(L, 1);
+	int y = (int)luaL_checknumber(L, 2);
+	int sx = (int)luaL_checknumber(L, 3);
+	int sy = (int)luaL_checknumber(L, 4);
+
+	if (CursorTouchingFreeForm(x, y, sx, sy))
+		lua_pushboolean(L, 1);
+	else
+		lua_pushboolean(L, 0);
+
+	return 1;
+}
+
+static int lua_IfWorldCursorTouching(lua_State* L)
+{
+	int x = (int)luaL_checknumber(L, 1);
+	int y = (int)luaL_checknumber(L, 2);
+	int sx = (int)luaL_checknumber(L, 3);
+	int sy = (int)luaL_checknumber(L, 4);
+
+	if (WorldCursorTouchingFreeForm(x, y, sx, sy))
+		lua_pushboolean(L, 1);
+	else
+		lua_pushboolean(L, 0);
+
+	return 1;
+}
+
+#define FUNCTION_TABLE_MOUSE_KEY_SIZE 11
+
+FUNCTION_TABLE MouseKeyFunctionTable[FUNCTION_TABLE_MOUSE_KEY_SIZE] =
+{
+	{"LeftClick", lua_KeyMouseLeft},
+	{"RightClick", lua_KeyMouseRight},
+	{"MiddleClick", lua_KeyMouseMiddle},
+	{"GetX", lua_GetScreenCursorX},
+	{"GetY", lua_GetScreenCursorY},
+	{"GetWorldX", lua_GetWorldCursorX},
+	{"GetWorldY", lua_GetWorldCursorY},
+	{"GetTileX", lua_GetTileCursorX},
+	{"GetTileY", lua_GetTileCursorY},
+	{"CursorTouching", lua_IfScreenCursorTouching},
+	{"WorldCursorTouching", lua_IfWorldCursorTouching},
+};
+
+void AutPI_GetTrg_ForInput()
+{
+	AutPI_MouseGetTrg();
+	GetCursorPosition(ghWnd);
+	UpdateAutPIInput();
+}
+
+static int lua_ShutDown(lua_State* L)
+{
+	PostMessage(ghWnd, WM_CLOSE, 0, 0);
+	return 0;
+}
+
+static int lua_CallEscape(lua_State* L)
+{
+	int ret = Call_Escape(ghWnd);
+	lua_pushnumber(L, (lua_Number)ret);
+	return 1;
+}
+
+static int lua_Sleep(lua_State* L)
+{
+	int val = (int)luaL_checknumber(L, 1);
+	Sleep(val);
+	return 0;
+}
+
+static int lua_SetMag(lua_State* L)
+{
+	// Workaround for using graphics enhancement
+	int cur_width = WINDOW_WIDTH;
+	int cur_height = WINDOW_HEIGHT;
+
+	int val = (int)luaL_checknumber(L, 1);
+	window_magnification = val;
+	grcGame.left = grcFull.left = 0;
+	grcGame.top = grcFull.top = 0;
+	grcGame.right = grcFull.right = cur_width * val;
+	grcGame.bottom = grcFull.bottom = cur_height * val;
+	return 0;
+}
+
+static int lua_GetMag(lua_State* L)
+{
+	lua_pushnumber(L, (lua_Number)window_magnification);
+	return 1;
+}
+
 BOOL InitModScript(void)
 {
 	char scriptpath[MAX_PATH];
@@ -432,6 +660,9 @@ BOOL InitModScript(void)
 	// Replace the standard Lua 'print' function with customPrint
 	lua_pushcfunction(gL, Print2Console);
 	lua_setglobal(gL, "print");
+
+	lua_pushcfunction(gL, lua_Sleep);
+	lua_setglobal(gL, "sleep");
 
 	lua_getglobal(gL, "package");
 	lua_pushstring(gL, scriptpath);
@@ -489,6 +720,18 @@ BOOL InitModScript(void)
 	lua_pushcfunction(gL, lua_FlipSystemTask);
 	lua_setfield(gL, -2, "SystemTask");
 
+	lua_pushcfunction(gL, lua_ShutDown);
+	lua_setfield(gL, -2, "ShutDown");
+
+	lua_pushcfunction(gL, lua_CallEscape);
+	lua_setfield(gL, -2, "CallEscape");
+
+	lua_pushcfunction(gL, lua_SetMag);
+	lua_setfield(gL, -2, "SetMag");
+
+	lua_pushcfunction(gL, lua_GetMag);
+	lua_setfield(gL, -2, "GetMag");
+
 	PushFunctionTable(gL, "RangeRect", OtherRectFunctionTable, FUNCTION_TABLE_OTHER_RECT_SIZE, TRUE);
 	PushFunctionTable(gL, "Game", GameFunctionTable, FUNCTION_TABLE_GAME_SIZE, TRUE);
 	PushFunctionTable(gL, "Rect", RectFunctionTable, FUNCTION_TABLE_RECT_SIZE, TRUE);
@@ -508,6 +751,8 @@ BOOL InitModScript(void)
 	PushFunctionTable(gL, "Profile", ProfileFunctionTable, FUNCTION_TABLE_PROFILE_SIZE, TRUE);
 	PushFunctionTable(gL, "Item", ItemFunctionTable, FUNCTION_TABLE_ITEM_SIZE, TRUE);
 	PushFunctionTable(gL, "Camera", CameraFunctionTable, FUNCTION_TABLE_CAMERA_SIZE, TRUE);
+
+	PushFunctionTable(gL, "Mouse", MouseKeyFunctionTable, FUNCTION_TABLE_MOUSE_KEY_SIZE, TRUE);
 
 	PushFunctionTable(gL, "Npc", NpcFunctionTable, FUNCTION_TABLE_NPC_SIZE, FALSE);
 	lua_newtable(gL);

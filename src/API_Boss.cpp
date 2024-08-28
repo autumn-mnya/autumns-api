@@ -13,6 +13,29 @@
 BOSSFUNCTION gpBossAPIFuncTbl[MAX_BOSS_TABLE_SIZE];
 size_t bossFuncCount = 0;
 
+#pragma runtime_checks("s", off)
+void CallBossActFunction(int code_char)
+{
+	// MSVC syntax
+	__asm {
+		push ebx
+		push esi
+		push edi
+	}
+
+	if (code_char < 10)
+		gpBossFuncTbl[code_char]();
+	else
+		gpBossAPIFuncTbl[code_char - 10]();
+
+	__asm {
+		pop edi
+		pop esi
+		pop ebx
+	}
+}
+#pragma runtime_checks("s", restore)
+
 void Replacement_ActBossChar()
 {
 	int code_char;
@@ -23,10 +46,8 @@ void Replacement_ActBossChar()
 
 	code_char = gBoss[0].code_char;
 
-	if (code_char < 10)
-		gpBossFuncTbl[code_char]();
-	else
-		gpBossAPIFuncTbl[code_char - 10]();
+	// asm hack safety measure
+	CallBossActFunction(code_char);
 
 	for (bos = 0; bos < BOSS_MAX; ++bos)
 		if (gBoss[bos].shock)

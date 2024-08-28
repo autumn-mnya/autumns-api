@@ -274,4 +274,6 @@ void InitMod(void)
         SaveBulletTable();
         SaveCaretTable();
     }
+
+    RegisterGetTrgElement(AutPI_GetTrg_ForInput);
 }
