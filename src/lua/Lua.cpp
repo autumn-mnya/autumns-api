@@ -795,12 +795,8 @@ BOOL InitModScript(void)
 	if (luaL_dofile(gL, path) != LUA_OK)
 	{
 		const char* error = lua_tostring(gL, -1);
-
-		if (ignore_main_lua_error == false)
-		{
-			ErrorLog(error, 0);
-			printf("ERROR: %s\n", error);
-		}
+		ErrorLog(error, 0);
+		printf("ERROR: %s\n", error);
 		return FALSE;
 	}
 
