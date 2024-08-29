@@ -9,24 +9,11 @@
 
 #include "API_GetTrg.h"
 
+#include "Main.h"
 #include "mod_loader.h"
 #include "cave_story.h"
 
-std::vector<GetTrgElementHandler> gettrgElementHandlers;
-
-// Function to register a GetTrg element handler
-void RegisterGetTrgElement(GetTrgElementHandler handler)
-{
-    gettrgElementHandlers.push_back(handler);
-}
-
-void ExecuteGetTrgElementHandlers()
-{
-    for (const auto& handler : gettrgElementHandlers)
-    {
-        handler();
-    }
-}
+DEFINE_ELEMENT_HANDLERS(GetTrgElementHandler, GetTrgElement)
 
 void Replacement_GetTrg(void)
 {

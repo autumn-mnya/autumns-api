@@ -9,25 +9,11 @@
 
 #include "API_TransferStage.h"
 
+#include "Main.h"
 #include "mod_loader.h"
 #include "cave_story.h"
 
-// TRANSFERSTAGEINIT //
-
-std::vector<TransferStageInitElementHandler> transferstageinitElementHandlers;
-
-void RegisterTransferStageInitElement(TransferStageInitElementHandler handler)
-{
-    transferstageinitElementHandlers.push_back(handler);
-}
-
-void ExecuteTransferStageInitElementHandlers()
-{
-    for (const auto& handler : transferstageinitElementHandlers)
-    {
-        handler();
-    }
-}
+DEFINE_ELEMENT_HANDLERS(TransferStageInitElementHandler, TransferStageInitElement)
 
 void TransferStageInitCode()
 {

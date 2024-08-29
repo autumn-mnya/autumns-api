@@ -1,9 +1,11 @@
 #pragma once
 
+#include <vector>
+
+#include "Main.h"
+
 typedef void (*TransferStageInitElementHandler)();
 
-extern std::vector<TransferStageInitElementHandler> transferstageinitElementHandlers;
+ELEMENT_HEADERS(TransferStageInitElementHandler, TransferStageInitElement)
 
-extern "C" __declspec(dllexport) void RegisterTransferStageInitElement(TransferStageInitElementHandler handler);
-void ExecuteTransferStageInitElementHandlers();
 void TransferStageInitCode();

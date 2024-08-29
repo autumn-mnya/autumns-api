@@ -9,26 +9,11 @@
 
 #include "API_LoadGenericData.h"
 
+#include "Main.h"
 #include "mod_loader.h"
 #include "cave_story.h"
 
-// Define the global list to store registered GenericData element handlers
-std::vector<GenericDataElementHandler> genericdataElementHandlers;
-
-// Function to register a GenericData element handler
-void RegisterGenericDataElement(GenericDataElementHandler handler)
-{
-    genericdataElementHandlers.push_back(handler);
-}
-
-// Function to execute all registered GenericData element handlers
-void ExecuteGenericDataElementHandlers()
-{
-    for (const auto& handler : genericdataElementHandlers)
-    {
-        handler();
-    }
-}
+DEFINE_ELEMENT_HANDLERS(GenericDataElementHandler, GenericDataElement)
 
 void GenericDataCode(int a, int b, SurfaceID c, BOOL d)
 {

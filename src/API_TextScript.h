@@ -2,9 +2,10 @@
 
 #include <vector>
 
-typedef void (*TextScriptSVPElementHandler)();
-extern std::vector<TextScriptSVPElementHandler> textscriptsvpElementHandlers;
+#include "Main.h"
 
-extern "C" __declspec(dllexport) void RegisterSVPElement(TextScriptSVPElementHandler handler);
-void ExecuteSVPElementHandlers();
+typedef void (*TextScriptSVPElementHandler)();
+
+ELEMENT_HEADERS(TextScriptSVPElementHandler, SVPElement)
+
 void TextScriptSVPCode(const char* name);

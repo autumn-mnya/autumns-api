@@ -4,12 +4,10 @@
 
 #include <vector>
 
-// Define the function signature for GetTrg element handlers
+#include "Main.h"
+
 typedef void (*GetTrgElementHandler)();
 
-// Declare the global list to store registered GetTrg element handlers
-extern std::vector<GetTrgElementHandler> gettrgElementHandlers;
+ELEMENT_HEADERS(GetTrgElementHandler, GetTrgElement)
 
-extern "C" __declspec(dllexport) void RegisterGetTrgElement(GetTrgElementHandler handler); // Function for registering a GetTrg element
-void ExecuteGetTrgElementHandlers();
 void Replacement_GetTrg(void);

@@ -9,24 +9,11 @@
 
 #include "API_PutFPS.h"
 
+#include "Main.h"
 #include "mod_loader.h"
 #include "cave_story.h"
 
-
-std::vector<PutFPSElementHandler> putfpsElementHandlers;
-
-void RegisterPutFPSElement(PutFPSElementHandler handler)
-{
-	putfpsElementHandlers.push_back(handler);
-}
-
-void ExecutePutFPSElementHandlers()
-{
-	for (const auto& handler : putfpsElementHandlers)
-	{
-		handler();
-	}
-}
+DEFINE_ELEMENT_HANDLERS(PutFPSElementHandler, PutFPSElement)
 
 void Replacement_PutFPS(void)
 {

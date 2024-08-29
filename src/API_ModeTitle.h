@@ -4,46 +4,21 @@
 
 #include <vector>
 
-// Define the function signature for Init element handlers
+#include "Main.h"
+
 typedef void (*TitleInitElementHandler)();
-
-// Declare the global list to store registered Init element handlers
-extern std::vector<TitleInitElementHandler> Title_initElementHandlers;
-
-// Define the function signature for Action element handlers
 typedef void (*TitleActionElementHandler)();
-
-// Declare the global list to store registered Action element handlers
-extern std::vector<TitleActionElementHandler> Title_actionElementHandlers;
-
-// Define the function signature for Action element handlers
 typedef void (*TitleBelowCounterElementHandler)();
-
-// Declare the global list to store registered Action element handlers
-extern std::vector<TitleBelowCounterElementHandler> Title_belowcounterElementHandlers;
-
-extern "C" __declspec(dllexport) void RegisterTitleInitElement(TitleInitElementHandler handler); // Function for registering a Init Element
-void ExecuteTitleInitElementHandlers();
-void TitleInitCode();
-
-extern "C" __declspec(dllexport) void RegisterTitleActionElement(TitleActionElementHandler handler); // Function for registering a Action Element
-void ExecuteTitleActionElementHandlers();
-void TitleActionCode();
-
-extern "C" __declspec(dllexport) void RegisterTitleBelowCounterElement(TitleBelowCounterElementHandler handler); // Function for registering a Action Element
-void ExecuteTitleBelowCounterElementHandlers();
-void TitleBelowCounterCode(int x, int y);
-
 typedef void (*MTBelowPutFPSElementHandler)();
-
-extern std::vector<MTBelowPutFPSElementHandler> MTbelowputfpsElementHandlers;
-
 typedef void (*MTAbovePutFPSElementHandler)();
 
-extern std::vector<MTAbovePutFPSElementHandler> MTaboveputfpsElementHandlers;
+ELEMENT_HEADERS(TitleInitElementHandler, TitleInitElement)
+ELEMENT_HEADERS(TitleActionElementHandler, TitleActionElement)
+ELEMENT_HEADERS(TitleBelowCounterElementHandler, TitleBelowCounterElement)
+ELEMENT_HEADERS(MTBelowPutFPSElementHandler, ModeTitleBelowPutFPSElement)
+ELEMENT_HEADERS(MTAbovePutFPSElementHandler, ModeTitleAbovePutFPSElement)
 
-extern "C" __declspec(dllexport) void RegisterModeTitleBelowPutFPSElement(MTBelowPutFPSElementHandler handler);
-void ExecuteModeTitleBelowPutFPSElementHandlers();
-extern "C" __declspec(dllexport) void RegisterModeTitleAbovePutFPSElement(MTAbovePutFPSElementHandler handler);
-void ExecuteModeTitleAbovePutFPSElementHandlers();
+void TitleInitCode();
+void TitleActionCode();
+void TitleBelowCounterCode(int x, int y);
 void ModeTitlePutFPSCode();

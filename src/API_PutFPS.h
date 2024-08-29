@@ -4,9 +4,10 @@
 
 #include <vector>
 
-typedef void (*PutFPSElementHandler)();
-extern std::vector<PutFPSElementHandler> putfpsElementHandlers;
+#include "Main.h"
 
-extern "C" __declspec(dllexport) void RegisterPutFPSElement(PutFPSElementHandler handler); // Function for registering a GetTrg element
-void ExecutePutFPSElementHandlers();
+typedef void (*PutFPSElementHandler)();
+
+ELEMENT_HEADERS(PutFPSElementHandler, PutFPSElement)
+
 void Replacement_PutFPS(void);

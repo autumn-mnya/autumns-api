@@ -4,12 +4,10 @@
 
 #include <vector>
 
-// Define the function signature for Init element handlers
+#include "Main.h"
+
 typedef void (*GenericDataElementHandler)();
 
-// Declare the global list to store registered Init element handlers
-extern std::vector<GenericDataElementHandler> genericdataElementHandlers;
+ELEMENT_HEADERS(GenericDataElementHandler, GenericDataElement)
 
-extern "C" __declspec(dllexport) void RegisterGenericDataElement(GenericDataElementHandler handler); // Function for registering a Init Element
-void ExecuteGenericDataElementHandlers();
 void GenericDataCode(int a, int b, SurfaceID c, BOOL d);
