@@ -31,8 +31,16 @@ DEFINE_ELEMENT_HANDLERS(BelowPutCaretElementHandler, BelowPutCaretElement)
 DEFINE_ELEMENT_HANDLERS(AbovePutCaretElementHandler, AbovePutCaretElement)
 DEFINE_ELEMENT_HANDLERS(MABelowPutFPSElementHandler, ModeActionBelowPutFPSElement)
 DEFINE_ELEMENT_HANDLERS(MAAbovePutFPSElementHandler, ModeActionAbovePutFPSElement)
+DEFINE_ELEMENT_HANDLERS(BelowPutBackElementHandler, BelowPutBackElement)
+DEFINE_ELEMENT_HANDLERS(AbovePutBackElementHandler, AbovePutBackElement)
 
-// Used for Player UI
+void PutBackCode(int fx, int fy)
+{
+    ExecuteBelowPutBackElementHandlers();
+    PutBack(fx, fy);
+    ExecuteAbovePutBackElementHandlers();
+}
+
 void PlayerHUDCode()
 {
     PutActiveArmsList();

@@ -15,6 +15,8 @@ typedef void (*OpeningActionElementHandler)();
 typedef void (*OpeningInitElementHandler)();
 typedef void (*OpeningBelowPutCaretElementHandler)();
 typedef void (*OpeningAbovePutCaretElementHandler)();
+typedef void (*OpeningBelowPutBackElementHandler)();
+typedef void (*OpeningAbovePutBackElementHandler)();
 typedef void (*MOBelowPutFPSElementHandler)();
 typedef void (*MOAbovePutFPSElementHandler)();
 
@@ -29,7 +31,10 @@ ELEMENT_HEADERS(OpeningBelowPutCaretElementHandler, OpeningBelowPutCaretElement)
 ELEMENT_HEADERS(OpeningAbovePutCaretElementHandler, OpeningAbovePutCaretElement)
 ELEMENT_HEADERS(MOBelowPutFPSElementHandler, ModeOpeningBelowPutFPSElement)
 ELEMENT_HEADERS(MOAbovePutFPSElementHandler, ModeOpeningAbovePutFPSElement)
+ELEMENT_HEADERS(OpeningBelowPutBackElementHandler, OpeningBelowPutBackElement)
+ELEMENT_HEADERS(OpeningAbovePutBackElementHandler, OpeningAbovePutBackElement)
 
+void OpeningPutBackCode(int fx, int fy);
 void OpeningFadeCode();
 void OpeningTextBoxCode();
 void OpeningEarlyActionCode();

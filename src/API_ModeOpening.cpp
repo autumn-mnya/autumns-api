@@ -24,6 +24,15 @@ DEFINE_ELEMENT_HANDLERS(OpeningBelowPutCaretElementHandler, OpeningBelowPutCaret
 DEFINE_ELEMENT_HANDLERS(OpeningAbovePutCaretElementHandler, OpeningAbovePutCaretElement)
 DEFINE_ELEMENT_HANDLERS(MOBelowPutFPSElementHandler, ModeOpeningBelowPutFPSElement)
 DEFINE_ELEMENT_HANDLERS(MOAbovePutFPSElementHandler, ModeOpeningAbovePutFPSElement)
+DEFINE_ELEMENT_HANDLERS(OpeningBelowPutBackElementHandler, OpeningBelowPutBackElement)
+DEFINE_ELEMENT_HANDLERS(OpeningAbovePutBackElementHandler, OpeningAbovePutBackElement)
+
+void OpeningPutBackCode(int fx, int fy)
+{
+    ExecuteOpeningBelowPutBackElementHandlers();
+    PutBack(fx, fy);
+    ExecuteOpeningAbovePutBackElementHandlers();
+}
 
 void OpeningFadeCode()
 {
