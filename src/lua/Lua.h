@@ -73,3 +73,4 @@ void Lua_GameDrawAboveTextBox();
 void Lua_GameDrawHUD();
 void Lua_GameDrawBelowPlayer();
 void Lua_GameDrawAbovePlayer();
+void Lua_FrameInit();

@@ -93,6 +93,7 @@
   <ItemGroup>
     <ClCompile Include="src\API_Boss.cpp" />
     <ClCompile Include="src\API_Caret.cpp" />
+    <ClCompile Include="src\API_Draw.cpp" />
     <ClCompile Include="src\API_Game.cpp" />
     <ClCompile Include="src\API_GetTrg.cpp" />
     <ClCompile Include="src\API_LoadGenericData.cpp" />
@@ -132,6 +133,7 @@
   <ItemGroup>
     <ClInclude Include="src\API_Boss.h" />
     <ClInclude Include="src\API_Caret.h" />
+    <ClInclude Include="src\API_Draw.h" />
     <ClInclude Include="src\API_Game.h" />
     <ClInclude Include="src\API_GetTrg.h" />
     <ClInclude Include="src\API_LoadGenericData.h" />

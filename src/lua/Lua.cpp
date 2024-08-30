@@ -44,7 +44,7 @@ extern "C"
 
 // Credit for the majority of this goes to yasinbread and aikyuu. All I did was port it and add some extra stuff.
 
-lua_State* gL;
+lua_State* gL = NULL;
 
 void PrintStack(lua_State* L) {
 	int top = lua_gettop(L);
@@ -625,6 +625,12 @@ static int lua_Sleep(lua_State* L)
 	return 0;
 }
 
+static int lua_Tick(lua_State* L)
+{
+	lua_pushnumber(L, (lua_Number)GetTickCount());
+	return 1;
+}
+
 static int lua_SetMag(lua_State* L)
 {
 	// Workaround for using graphics enhancement
@@ -663,6 +669,8 @@ BOOL InitModScript(void)
 
 	lua_pushcfunction(gL, lua_Sleep);
 	lua_setglobal(gL, "sleep");
+	lua_pushcfunction(gL, lua_Tick);
+	lua_setglobal(gL, "tick");
 
 	lua_getglobal(gL, "package");
 	lua_pushstring(gL, scriptpath);
@@ -886,4 +894,35 @@ void Lua_GameDrawAbovePlayer()
 {
 	if (!GameDrawAbovePlayerModScript())
 		return;
+}
+
+void Lua_FrameInit()
+{
+	// This is ran first before lua is initted so just don't do anything
+	if (gL == NULL) {
+		return;
+	}
+
+	lua_getglobal(gL, "ModCS");
+	lua_getfield(gL, -1, "FrameInit");
+
+	if (lua_isnil(gL, -1))
+	{
+		lua_settop(gL, 0); // Clear stack
+		return;
+	}
+
+	if (lua_pcall(gL, 0, 0, 0) != LUA_OK)
+	{
+		const char* error = lua_tostring(gL, -1);
+
+		ErrorLog(error, 0);
+		printf("ERROR: %s\n", error);
+		MessageBoxA(ghWnd, "Couldn't execute frame init function", "ModScript Error", MB_OK);
+		return;
+	}
+
+	lua_settop(gL, 0); // Clear stack
+
+	return;
 }

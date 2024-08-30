@@ -72,6 +72,7 @@
     </ClCompile>
     <ClCompile Include="src\ASM_Patches.cpp" />
     <ClCompile Include="src\API_PutFPS.cpp" />
+    <ClCompile Include="src\API_Draw.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\API_Boss.h" />
@@ -147,6 +148,7 @@
     </ClInclude>
     <ClInclude Include="src\ASM_Patches.h" />
     <ClInclude Include="src\API_PutFPS.h" />
+    <ClInclude Include="src\API_Draw.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="lua">
