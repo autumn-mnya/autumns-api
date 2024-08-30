@@ -16,8 +16,13 @@ extern "C"
 
 #include "Lua.h"
 
+#include "../Main.h"
 #include "../mod_loader.h"
 #include "../cave_story.h"
+
+DEFINE_ELEMENT_HANDLERS(PreGlobalModCSElementHandler, LuaPreGlobalModCSElement)
+DEFINE_ELEMENT_HANDLERS(LuaMetadataElementHandler, LuaMetadataElement)
+DEFINE_ELEMENT_HANDLERS(LuaFuncElementHandler, LuaFuncElement)
 
 lua_State* GetLuaL()
 {
@@ -27,64 +32,14 @@ lua_State* GetLuaL()
 		return nullptr;
 }
 
-// Pre Global ModCS
-
-std::vector<PreGlobalModCSElementHandler> preglobalmodcsElementHandlers;
-
-void RegisterLuaPreGlobalModCSElement(PreGlobalModCSElementHandler handler)
-{
-    preglobalmodcsElementHandlers.push_back(handler);
-}
-
-void ExecuteLuaPreGlobalModCSElementHandlers()
-{
-    for (const auto& handler : preglobalmodcsElementHandlers)
-    {
-        handler();
-    }
-}
-
 void RunLuaPreGlobalModCSCode()
 {
     ExecuteLuaPreGlobalModCSElementHandlers();
 }
 
-// Metadata
-
-std::vector<LuaMetadataElementHandler> luametadataElementHandlers;
-std::vector<LuaFuncElementHandler> luafuncElementHandlers;
-
-void RegisterLuaMetadataElement(LuaMetadataElementHandler handler)
-{
-    luametadataElementHandlers.push_back(handler);
-}
-
-void ExecuteLuaMetadataElementHandlers()
-{
-    for (const auto& handler : luametadataElementHandlers)
-    {
-        handler();
-    }
-}
-
 void RunLuaMetadataCode()
 {
     ExecuteLuaMetadataElementHandlers();
-}
-
-// Lua Func
-
-void RegisterLuaFuncElement(LuaFuncElementHandler handler)
-{
-    luafuncElementHandlers.push_back(handler);
-}
-
-void ExecuteLuaFuncElementHandlers()
-{
-    for (const auto& handler : luafuncElementHandlers)
-    {
-        handler();
-    }
 }
 
 void AddAutPILuaFunctions()

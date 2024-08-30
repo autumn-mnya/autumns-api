@@ -172,6 +172,7 @@ void InitMod(void)
     ModLoader_WriteCall((void*)0x40F74F, (void*)OpeningInitCode);
     ModLoader_WriteCall((void*)0x40F8E1, (void*)OpeningCaretCode);
     ModLoader_WriteCall((void*)0x40F924, (void*)ModeOpeningPutFPSCode);
+    ModLoader_WriteCall((void*)0x40F871, (void*)OpeningPutBackCode);
 
     // ModeTitle API
     ModLoader_WriteCall((void*)0x40FD85, (void*)TitleInitCode);
@@ -191,6 +192,7 @@ void InitMod(void)
     ModLoader_WriteCall((void*)0x410477, (void*)InitCode);
     ModLoader_WriteCall((void*)0x4106D8, (void*)ActionCaretCode);
     ModLoader_WriteCall((void*)0x410874, (void*)ModeActionPutFPSCode);
+    ModLoader_WriteCall((void*)0x410633, (void*)PutBackCode);
 
     // Profile API (unfinished, need a way for the user to use the FILE* fp pointer, and i dont know how ,)
     ModLoader_WriteCall((void*)0x41D239, (void*)SaveProfileCode);
