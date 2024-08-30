@@ -76,13 +76,98 @@ static int lua_SoundChangePan(lua_State* L)
 	return 0;
 }
 
+WAVEFORMATEX format = { WAVE_FORMAT_PCM, 1, 22050, 22050, 1, 8, 0 };
+
+static int lua_SoundCreate(lua_State* L)
+{
+	DSBUFFERDESC dsbd;
+
+	int num = (int)luaL_checknumber(L, 1);
+
+	luaL_checktype(L, 2, LUA_TTABLE);
+	int len = lua_rawlen(L, 2);
+
+	if (num < 0 || num >= SE_MAX) {
+		luaL_error(L, "Invalid sound ID %d", num);
+		return 0;
+	}
+
+	if (lpSECONDARYBUFFER[num] != NULL) {
+		luaL_error(L, "Sound with ID %d already exists", num);
+		return 0;
+	}
+	
+	unsigned char* buffer = (unsigned char*)malloc(len);
+
+	for (int i = 0; i < len; i++) {
+		if (lua_rawgeti(L, 2, (lua_Integer)i + 1) != LUA_TNUMBER) {
+			free(buffer);
+			luaL_error(L, "Sample %d was not a number", i);
+			return 0;
+		}
+
+		buffer[i] = lua_tonumber(L, -1);
+
+		lua_pop(L, 1);
+	}
+
+	memset(&dsbd, 0, sizeof(dsbd));
+	dsbd.dwSize = sizeof(dsbd);
+	dsbd.dwFlags = DSBCAPS_STATIC | DSBCAPS_GLOBALFOCUS | DSBCAPS_CTRLPAN | DSBCAPS_CTRLVOLUME | DSBCAPS_CTRLFREQUENCY;
+	dsbd.dwBufferBytes = len;
+	dsbd.lpwfxFormat = (LPWAVEFORMATEX)&format;
+
+	if (lpDS->CreateSoundBuffer(&dsbd, &lpSECONDARYBUFFER[num], NULL) != DS_OK) {
+		luaL_error(L, "Failed to create sound with ID %d", num);
+		return 0;
+	}
+
+	LPVOID lpbuf1, lpbuf2;
+	DWORD dwbuf1, dwbuf2;
+
+	lpSECONDARYBUFFER[num]->Lock(0, len, &lpbuf1, &dwbuf1, &lpbuf2, &dwbuf2, 0);
+
+	memcpy(lpbuf1, buffer, dwbuf1);
+
+	if (dwbuf2 != 0)
+		memcpy(lpbuf2, buffer, dwbuf2);
+
+	lpSECONDARYBUFFER[num]->Unlock(lpbuf1, dwbuf1, lpbuf2, dwbuf2);
+	
+	free(buffer);
+
+	return 0;
+}
+
+static int lua_SoundDestroy(lua_State* L)
+{
+	int num = (int)luaL_checknumber(L, 1);
+
+	if (num < 0 || num >= SE_MAX) {
+		luaL_error(L, "Invalid sound ID %d", num);
+		return 0;
+	}
+
+	if (lpSECONDARYBUFFER[num] == NULL) {
+		luaL_error(L, "Sound with ID %d does not exist", num);
+		return 0;
+	}
+
+	lpSECONDARYBUFFER[num]->Release();
+	lpSECONDARYBUFFER[num] = NULL;
+
+	return 0;
+}
+
 FUNCTION_TABLE SoundFunctionTable[FUNCTION_TABLE_SOUND_SIZE] =
 {
 	{"Play", lua_SoundPlay},
 	{"Stop", lua_SoundStop},
 	{"ChangeFrequency", lua_SoundChangeFrequency},
 	{"ChangeVolume", lua_SoundChangeVolume},
-	{"ChangePan", lua_SoundChangePan}
+	{"ChangePan", lua_SoundChangePan},
+	{"Create", lua_SoundCreate},
+	{"Destroy", lua_SoundDestroy}
 };
 
 static int lua_OrganyaPlay(lua_State* L)
