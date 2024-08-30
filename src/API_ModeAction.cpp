@@ -33,6 +33,24 @@ DEFINE_ELEMENT_HANDLERS(MABelowPutFPSElementHandler, ModeActionBelowPutFPSElemen
 DEFINE_ELEMENT_HANDLERS(MAAbovePutFPSElementHandler, ModeActionAbovePutFPSElement)
 DEFINE_ELEMENT_HANDLERS(BelowPutBackElementHandler, BelowPutBackElement)
 DEFINE_ELEMENT_HANDLERS(AbovePutBackElementHandler, AbovePutBackElement)
+DEFINE_ELEMENT_HANDLERS(BelowPutStage_BackElementHandler, BelowPutStage_BackElement)
+DEFINE_ELEMENT_HANDLERS(AbovePutStage_BackElementHandler, AbovePutStage_BackElement)
+DEFINE_ELEMENT_HANDLERS(BelowPutStage_FrontElementHandler, BelowPutStage_FrontElement)
+DEFINE_ELEMENT_HANDLERS(AbovePutStage_FrontElementHandler, AbovePutStage_FrontElement)
+
+void PutStage_BackCode(int fx, int fy)
+{
+    ExecuteBelowPutStage_BackElementHandlers();
+    PutStage_Back(fx, fy);
+    ExecuteAbovePutStage_BackElementHandlers();
+}
+
+void PutStage_FrontCode(int fx, int fy)
+{
+    ExecuteBelowPutStage_FrontElementHandlers();
+    PutStage_Front(fx, fy);
+    ExecuteAbovePutStage_FrontElementHandlers();
+}
 
 void PutBackCode(int fx, int fy)
 {
