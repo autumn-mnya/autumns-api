@@ -24,9 +24,9 @@
 #include "API_Npc.h"
 #include "API_Profile.h"
 #include "API_PutFPS.h"
+#include "API_Stage.h"
 #include "API_Tile.h"
 #include "API_TextScript.h"
-#include "API_TransferStage.h"
 #include "API_Weapon.h"
 #include "ASM_Patches.h"
 
