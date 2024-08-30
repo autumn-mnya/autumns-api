@@ -183,7 +183,7 @@ int TSCCommandModScript(char command[4])
 	gReadValue = 4;
 	gCommand = TRUE;
 
-	if (lua_pcall(gL, 0, 0, 0) != LUA_OK)
+	if (lua_pcall(gL, 0, 1, 0) != LUA_OK)
 	{
 		const char* error = lua_tostring(gL, -1);
 
@@ -196,7 +196,7 @@ int TSCCommandModScript(char command[4])
 
 	// Check if there is return value
 	// We can use this value as returned exit code (0 = exit, 1 = continue, 2 = restart)
-	if (!lua_isnoneornil(gL, -1) && lua_isnumber(gL, -1)) {
+	if (lua_type(gL, -1) == LUA_TNUMBER) {
 		returnval = (int)lua_tonumber(gL, -1);
 	}
 
