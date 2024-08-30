@@ -76,7 +76,7 @@ static int lua_SoundChangePan(lua_State* L)
 	return 0;
 }
 
-WAVEFORMATEX format = { WAVE_FORMAT_PCM, 1, 22050, 22050, 1, 8, 0 };
+static WAVEFORMATEX format = { WAVE_FORMAT_PCM, 1, 22050, 22050, 1, 8, 0 };
 
 static int lua_SoundCreate(lua_State* L)
 {
@@ -102,7 +102,7 @@ static int lua_SoundCreate(lua_State* L)
 	for (int i = 0; i < len; i++) {
 		if (lua_rawgeti(L, 2, (lua_Integer)i + 1) != LUA_TNUMBER) {
 			free(buffer);
-			luaL_error(L, "Sample %d was not a number", i);
+			luaL_error(L, "Sample %d was not a number", i + 1);
 			return 0;
 		}
 
