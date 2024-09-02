@@ -6,7 +6,7 @@ print("Hello World!")
 ModCS.Mod.SetAuthor("autumn")
 
 ModCS.Mod.SetOpening(0x10, 100, 0x1000)
--- ModCS.Mod.SetStart(13, 94, 10, 8)
+ModCS.Mod.SetStart(13, 94, 10, 8)
 
 ModCS.AddEntity("MyNewEntity")
 ModCS.AddCaret("MyNewCaret")
@@ -17,6 +17,8 @@ ModCS.Mod.SetSpikeDamage(10)
 --function ModCS.Game.Act()
 --	ModCS.Npc.Spawn(361, 10, 10)
 --end
+
+print("Starting Event is " .. ModCS.ModLoader.GetLong(0x41D594) .. " or so i think..?")
 
 local str = {""};
 local line = 1;

@@ -1,6 +1,7 @@
 v1.1.6:
 ModCS Lua:
 - No Category
+	- tick() -> Run "GetTickCount()" and receive what it returns.
 	- ModCS.SetModulePath -> Set the "module" path. This is the path where the game thinks the exe is. Don't edit this unless you know what you're doing!
 	- ModCS.SetDataPath -> Set the "data folder" path. This is the path where the game thinks the "data" is.
 - Key Control

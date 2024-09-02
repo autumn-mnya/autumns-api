@@ -171,3 +171,6 @@ void PushFunctionTableModName(lua_State* L, const char* modname, const char* nam
 void PushSimpleMetatables(lua_State* L, const METATABLE_TABLE* table, int length);
 BOOL LoadStageTable(char* name);
 BOOL ReloadModScript();
+unsigned char ModLoader_GetByte(void* address);
+unsigned short ModLoader_GetWord(void* address);
+unsigned long ModLoader_GetLong(void* address);
