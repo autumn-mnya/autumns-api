@@ -24,7 +24,7 @@ extern "C"
 #include "../API_GetTrg.h"
 #include "../API_ModeOpening.h"
 #include "../API_ModeAction.h"
-#include "../API_TransferStage.h"
+#include "../API_Stage.h"
 
 static int lua_StageGetCurrentNo(lua_State* L)
 {
@@ -37,7 +37,14 @@ static int lua_StageGetTileset(lua_State* L)
 {
 	int no = (int)luaL_optnumber(L, 1, gStageNo);
 
-	lua_pushstring(L, gTMT[no].parts);
+	STAGE_TABLE* gStage;
+
+	if (stage_table_patched)
+		gStage = gStageTable;
+	else
+		gStage = gTMT;
+
+	lua_pushstring(L, gStage[no].parts);
 
 	return 1;
 }
@@ -46,7 +53,14 @@ static int lua_StageGetFilename(lua_State* L)
 {
 	int no = (int)luaL_optnumber(L, 1, gStageNo);
 
-	lua_pushstring(L, gTMT[no].map);
+	STAGE_TABLE* gStage;
+
+	if (stage_table_patched)
+		gStage = gStageTable;
+	else
+		gStage = gTMT;
+
+	lua_pushstring(L, gStage[no].map);
 
 	return 1;
 }
@@ -55,7 +69,14 @@ static int lua_StageGetBackgroundMode(lua_State* L)
 {
 	int no = (int)luaL_optnumber(L, 1, gStageNo);
 
-	lua_pushnumber(L, gTMT[no].bkType);
+	STAGE_TABLE* gStage;
+
+	if (stage_table_patched)
+		gStage = gStageTable;
+	else
+		gStage = gTMT;
+
+	lua_pushnumber(L, gStage[no].bkType);
 
 	return 1;
 }
@@ -64,7 +85,14 @@ static int lua_StageGetBackground(lua_State* L)
 {
 	int no = (int)luaL_optnumber(L, 1, gStageNo);
 
-	lua_pushstring(L, gTMT[no].back);
+	STAGE_TABLE* gStage;
+
+	if (stage_table_patched)
+		gStage = gStageTable;
+	else
+		gStage = gTMT;
+
+	lua_pushstring(L, gStage[no].back);
 
 	return 1;
 }
@@ -73,7 +101,14 @@ static int lua_StageGetNpcSheet1(lua_State* L)
 {
 	int no = (int)luaL_optnumber(L, 1, gStageNo);
 
-	lua_pushstring(L, gTMT[no].npc);
+	STAGE_TABLE* gStage;
+
+	if (stage_table_patched)
+		gStage = gStageTable;
+	else
+		gStage = gTMT;
+
+	lua_pushstring(L, gStage[no].npc);
 
 	return 1;
 }
@@ -82,7 +117,14 @@ static int lua_StageGetNpcSheet2(lua_State* L)
 {
 	int no = (int)luaL_optnumber(L, 1, gStageNo);
 
-	lua_pushstring(L, gTMT[no].boss);
+	STAGE_TABLE* gStage;
+
+	if (stage_table_patched)
+		gStage = gStageTable;
+	else
+		gStage = gTMT;
+
+	lua_pushstring(L, gStage[no].boss);
 
 	return 1;
 }
@@ -91,7 +133,14 @@ static int lua_StageGetBossNo(lua_State* L)
 {
 	int no = (int)luaL_optnumber(L, 1, gStageNo);
 
-	lua_pushnumber(L, gTMT[no].boss_no);
+	STAGE_TABLE* gStage;
+
+	if (stage_table_patched)
+		gStage = gStageTable;
+	else
+		gStage = gTMT;
+
+	lua_pushnumber(L, gStage[no].boss_no);
 
 	return 1;
 }
@@ -100,7 +149,14 @@ static int lua_StageGetName(lua_State* L)
 {
 	int no = (int)luaL_optnumber(L, 1, gStageNo);
 
-	lua_pushstring(L, gTMT[no].name);
+	STAGE_TABLE* gStage;
+
+	if (stage_table_patched)
+		gStage = gStageTable;
+	else
+		gStage = gTMT;
+
+	lua_pushstring(L, gStage[no].name);
 
 	return 1;
 }
@@ -119,6 +175,15 @@ static int lua_StageTransfer(lua_State* L)
 	return 0;
 }
 
+static int lua_LoadStageTable(lua_State* L)
+{
+	const char* string = luaL_checkstring(L, 1);
+	char* tempString;
+	strcpy(tempString, string);
+	LoadStageTable(tempString);
+	return 0;
+}
+
 FUNCTION_TABLE StageFunctionTable[FUNCTION_TABLE_STAGE_SIZE] =
 {
 	{"GetCurrentNo", lua_StageGetCurrentNo},
@@ -131,6 +196,7 @@ FUNCTION_TABLE StageFunctionTable[FUNCTION_TABLE_STAGE_SIZE] =
 	{"GetBossNo", lua_StageGetBossNo},
 	{"GetName", lua_StageGetName},
 	{"Transfer", lua_StageTransfer},
+	{"LoadTable", lua_LoadStageTable},
 };
 
 static int lua_MapGetWidth(lua_State* L)

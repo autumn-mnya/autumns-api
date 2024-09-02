@@ -26,6 +26,24 @@ DEFINE_ELEMENT_HANDLERS(MOBelowPutFPSElementHandler, ModeOpeningBelowPutFPSEleme
 DEFINE_ELEMENT_HANDLERS(MOAbovePutFPSElementHandler, ModeOpeningAbovePutFPSElement)
 DEFINE_ELEMENT_HANDLERS(OpeningBelowPutBackElementHandler, OpeningBelowPutBackElement)
 DEFINE_ELEMENT_HANDLERS(OpeningAbovePutBackElementHandler, OpeningAbovePutBackElement)
+DEFINE_ELEMENT_HANDLERS(OpeningBelowPutStage_BackElementHandler, OpeningBelowPutStage_BackElement)
+DEFINE_ELEMENT_HANDLERS(OpeningAbovePutStage_BackElementHandler, OpeningAbovePutStage_BackElement)
+DEFINE_ELEMENT_HANDLERS(OpeningBelowPutStage_FrontElementHandler, OpeningBelowPutStage_FrontElement)
+DEFINE_ELEMENT_HANDLERS(OpeningAbovePutStage_FrontElementHandler, OpeningAbovePutStage_FrontElement)
+
+void OpeningPutStage_BackCode(int fx, int fy)
+{
+    ExecuteOpeningBelowPutStage_BackElementHandlers();
+    PutStage_Back(fx, fy);
+    ExecuteOpeningAbovePutStage_BackElementHandlers();
+}
+
+void OpeningPutStage_FrontCode(int fx, int fy)
+{
+    ExecuteOpeningBelowPutStage_FrontElementHandlers();
+    PutStage_Front(fx, fy);
+    ExecuteOpeningAbovePutStage_FrontElementHandlers();
+}
 
 void OpeningPutBackCode(int fx, int fy)
 {
@@ -47,7 +65,6 @@ void OpeningTextBoxCode()
     PutTextScript();
     ExecuteOpeningAboveTextBoxElementHandlers();
 }
-
 
 void OpeningEarlyActionCode()
 {

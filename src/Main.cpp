@@ -25,9 +25,9 @@
 #include "API_Npc.h"
 #include "API_Profile.h"
 #include "API_PutFPS.h"
+#include "API_Stage.h"
 #include "API_Tile.h"
 #include "API_TextScript.h"
-#include "API_TransferStage.h"
 #include "API_Weapon.h"
 #include "API_Draw.h"
 #include "ASM_Patches.h"
@@ -175,6 +175,8 @@ void InitMod(void)
     ModLoader_WriteCall((void*)0x40F8E1, (void*)OpeningCaretCode);
     ModLoader_WriteCall((void*)0x40F924, (void*)ModeOpeningPutFPSCode);
     ModLoader_WriteCall((void*)0x40F871, (void*)OpeningPutBackCode);
+    ModLoader_WriteCall((void*)0x40F881, (void*)OpeningPutStage_BackCode);
+    ModLoader_WriteCall((void*)0x40F8D1, (void*)OpeningPutStage_FrontCode);
 
     // ModeTitle API
     ModLoader_WriteCall((void*)0x40FD85, (void*)TitleInitCode);
@@ -195,6 +197,8 @@ void InitMod(void)
     ModLoader_WriteCall((void*)0x4106D8, (void*)ActionCaretCode);
     ModLoader_WriteCall((void*)0x410874, (void*)ModeActionPutFPSCode);
     ModLoader_WriteCall((void*)0x410633, (void*)PutBackCode);
+    ModLoader_WriteCall((void*)0x410643, (void*)PutStage_BackCode);
+    ModLoader_WriteCall((void*)0x4106C3, (void*)PutStage_FrontCode);
 
     // Profile API (unfinished, need a way for the user to use the FILE* fp pointer, and i dont know how ,)
     ModLoader_WriteCall((void*)0x41D239, (void*)SaveProfileCode);

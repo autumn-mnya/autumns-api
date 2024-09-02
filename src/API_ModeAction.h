@@ -24,6 +24,10 @@ typedef void (*MABelowPutFPSElementHandler)();
 typedef void (*MAAbovePutFPSElementHandler)();
 typedef void (*BelowPutBackElementHandler)();
 typedef void (*AbovePutBackElementHandler)();
+typedef void (*BelowPutStage_BackElementHandler)();
+typedef void (*AbovePutStage_BackElementHandler)();
+typedef void (*BelowPutStage_FrontElementHandler)();
+typedef void (*AbovePutStage_FrontElementHandler)();
 
 ELEMENT_HEADERS(PlayerHudElementHandler, PlayerHudElement)
 ELEMENT_HEADERS(CreditsHudElementHandler, CreditsHudElement)
@@ -43,7 +47,13 @@ ELEMENT_HEADERS(MABelowPutFPSElementHandler, ModeActionBelowPutFPSElement)
 ELEMENT_HEADERS(MAAbovePutFPSElementHandler, ModeActionAbovePutFPSElement)
 ELEMENT_HEADERS(BelowPutBackElementHandler, BelowPutBackElement)
 ELEMENT_HEADERS(AbovePutBackElementHandler, AbovePutBackElement)
+ELEMENT_HEADERS(BelowPutStage_BackElementHandler, BelowPutStage_BackElement)
+ELEMENT_HEADERS(AbovePutStage_BackElementHandler, AbovePutStage_BackElement)
+ELEMENT_HEADERS(BelowPutStage_FrontElementHandler, BelowPutStage_FrontElement)
+ELEMENT_HEADERS(AbovePutStage_FrontElementHandler, AbovePutStage_FrontElement)
 
+void PutStage_BackCode(int fx, int fy);
+void PutStage_FrontCode(int fx, int fy);
 void PutBackCode(int fx, int fy);
 void PlayerHUDCode();
 void CreditsUICode();

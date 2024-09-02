@@ -17,6 +17,10 @@ typedef void (*OpeningBelowPutCaretElementHandler)();
 typedef void (*OpeningAbovePutCaretElementHandler)();
 typedef void (*OpeningBelowPutBackElementHandler)();
 typedef void (*OpeningAbovePutBackElementHandler)();
+typedef void (*OpeningBelowPutStage_BackElementHandler)();
+typedef void (*OpeningAbovePutStage_BackElementHandler)();
+typedef void (*OpeningBelowPutStage_FrontElementHandler)();
+typedef void (*OpeningAbovePutStage_FrontElementHandler)();
 typedef void (*MOBelowPutFPSElementHandler)();
 typedef void (*MOAbovePutFPSElementHandler)();
 
@@ -33,7 +37,13 @@ ELEMENT_HEADERS(MOBelowPutFPSElementHandler, ModeOpeningBelowPutFPSElement)
 ELEMENT_HEADERS(MOAbovePutFPSElementHandler, ModeOpeningAbovePutFPSElement)
 ELEMENT_HEADERS(OpeningBelowPutBackElementHandler, OpeningBelowPutBackElement)
 ELEMENT_HEADERS(OpeningAbovePutBackElementHandler, OpeningAbovePutBackElement)
+ELEMENT_HEADERS(OpeningBelowPutStage_BackElementHandler, OpeningBelowPutStage_BackElement)
+ELEMENT_HEADERS(OpeningAbovePutStage_BackElementHandler, OpeningAbovePutStage_BackElement)
+ELEMENT_HEADERS(OpeningBelowPutStage_FrontElementHandler, OpeningBelowPutStage_FrontElement)
+ELEMENT_HEADERS(OpeningAbovePutStage_FrontElementHandler, OpeningAbovePutStage_FrontElement)
 
+void OpeningPutStage_BackCode(int fx, int fy);
+void OpeningPutStage_FrontCode(int fx, int fy);
 void OpeningPutBackCode(int fx, int fy);
 void OpeningFadeCode();
 void OpeningTextBoxCode();

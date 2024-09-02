@@ -12,7 +12,7 @@
     <ClCompile Include="src\API_Npc.cpp" />
     <ClCompile Include="src\API_Profile.cpp" />
     <ClCompile Include="src\API_TextScript.cpp" />
-    <ClCompile Include="src\API_TransferStage.cpp" />
+    <ClCompile Include="src\API_Stage.cpp" />
     <ClCompile Include="src\API_Weapon.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\API_Tile.cpp" />
@@ -74,6 +74,7 @@
     <ClCompile Include="src\API_PutFPS.cpp" />
     <ClCompile Include="src\API_Draw.cpp" />
     <ClCompile Include="src\KeyControl.cpp" />
+    <ClCompile Include="src\File.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\API_Boss.h" />
@@ -87,7 +88,7 @@
     <ClInclude Include="src\API_Npc.h" />
     <ClInclude Include="src\API_Profile.h" />
     <ClInclude Include="src\API_TextScript.h" />
-    <ClInclude Include="src\API_TransferStage.h" />
+    <ClInclude Include="src\API_Stage.h" />
     <ClInclude Include="src\API_Weapon.h" />
     <ClInclude Include="src\cave_story.h" />
     <ClInclude Include="src\Main.h" />
@@ -151,6 +152,7 @@
     <ClInclude Include="src\API_PutFPS.h" />
     <ClInclude Include="src\API_Draw.h" />
     <ClInclude Include="src\KeyControl.h" />
+    <ClInclude Include="src\File.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="lua">
