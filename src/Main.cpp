@@ -33,12 +33,9 @@
 #include "ASM_Patches.h"
 
 #include "lua/Lua.h"
-#include "lua/Lua_Main.h"
+#include "lua/Lua_Mod.h"
 #include "lua/Lua_Profile.h"
 #include "lua/Lua_Stage.h"
-
-char gModulePath[MAX_PATH];
-char gDataPath[MAX_PATH];
 
 int gCurrentGameMode = 0;
 
@@ -64,7 +61,7 @@ void SaveArmsTable()
     char path[MAX_PATH];
 
     // Construct the file path
-    sprintf(path, "%s\\%s", gModulePath, "arms_level.tbl");
+    sprintf(path, "%s\\%s", exeModulePath, "arms_level.tbl");
 
     // Open the file for writing
     fp = fopen(path, "wb");
@@ -87,7 +84,7 @@ void SaveBulletTable()
     char path[MAX_PATH];
     size_t size;
 
-    sprintf(path, "%s\\bullet.tbl", gModulePath);
+    sprintf(path, "%s\\bullet.tbl", exeModulePath);
 
     fp = fopen(path, "wb");
     if (fp == NULL)
@@ -117,7 +114,7 @@ void SaveCaretTable()
     char path[MAX_PATH];
 
     // Construct the file path
-    sprintf(path, "%s\\%s", gModulePath, "caret.tbl");
+    sprintf(path, "%s\\%s", exeModulePath, "caret.tbl");
 
     // Open the file for writing
     fp = fopen(path, "wb");
@@ -133,16 +130,16 @@ void SaveCaretTable()
     fclose(fp);
 }
 
+void LoadModTables()
+{
+    LoadLevelsTable();
+    ArmsTablePatches();
+    LoadBulletTable();
+    LoadCaretTable();
+}
+
 void InitMod(void)
 {
-    // Get executable's path
-    GetModuleFileNameA(NULL, gModulePath, MAX_PATH);
-    PathRemoveFileSpecA(gModulePath);
-
-    // Get path of the data folder
-    strcpy(gDataPath, gModulePath);
-    strcat(gDataPath, "\\data");
-
     InitMod_Settings();
 
     // Tile Type api (unfinished, is complicated)
@@ -153,7 +150,6 @@ void InitMod(void)
     ModLoader_WriteJump((void*)ActBossChar, (void*)Replacement_ActBossChar);
 
     // Caret API
-    LoadCaretTable();
     ModLoader_WriteJump((void*)ActCaret, (void*)Replacement_ActCaret);
     ModLoader_WriteJump((void*)SetCaret, (void*)Replacement_SetCaret);
 
@@ -220,10 +216,6 @@ void InitMod(void)
     // TextScript API
     ModLoader_WriteCall((void*)0x424DAE, (void*)TextScriptSVPCode);
 
-    // Weapons API
-    LoadLevelsTable();
-    LoadBulletTable();
-    ArmsTablePatches();
     /*
     ModLoader_WriteJump((void*)0x4196F0, (void*)AddExpMyChar);
     ModLoader_WriteJump((void*)0x4198C0, (void*)IsMaxExpMyChar);
@@ -238,6 +230,7 @@ void InitMod(void)
     InitTSC();
     InitKeyControl();
 
+    RegisterPreModeElement(LoadModTables);
     RegisterPreModeElement(InitMod_Lua);
     RegisterPreModeElement(RegisterPreModeModScript);
 

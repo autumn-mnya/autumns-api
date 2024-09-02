@@ -1,3 +1,46 @@
+v1.1.6:
+ModCS Lua:
+- No Category
+	- ModCS.SetModulePath -> Set the "module" path. This is the path where the game thinks the exe is. Don't edit this unless you know what you're doing!
+	- ModCS.SetDataPath -> Set the "data folder" path. This is the path where the game thinks the "data" is.
+- Key Control
+	- ModCS.Key.KeyDown(kcode, kchar, krepeat) Make something happen when "kcode" is pressed (win32 keycode), or do something with "kchar" (if its a character on the keyboard). "krepeat" is a boolean, thats if the user is holding the key.
+	- ModCS.Key.KeyUp(kcode, kchar) -> Make something happen when "kcode" is released (win32 keycode), or do something with "kchar" (if its a character on the keyboard).
+- Mod
+	- ModCS.Mod.SetBossHP(id, newLife) -> Set the boss hp for boss "id" to value "newLife". The order is:
+		1: Omega
+		2: Balfrog
+		3: Monster X
+		4: Core
+		5: Ironhead
+		6: Dragon Sisters
+		7: Undead Core
+		8: Heavy Press
+		9: Ballos Ball (Phase 2)
+		10: Ballos Ball (Phase 4)
+	- ModCS.Mod.SetSpikeDamage(num) -> Sets the *tile* spike damage to "num". Can be from 1 to 127.
+	- ModCS.Mod.SetStartMyChar(newMaxLife, newLife, direction) -> Set the players "max life", "current life", and "direction" on new game.
+- ModLoader (New Category)
+    - ModCS.ModLoader.WriteByte(address, value) -> Write a byte of data "value" at the address chosen.
+    - ModCS.ModLoader.WriteWord(address, value) -> Write a word of data "value" at the address chosen.
+    - ModCS.ModLoader.WriteLong(address, value) -> Write a long of data "value" at the address chosen.
+    - ModCS.ModLoader.WriteWordBE(address, value) -> Write a word of data "value" at the address chosen, in Big Endian.
+    - ModCS.ModLoader.WriteLongBE(address, value) -> Write a long of data "value" at the address chosen, in Big Endian.
+- Sound
+	- ModCS.Sound.Create(number, ]array of lua samples]) -> Create a directsound ID
+	- ModCS.Sound.Destroy(number) -> Destroy a directsound ID
+- Stage
+	- ModCS.Stage.LoadTable("stage.tbl") -> Load a stage.tbl file with the name given.
+
+C++:
+LoadStageTable("stage.tbl"); -> Load a stage table from the gDataPath, with the name given to the argument.
+ReloadModScript(); -> Reload all of the script files from the current gDataPath.
+
+Source Code:
+The import folder has been updated, so other dlls can simply drag and drop the new files into their mod, and run LoadAutPiDll() on boot of their dll in order to use autpi functions.
+
+v1.1.5:
+ModCS Lua:
 - Key Control
 	- ModCS.Key.GetKey() -> Returns the value of "gKey".
 	- ModCS.Key.GetKeyTrg() -> Returns the value of "gKeyTrg".

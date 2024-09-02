@@ -61,7 +61,7 @@ void LoadLevelsTable()
 	size_t size;
 	int entries;
 
-	sprintf(path, "%s\\%s", gDataPath, "arms_level.tbl");
+	sprintf(path, "%s\\%s", exeDataPath, "arms_level.tbl");
 
 	size = GetFileSizeLong(path);
 	if (size == INVALID_FILE_SIZE)
@@ -106,7 +106,7 @@ void LoadBulletTable()
 	size_t size;
 	unsigned int entries;
 
-	sprintf(path, "%s\\bullet.tbl", gDataPath);
+	sprintf(path, "%s\\bullet.tbl", exeDataPath);
 
 	size = GetFileSizeLong(path);
 	if (size == INVALID_FILE_SIZE)

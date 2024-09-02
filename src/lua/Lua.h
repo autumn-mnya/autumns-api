@@ -58,6 +58,7 @@ void AutPI_GetTrg_ForInput();
 
 BOOL InitModScript(void);
 void CloseModScript(void);
+extern "C" __declspec(dllexport) BOOL ReloadModScript();
 
 void InitMod_Lua();
 

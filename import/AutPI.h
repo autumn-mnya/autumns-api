@@ -3,6 +3,23 @@
 #include <Windows.h>
 #include "cave_story.h"
 #include <vector>
+#include "lua/Lua.h"
+
+extern "C"
+{
+#include <lua.h>
+}
+
+#define DEFINE_REGISTER_FUNCTION(HandlerType, HandlerName) \
+    std::vector<HandlerType> HandlerName##Handlers; \
+    \
+    void Register##HandlerName##(HandlerType handler) \
+    { \
+        RegisterElement(HandlerName##Handlers, "Register" #HandlerName, reinterpret_cast<void (*)()>(handler)); \
+    }
+
+#define DEFINE_REGISTER_HEADER(HandlerType, HandlerName) \
+    void Register##HandlerName##(HandlerType handler);
 
 extern HMODULE autpiDLL;  // Global variable
 
@@ -25,10 +42,22 @@ typedef void (*OpeningAboveTextBoxElementHandler)();
 typedef void (*OpeningEarlyActionElementHandler)();
 typedef void (*OpeningActionElementHandler)();
 typedef void (*OpeningInitElementHandler)();
+typedef void (*OpeningBelowPutCaretElementHandler)();
+typedef void (*OpeningAbovePutCaretElementHandler)();
+typedef void (*OpeningBelowPutBackElementHandler)();
+typedef void (*OpeningAbovePutBackElementHandler)();
+typedef void (*MOBelowPutFPSElementHandler)();
+typedef void (*MOAbovePutFPSElementHandler)();
+typedef void (*OpeningBelowPutStage_BackElementHandler)();
+typedef void (*OpeningAbovePutStage_BackElementHandler)();
+typedef void (*OpeningBelowPutStage_FrontElementHandler)();
+typedef void (*OpeningAbovePutStage_FrontElementHandler)();
 // ModeTitle()
 typedef void (*TitleInitElementHandler)();
 typedef void (*TitleActionElementHandler)();
 typedef void (*TitleBelowCounterElementHandler)();
+typedef void (*MTBelowPutFPSElementHandler)();
+typedef void (*MTAbovePutFPSElementHandler)();
 // ModeAction()
 typedef void (*PlayerHudElementHandler)();
 typedef void (*CreditsHudElementHandler)();
@@ -42,59 +71,103 @@ typedef void (*EarlyActionElementHandler)();
 typedef void (*ActionElementHandler)();
 typedef void (*CreditsActionElementHandler)();
 typedef void (*InitElementHandler)();
+typedef void (*BelowPutCaretElementHandler)();
+typedef void (*AbovePutCaretElementHandler)();
+typedef void (*MABelowPutFPSElementHandler)();
+typedef void (*MAAbovePutFPSElementHandler)();
+typedef void (*BelowPutBackElementHandler)();
+typedef void (*AbovePutBackElementHandler)();
+typedef void (*BelowPutStage_BackElementHandler)();
+typedef void (*AbovePutStage_BackElementHandler)();
+typedef void (*BelowPutStage_FrontElementHandler)();
+typedef void (*AbovePutStage_FrontElementHandler)();
 // Profile
-typedef void (*SaveProfilePreWriteElementHandler)();
-typedef void (*SaveProfilePostWriteElementHandler)();
+typedef void (*SaveProfilePreCloseElementHandler)();
+typedef void (*SaveProfilePostCloseElementHandler)();
 typedef void (*LoadProfilePreCloseElementHandler)();
 typedef void (*LoadProfilePostCloseElementHandler)();
 typedef void (*InitializeGameInitElementHandler)();
+// PutFPS
+typedef void (*PutFPSElementHandler)();
 // TextScript
 typedef void (*TextScriptSVPElementHandler)();
 // TransferStage()
 typedef void (*TransferStageInitElementHandler)();
+// Lua
+typedef void (*LuaPreGlobalModCSElementHandler)();
+typedef void (*LuaMetadataElementHandler)();
+typedef void (*LuaFuncElementHandler)();
 
 void LoadAutPiDll();
 
 // NpcTbl API
 void AutPI_AddEntity(NPCFUNCTION func, char* author, char* name);
 
-// Game() API
-void RegisterPreModeElement(PreModeElementHandler handler);
-void RegisterReleaseElement(ReleaseElementHandler handler);
-// GetTrg() API
-void RegisterGetTrgElement(GetTrgElementHandler handler);
-// ModeOpening() API
-void RegisterOpeningBelowFadeElement(OpeningBelowFadeElementHandler handler);
-void RegisterOpeningAboveFadeElement(OpeningAboveFadeElementHandler handler);
-void RegisterOpeningBelowTextBoxElement(OpeningBelowTextBoxElementHandler handler);
-void RegisterOpeningAboveTextBoxElement(OpeningAboveTextBoxElementHandler handler);
-void RegisterOpeningEarlyActionElement(OpeningEarlyActionElementHandler handler);
-void RegisterOpeningActionElement(OpeningActionElementHandler handler);
-void RegisterOpeningInitElement(OpeningInitElementHandler handler);
-// ModeTitle() API
-void RegisterTitleInitElement(TitleInitElementHandler handler);
-void RegisterTitleActionElement(TitleActionElementHandler handler);
-void RegisterTitleBelowCounterElement(TitleBelowCounterElementHandler handler);
-// ModeAction() API
-void RegisterPlayerHudElement(PlayerHudElementHandler handler);
-void RegisterCreditsHudElement(CreditsHudElementHandler handler);
-void RegisterBelowFadeElement(BelowFadeElementHandler handler);
-void RegisterAboveFadeElement(AboveFadeElementHandler handler);
-void RegisterBelowTextBoxElement(BelowTextBoxElementHandler handler);
-void RegisterAboveTextBoxElement(AboveTextBoxElementHandler handler);
-void RegisterBelowPlayerElement(BelowPlayerElementHandler handler);
-void RegisterAbovePlayerElement(AboveTextBoxElementHandler handler);
-void RegisterEarlyActionElement(EarlyActionElementHandler handler);
-void RegisterActionElement(ActionElementHandler handler);
-void RegisterCreditsActionElement(CreditsActionElementHandler handler);
-void RegisterInitElement(InitElementHandler handler);
-// Profile API
-void RegisterSaveProfilePreWriteElement(SaveProfilePreWriteElementHandler handler);
-void RegisterSaveProfilePostWriteElement(SaveProfilePostWriteElementHandler handler);
-void RegisterLoadProfilePreCloseElement(LoadProfilePreCloseElementHandler handler);
-void RegisterLoadProfilePostCloseElement(LoadProfilePostCloseElementHandler handler);
-void RegisterInitializeGameInitElement(InitializeGameInitElementHandler handler);
-// TextScript API
-void RegisterSVPElement(TextScriptSVPElementHandler handler);
-// TransferStage() API
-void RegisterTransferStageInitElement(TransferStageInitElementHandler handler);
+DEFINE_REGISTER_HEADER(PreModeElementHandler, PreModeElement)
+DEFINE_REGISTER_HEADER(ReleaseElementHandler, ReleaseElement)
+DEFINE_REGISTER_HEADER(GetTrgElementHandler, GetTrgElement)
+DEFINE_REGISTER_HEADER(OpeningBelowFadeElementHandler, OpeningBelowFadeElement)
+DEFINE_REGISTER_HEADER(OpeningAboveFadeElementHandler, OpeningAboveFadeElement)
+DEFINE_REGISTER_HEADER(OpeningBelowTextBoxElementHandler, OpeningBelowTextBoxElement)
+DEFINE_REGISTER_HEADER(OpeningAboveTextBoxElementHandler, OpeningAboveTextBoxElement)
+DEFINE_REGISTER_HEADER(OpeningEarlyActionElementHandler, OpeningEarlyActionElement)
+DEFINE_REGISTER_HEADER(OpeningActionElementHandler, OpeningActionElement)
+DEFINE_REGISTER_HEADER(OpeningInitElementHandler, OpeningInitElement)
+DEFINE_REGISTER_HEADER(OpeningBelowPutCaretElementHandler, OpeningBelowPutCaretElement)
+DEFINE_REGISTER_HEADER(OpeningAbovePutCaretElementHandler, OpeningAbovePutCaretElement)
+DEFINE_REGISTER_HEADER(MOBelowPutFPSElementHandler, ModeOpeningBelowPutFPSElement)
+DEFINE_REGISTER_HEADER(MOAbovePutFPSElementHandler, ModeOpeningAbovePutFPSElement)
+DEFINE_REGISTER_HEADER(OpeningBelowPutBackElementHandler, OpeningBelowPutBackElement)
+DEFINE_REGISTER_HEADER(OpeningAbovePutBackElementHandler, OpeningAbovePutBackElement)
+DEFINE_REGISTER_HEADER(OpeningBelowPutStage_BackElementHandler, OpeningBelowPutStage_BackElement)
+DEFINE_REGISTER_HEADER(OpeningAbovePutStage_BackElementHandler, OpeningAbovePutStage_BackElement)
+DEFINE_REGISTER_HEADER(OpeningBelowPutStage_FrontElementHandler, OpeningBelowPutStage_FrontElement)
+DEFINE_REGISTER_HEADER(OpeningAbovePutStage_FrontElementHandler, OpeningAbovePutStage_FrontElement)
+DEFINE_REGISTER_HEADER(TitleInitElementHandler, TitleInitElement)
+DEFINE_REGISTER_HEADER(TitleActionElementHandler, TitleActionElement)
+DEFINE_REGISTER_HEADER(TitleBelowCounterElementHandler, TitleBelowCounterElement)
+DEFINE_REGISTER_HEADER(MTBelowPutFPSElementHandler, ModeTitleBelowPutFPSElement)
+DEFINE_REGISTER_HEADER(MTAbovePutFPSElementHandler, ModeTitleAbovePutFPSElement)
+DEFINE_REGISTER_HEADER(PlayerHudElementHandler, PlayerHudElement)
+DEFINE_REGISTER_HEADER(CreditsHudElementHandler, CreditsHudElement)
+DEFINE_REGISTER_HEADER(BelowFadeElementHandler, BelowFadeElement)
+DEFINE_REGISTER_HEADER(AboveFadeElementHandler, AboveFadeElement)
+DEFINE_REGISTER_HEADER(BelowTextBoxElementHandler, BelowTextBoxElement)
+DEFINE_REGISTER_HEADER(AboveTextBoxElementHandler, AboveTextBoxElement)
+DEFINE_REGISTER_HEADER(BelowPlayerElementHandler, BelowPlayerElement)
+DEFINE_REGISTER_HEADER(AbovePlayerElementHandler, AbovePlayerElement)
+DEFINE_REGISTER_HEADER(EarlyActionElementHandler, EarlyActionElement)
+DEFINE_REGISTER_HEADER(ActionElementHandler, ActionElement)
+DEFINE_REGISTER_HEADER(CreditsActionElementHandler, CreditsActionElement)
+DEFINE_REGISTER_HEADER(InitElementHandler, InitElement)
+DEFINE_REGISTER_HEADER(BelowPutCaretElementHandler, BelowPutCaretElement)
+DEFINE_REGISTER_HEADER(AbovePutCaretElementHandler, AbovePutCaretElement)
+DEFINE_REGISTER_HEADER(MABelowPutFPSElementHandler, ModeActionBelowPutFPSElement)
+DEFINE_REGISTER_HEADER(MAAbovePutFPSElementHandler, ModeActionAbovePutFPSElement)
+DEFINE_REGISTER_HEADER(BelowPutBackElementHandler, BelowPutBackElement)
+DEFINE_REGISTER_HEADER(AbovePutBackElementHandler, AbovePutBackElement)
+DEFINE_REGISTER_HEADER(BelowPutStage_BackElementHandler, BelowPutStage_BackElement)
+DEFINE_REGISTER_HEADER(AbovePutStage_BackElementHandler, AbovePutStage_BackElement)
+DEFINE_REGISTER_HEADER(BelowPutStage_FrontElementHandler, BelowPutStage_FrontElement)
+DEFINE_REGISTER_HEADER(AbovePutStage_FrontElementHandler, AbovePutStage_FrontElement)
+DEFINE_REGISTER_HEADER(SaveProfilePreCloseElementHandler, SaveProfilePreCloseElement)
+DEFINE_REGISTER_HEADER(SaveProfilePostCloseElementHandler, SaveProfilePostCloseElement)
+DEFINE_REGISTER_HEADER(LoadProfilePreCloseElementHandler, LoadProfilePreCloseElement)
+DEFINE_REGISTER_HEADER(LoadProfilePostCloseElementHandler, LoadProfilePostCloseElement)
+DEFINE_REGISTER_HEADER(InitializeGameInitElementHandler, InitializeGameInitElement)
+DEFINE_REGISTER_HEADER(PutFPSElementHandler, PutFPSElement)
+DEFINE_REGISTER_HEADER(TextScriptSVPElementHandler, SVPElement)
+DEFINE_REGISTER_HEADER(TransferStageInitElementHandler, TransferStageInitElement)
+DEFINE_REGISTER_HEADER(LuaPreGlobalModCSElementHandler, LuaPreGlobalModCSElement)
+DEFINE_REGISTER_HEADER(LuaMetadataElementHandler, LuaMetadataElement)
+DEFINE_REGISTER_HEADER(LuaFuncElementHandler, LuaFuncElement)
+
+// Lua API
+lua_State* GetLuaL();
+BOOL ReadStructBasic(lua_State* L, const char* name, STRUCT_TABLE* table, void* data, int length);
+BOOL Write2StructBasic(lua_State* L, const char* name, STRUCT_TABLE* table, void* data, int length);
+void PushFunctionTable(lua_State* L, const char* name, const FUNCTION_TABLE* table, int length, BOOL pop);
+void PushFunctionTableModName(lua_State* L, const char* modname, const char* name, const FUNCTION_TABLE* table, int length, BOOL pop);
+void PushSimpleMetatables(lua_State* L, const METATABLE_TABLE* table, int length);
+BOOL LoadStageTable(char* name);
+BOOL ReloadModScript();

@@ -34,7 +34,8 @@ extern "C"
 #include "Lua_Frame.h"
 #include "Lua_Game.h"
 #include "Lua_KeyControl.h"
-#include "Lua_Main.h"
+#include "Lua_Mod.h"
+#include "Lua_ModLoader.h"
 #include "Lua_MyChar.h"
 #include "Lua_Npc.h"
 #include "Lua_Profile.h"
@@ -400,13 +401,25 @@ static int Print2Console(lua_State* L) {
 
 static int lua_GetModulePath(lua_State* L)
 {
-	lua_pushstring(L, gModulePath);
+	lua_pushstring(L, exeModulePath);
 	return 1;
 }
 
 static int lua_GetDataPath(lua_State* L) {
-	lua_pushstring(L, gDataPath);
+	lua_pushstring(L, exeDataPath);
 	return 1;
+}
+
+static int lua_SetModulePath(lua_State* L)
+{
+	strcpy(exeModulePath, luaL_checkstring(L, 1));
+	return 0;
+}
+
+static int lua_SetDataPath(lua_State* L)
+{
+	strcpy(exeDataPath, luaL_checkstring(L, 1));
+	return 0;
 }
 
 static int lua_FlipSystemTask(lua_State* L)
@@ -658,8 +671,8 @@ BOOL InitModScript(void)
 	char path[MAX_PATH];
 	gL = luaL_newstate();
 
-	sprintf(path, "%s\\Scripts\\main.lua", gDataPath);
-	sprintf(scriptpath, "%s\\Scripts\\?.lua", gDataPath);
+	sprintf(path, "%s\\Scripts\\main.lua", exeDataPath);
+	sprintf(scriptpath, "%s\\Scripts\\?.lua", exeDataPath);
 
 	luaL_openlibs(gL);
 
@@ -725,6 +738,12 @@ BOOL InitModScript(void)
 	lua_pushcfunction(gL, lua_GetDataPath);
 	lua_setfield(gL, -2, "GetDataPath");
 
+	lua_pushcfunction(gL, lua_SetModulePath);
+	lua_setfield(gL, -2, "SetModulePath");
+
+	lua_pushcfunction(gL, lua_SetDataPath);
+	lua_setfield(gL, -2, "SetDataPath");
+
 	lua_pushcfunction(gL, lua_FlipSystemTask);
 	lua_setfield(gL, -2, "SystemTask");
 
@@ -750,10 +769,11 @@ BOOL InitModScript(void)
 	PushFunctionTable(gL, "Stage", StageFunctionTable, FUNCTION_TABLE_STAGE_SIZE, TRUE);
 	PushFunctionTable(gL, "Map", MapFunctionTable, FUNCTION_TABLE_MAP_SIZE, TRUE);
 	PushFunctionTable(gL, "Mod", ModFunctionTable, FUNCTION_TABLE_MOD_SIZE, TRUE);
+	PushFunctionTable(gL, "ModLoader", ModLoaderFunctionTable, FUNCTION_TABLE_MOD_LOADER_SIZE, TRUE);
 	
 	PushFunctionTable(gL, "Sound", SoundFunctionTable, FUNCTION_TABLE_SOUND_SIZE, TRUE);
 	PushFunctionTable(gL, "Organya", OrgFunctionTable, FUNCTION_TABLE_ORG_SIZE, TRUE);
-	PushFunctionTable(gL, "Music", OrgFunctionTable, FUNCTION_TABLE_ORG_SIZE, TRUE); // kill me
+	PushFunctionTable(gL, "Music", OrgFunctionTable, FUNCTION_TABLE_ORG_SIZE, TRUE);
 
 	PushFunctionTable(gL, "Key", KeyFunctionTable, FUNCTION_TABLE_KEY_SIZE, TRUE);
 	PushFunctionTable(gL, "Profile", ProfileFunctionTable, FUNCTION_TABLE_PROFILE_SIZE, TRUE);
@@ -814,6 +834,16 @@ BOOL InitModScript(void)
 void CloseModScript(void)
 {
 	lua_close(gL);
+}
+
+BOOL ReloadModScript()
+{
+	CloseModScript();
+
+	if (!InitModScript())
+		return FALSE;
+
+	return TRUE;
 }
 
 void InitMod_Lua()

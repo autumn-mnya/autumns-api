@@ -1,16 +1,18 @@
 require("arms")
 require("npc")
 
-print(ModCS.GetModulePath())
 print("Hello World!")
 
 ModCS.Mod.SetAuthor("autumn")
 
 ModCS.Mod.SetOpening(0x10, 100, 0x1000)
-ModCS.Mod.SetStart(13, 94, 10, 8)
+-- ModCS.Mod.SetStart(13, 94, 10, 8)
 
 ModCS.AddEntity("MyNewEntity")
 ModCS.AddCaret("MyNewCaret")
+
+ModCS.Mod.SetBossHP(1, 2000)
+ModCS.Mod.SetSpikeDamage(10)
 
 --function ModCS.Game.Act()
 --	ModCS.Npc.Spawn(361, 10, 10)
@@ -157,10 +159,6 @@ function ModCS.Game.Act()
 		end
 	end
 	
-	if ModCS.Key.Shoot(true) then
-		ModCS.Arms.AddExp(1)
-	end
-	
 	-- This needs to be here, just incase
 	if ModCS.Game.CanControl() then
 		if ModCS.Key.Arms() then
@@ -183,7 +181,7 @@ function ModCS.Game.Act()
 		end
 	end
 	
-	ModCS.Npc.Spawn(1, ModCS.Mouse.GetWorldX() / 512, ModCS.Mouse.GetWorldY() / 512)
+	-- ModCS.Npc.Spawn(1, ModCS.Mouse.GetWorldX() / 512, ModCS.Mouse.GetWorldY() / 512)
 end
 
 function GetDataFilePath(filename)

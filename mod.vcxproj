@@ -119,7 +119,8 @@
     <ClCompile Include="src\lua\Lua_Frame.cpp" />
     <ClCompile Include="src\lua\Lua_Game.cpp" />
     <ClCompile Include="src\lua\Lua_KeyControl.cpp" />
-    <ClCompile Include="src\lua\Lua_Main.cpp" />
+    <ClCompile Include="src\lua\Lua_Mod.cpp" />
+    <ClCompile Include="src\lua\Lua_ModLoader.cpp" />
     <ClCompile Include="src\lua\Lua_Npc.cpp" />
     <ClCompile Include="src\lua\Lua_MyChar.cpp" />
     <ClCompile Include="src\lua\Lua_Profile.cpp" />
@@ -162,7 +163,8 @@
     <ClInclude Include="src\lua\Lua_Frame.h" />
     <ClInclude Include="src\lua\Lua_Game.h" />
     <ClInclude Include="src\lua\Lua_KeyControl.h" />
-    <ClInclude Include="src\lua\Lua_Main.h" />
+    <ClInclude Include="src\lua\Lua_Mod.h" />
+    <ClInclude Include="src\lua\Lua_ModLoader.h" />
     <ClInclude Include="src\lua\Lua_MyChar.h" />
     <ClInclude Include="src\lua\Lua_Npc.h" />
     <ClInclude Include="src\lua\Lua_Profile.h" />

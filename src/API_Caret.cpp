@@ -45,7 +45,7 @@ void LoadCaretTable()
 	char path[MAX_PATH];
 
 	// Construct the file path
-	sprintf(path, "%s\\%s", gDataPath, "caret.tbl");
+	sprintf(path, "%s\\%s", exeDataPath, "caret.tbl");
 	memset(autpiCaretTable, 0, sizeof(CARET_TABLE));
 
 	// Open the file for reading

@@ -6,9 +6,6 @@
 
 extern int gCurrentGameMode;
 
-extern char gModulePath[MAX_PATH];
-extern char gDataPath[MAX_PATH];
-
 // Define the macros to automate handler creation
 #define DEFINE_ELEMENT_HANDLERS(Type, Name) \
     std::vector<Type> Name##Handlers; \

@@ -50,7 +50,7 @@ BOOL LoadStageTable(char* name)
 	size_t file_size;
 
 	// Try to load stage.tbl
-	sprintf(path, "%s\\%s", gDataPath, name);
+	sprintf(path, "%s\\%s", exeDataPath, name);
 	file_buffer = LoadFileToMemory(path, &file_size);
 
 	if (file_buffer != NULL)

@@ -1,5 +1,7 @@
 /.git
 /.vs
+/.vscode
+/import/.vscode
 /Debug
 /Release
 mod.vcxproj.user

@@ -11,6 +11,10 @@ static int& window_magnification = *reinterpret_cast<int*>(0x48F914); // Window 
 static ::RECT& grcGame = *reinterpret_cast<::RECT*>(0x48F91C);
 static ::RECT& grcFull = *reinterpret_cast<::RECT*>(0x48F92C);
 
+// Paths inside the exe with different names than original game, because sometimes you wanna get the path urself before the game launches
+static auto& exeModulePath = *reinterpret_cast<char(*)[MAX_PATH]>(0x49E328);
+static auto& exeDataPath = *reinterpret_cast<char(*)[MAX_PATH]>(0x49E220);
+
 #define WINDOW_WIDTH grcGame.right
 #define WINDOW_HEIGHT grcGame.bottom
 

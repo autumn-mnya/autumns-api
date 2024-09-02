@@ -28,9 +28,9 @@ BOOL IsProfileCustom(const char* name)
 
 	// Get path
 	if (name != NULL)
-		sprintf(path, "%s\\%s", gModulePath, name);
+		sprintf(path, "%s\\%s", exeModulePath, name);
 	else
-		sprintf(path, "%s\\%s", gModulePath, gDefaultName);
+		sprintf(path, "%s\\%s", exeModulePath, gDefaultName);
 
 	HANDLE hFile = CreateFileA(path, 0, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hFile == INVALID_HANDLE_VALUE)
