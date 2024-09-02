@@ -11,17 +11,18 @@
 #include "lua/Lua_KeyControl.h"
 
 static int KeyDownFunction(MLHookCPURegisters* regs, void* ud) {
-    unsigned int lp = *(unsigned int*)(regs->ebp + 0x10);
+    unsigned int wp = *(unsigned int*)(regs->ebp + 0x10);
+    unsigned int lp = *(unsigned int*)(regs->ebp + 0x14);
 
-    KeyControlModScript(lp, true);
+    KeyControlModScript(wp, true, lp & (1 << 30));
 
     return 0;
 }
 
 static int KeyUpFunction(MLHookCPURegisters* regs, void* ud) {
-    unsigned int lp = *(unsigned int*)(regs->ebp + 0x10);
+    unsigned int wp = *(unsigned int*)(regs->ebp + 0x10);
 
-    KeyControlModScript(lp, false);
+    KeyControlModScript(wp, false, false);
 
     return 0;
 }

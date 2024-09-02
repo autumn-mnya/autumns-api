@@ -197,7 +197,7 @@ FUNCTION_TABLE KeyFunctionTable[FUNCTION_TABLE_KEY_SIZE] =
 	{"GetTrg", lua_GetTrg},
 };
 
-int KeyControlModScript(unsigned int vkey, bool down) {
+int KeyControlModScript(unsigned int vkey, bool down, bool repeat) {
 	lua_getglobal(gL, "ModCS");
 	lua_getfield(gL, -1, "Key");
 	lua_getfield(gL, -1, down ? "KeyDown" : "KeyUp");
@@ -215,9 +215,13 @@ int KeyControlModScript(unsigned int vkey, bool down) {
 	WORD chr = 0;
 	int ct = ToAscii(vkey, MapVirtualKeyA(vkey, MAPVK_VK_TO_VSC), wks, &chr, 0);
 
-	lua_pushlstring(gL, (char *)&chr, ct);
+	lua_pushlstring(gL, (char*)&chr, ct);
 
-	if (lua_pcall(gL, 2, 0, 0) != LUA_OK)
+	if (down) {
+		lua_pushboolean(gL, repeat);
+	}
+
+	if (lua_pcall(gL, down ? 3 : 2, 0, 0) != LUA_OK)
 	{
 		const char* error = lua_tostring(gL, -1);
 

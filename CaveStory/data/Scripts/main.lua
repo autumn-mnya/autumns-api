@@ -40,7 +40,8 @@ function ModCS.Game.Draw()
     end
 end
 
-function ModCS.Key.KeyDown(kcode, kchar)
+function ModCS.Key.KeyDown(kcode, kchar, krepeat)
+    --print (krepeat)
     if (kcode == 0x08) then -- backspace
         if (indx == 1) then
             if (line > 1) then
