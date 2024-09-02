@@ -196,3 +196,38 @@ FUNCTION_TABLE KeyFunctionTable[FUNCTION_TABLE_KEY_SIZE] =
 	{"ClearKeyTrg", lua_ClearKeyTrg},
 	{"GetTrg", lua_GetTrg},
 };
+
+int KeyControlModScript(unsigned int vkey, bool down) {
+	lua_getglobal(gL, "ModCS");
+	lua_getfield(gL, -1, "Key");
+	lua_getfield(gL, -1, down ? "KeyDown" : "KeyUp");
+
+	if (lua_isnil(gL, -1))
+	{
+		lua_settop(gL, 0); // Clear stack
+		return TRUE;
+	}
+
+	lua_pushinteger(gL, vkey);
+
+	static BYTE wks[256];
+	GetKeyboardState(wks);
+	WORD chr = 0;
+	int ct = ToAscii(vkey, MapVirtualKeyA(vkey, MAPVK_VK_TO_VSC), wks, &chr, 0);
+
+	lua_pushlstring(gL, (char *)&chr, ct);
+
+	if (lua_pcall(gL, 2, 0, 0) != LUA_OK)
+	{
+		const char* error = lua_tostring(gL, -1);
+
+		ErrorLog(error, 0);
+		printf("ERROR: %s\n", error);
+		MessageBoxA(ghWnd, down ? "Couldn't execute key down function" : "Couldn't execute key up function", "ModScript Error", MB_OK);
+		return FALSE;
+	}
+
+	lua_settop(gL, 0); // Clear stack
+
+	return TRUE;
+}

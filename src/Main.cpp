@@ -12,6 +12,7 @@
 #include "cave_story.h"
 #include "ModSettings.h"
 #include "TextScr.h"
+#include "KeyControl.h"
 
 #include "API_Boss.h"
 #include "API_Caret.h"
@@ -231,6 +232,7 @@ void InitMod(void)
     ModLoader_WriteCall((void*)0x40B42D, (void*)Replacement_RestoreSurfaces);
 
     InitTSC();
+    InitKeyControl();
 
     RegisterPreModeElement(InitMod_Lua);
     RegisterPreModeElement(RegisterPreModeModScript);
