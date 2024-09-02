@@ -93,6 +93,7 @@
   <ItemGroup>
     <ClCompile Include="src\API_Boss.cpp" />
     <ClCompile Include="src\API_Caret.cpp" />
+    <ClCompile Include="src\API_Draw.cpp" />
     <ClCompile Include="src\API_Game.cpp" />
     <ClCompile Include="src\API_GetTrg.cpp" />
     <ClCompile Include="src\API_LoadGenericData.cpp" />
@@ -106,6 +107,7 @@
     <ClCompile Include="src\API_Stage.cpp" />
     <ClCompile Include="src\API_Weapon.cpp" />
     <ClCompile Include="src\ASM_Patches.cpp" />
+    <ClCompile Include="src\KeyControl.cpp" />
     <ClCompile Include="src\File.cpp" />
     <ClCompile Include="src\lua\API_Lua.cpp" />
     <ClCompile Include="src\lua\Lua.cpp" />
@@ -133,6 +135,7 @@
   <ItemGroup>
     <ClInclude Include="src\API_Boss.h" />
     <ClInclude Include="src\API_Caret.h" />
+    <ClInclude Include="src\API_Draw.h" />
     <ClInclude Include="src\API_Game.h" />
     <ClInclude Include="src\API_GetTrg.h" />
     <ClInclude Include="src\API_LoadGenericData.h" />
@@ -147,6 +150,7 @@
     <ClInclude Include="src\API_Weapon.h" />
     <ClInclude Include="src\ASM_Patches.h" />
     <ClInclude Include="src\cave_story.h" />
+    <ClInclude Include="src\KeyControl.h" />
     <ClInclude Include="src\File.h" />
     <ClInclude Include="src\lua\API_Lua.h" />
     <ClInclude Include="src\lua\Lua.h" />

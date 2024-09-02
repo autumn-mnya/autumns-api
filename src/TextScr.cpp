@@ -22,14 +22,14 @@ static int CustomTSC(MLHookCPURegisters* regs, void* ud)
 	char command[4] = { gTS.data[gTS.p_read + 1], gTS.data[gTS.p_read + 2], gTS.data[gTS.p_read + 3], '\0' };
 	int result = TSCCommandModScript(command);
 
-	if (result == 0)
+	if (result == -2)
 	{
 		char str_0[0x40];
 		sprintf(str_0, "Couldn't execute function for code <%s", command);
 		MessageBoxA(NULL, str_0, "ModScript Error", MB_OK);
-		return enum_ESCRETURN_exit;
+		return 0;
 	}
-	else if (result == 1)
+	else if (result == -1)
 	{
 		if (strncmp(where + 1, "AUTPITTESTCOMMAND", 3) == 0) // just a test command
 		{
@@ -40,7 +40,16 @@ static int CustomTSC(MLHookCPURegisters* regs, void* ud)
 			return 0;
 	}
 
-	regs->eip = CSJ_tsc_done;
+	if (result == 1) {
+		regs->eip = CSJ_tsc_done;
+	} else {
+		// Return value
+		regs->eax = result;
+
+		// This should be right after eax is set to the return value in the original function
+		regs->eip = 0x425765; // MOV ECX, dword ptr[EBP + -0x80]
+	}
+
 	return 1;
 }
 

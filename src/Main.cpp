@@ -12,6 +12,7 @@
 #include "cave_story.h"
 #include "ModSettings.h"
 #include "TextScr.h"
+#include "KeyControl.h"
 
 #include "API_Boss.h"
 #include "API_Caret.h"
@@ -28,6 +29,7 @@
 #include "API_Tile.h"
 #include "API_TextScript.h"
 #include "API_Weapon.h"
+#include "API_Draw.h"
 #include "ASM_Patches.h"
 
 #include "lua/Lua.h"
@@ -231,7 +233,10 @@ void InitMod(void)
     ModLoader_WriteJump((void*)0x41FE70, (void*)Replacement_ShootBullet);
     // ModLoader_WriteCall((void*)0x4105A6, (void*)ReplacementForShootBullet);
 
+    ModLoader_WriteCall((void*)0x40B42D, (void*)Replacement_RestoreSurfaces);
+
     InitTSC();
+    InitKeyControl();
 
     RegisterPreModeElement(InitMod_Lua);
     RegisterPreModeElement(RegisterPreModeModScript);
@@ -282,4 +287,6 @@ void InitMod(void)
     }
 
     RegisterGetTrgElement(AutPI_GetTrg_ForInput);
+
+    RegisterDrawFrameElement(Lua_FrameInit);
 }

@@ -169,7 +169,7 @@ int TSCCommandModScript(char command[4])
 		if (lua_isnil(gL, -1))
 		{
 			lua_settop(gL, 0); // Clear stack
-			return 1;
+			return -1;
 		}
 
 		if (fcuking)
@@ -183,13 +183,26 @@ int TSCCommandModScript(char command[4])
 	gReadValue = 4;
 	gCommand = TRUE;
 
-	if (lua_pcall(gL, 0, 0, 0) != LUA_OK)
+	if (lua_pcall(gL, 0, 1, 0) != LUA_OK)
 	{
 		const char* error = lua_tostring(gL, -1);
 
 		ErrorLog(error, 0);
 		printf("ERROR: %s\n", error);
-		return FALSE;
+		return -2;
+	}
+
+	int returnval = 1;
+
+	// Check if there is return value
+	// We can use this value as returned exit code (0 = exit, 1 = continue, 2 = restart)
+	if (lua_type(gL, -1) == LUA_TNUMBER) {
+		returnval = (int)lua_tonumber(gL, -1);
+	}
+
+	// Do nothing if this is invalid
+	if (returnval < 0 || returnval > 2) {
+		returnval = 1;
 	}
 
 	gTS.p_read += gReadValue;
@@ -197,5 +210,5 @@ int TSCCommandModScript(char command[4])
 	gCommand = FALSE;
 	lua_settop(gL, 0); // Clear stack
 
-	return 2;
+	return returnval;
 }
