@@ -10,5 +10,5 @@ extern "C"
 
 #include "Lua.h"
 
-#define FUNCTION_TABLE_MOD_LOADER_SIZE 5
+#define FUNCTION_TABLE_MOD_LOADER_SIZE 8
 extern FUNCTION_TABLE ModLoaderFunctionTable[FUNCTION_TABLE_MOD_LOADER_SIZE];

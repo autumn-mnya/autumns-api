@@ -26,6 +26,9 @@ ModCS Lua:
     - ModCS.ModLoader.WriteLong(address, value) -> Write a long of data "value" at the address chosen.
     - ModCS.ModLoader.WriteWordBE(address, value) -> Write a word of data "value" at the address chosen, in Big Endian.
     - ModCS.ModLoader.WriteLongBE(address, value) -> Write a long of data "value" at the address chosen, in Big Endian.
+	- ModCS.ModLoader.GetByte(address) -> Returns the byte at the address given.
+	- ModCS.ModLoader.GetWord(address) -> Returns the word at the address given.
+	- ModCS.ModLoader.GetLong(address) -> Returns the long at the address given.
 - Sound
 	- ModCS.Sound.Create(number, ]array of lua samples]) -> Create a directsound ID
 	- ModCS.Sound.Destroy(number) -> Destroy a directsound ID
