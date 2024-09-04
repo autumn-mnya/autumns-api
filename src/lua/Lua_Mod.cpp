@@ -167,7 +167,7 @@ FUNCTION_TABLE ModFunctionTable[FUNCTION_TABLE_MOD_SIZE] =
 	{"SetStart", lua_ModSetStart},
 	{"SetBossHP", lua_ModSetBossHealth},
 	{"SetSpikeDamage", lua_ModSetSpikeDamage},
-	{"StartStartMyChar", lua_ModSetInitMyChar},
+	{"SetStartMyChar", lua_ModSetInitMyChar},
 };
 
 BOOL PreModeInitModScript(void)
