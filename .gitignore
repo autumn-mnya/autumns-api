@@ -6,9 +6,7 @@
 /Release
 mod.vcxproj.user
 *.exp
-*.lib
 *.pdb
-*.dll
 
 CaveStory/fps
 CaveStory/mute
