@@ -102,3 +102,11 @@ void TransferStageInitCode()
     ResetFlash();
     ExecuteTransferStageInitElementHandlers();
 }
+
+STAGE_TABLE* GetStageTable()
+{
+	if (stage_table_patched)
+		return gStageTable;
+	else
+		return gTMT;
+}

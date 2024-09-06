@@ -15,3 +15,4 @@ extern STAGE_TABLE* gStageTable;
 
 extern "C" __declspec(dllexport) BOOL LoadStageTable(char* name);
 void TransferStageInitCode();
+extern "C" __declspec(dllexport) STAGE_TABLE* GetStageTable();

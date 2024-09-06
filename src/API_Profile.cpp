@@ -17,6 +17,7 @@ DEFINE_ELEMENT_HANDLERS(SaveProfilePreCloseElementHandler, SaveProfilePreCloseEl
 DEFINE_ELEMENT_HANDLERS(SaveProfilePostCloseElementHandler, SaveProfilePostCloseElement)
 DEFINE_ELEMENT_HANDLERS(LoadProfilePreCloseElementHandler, LoadProfilePreCloseElement)
 DEFINE_ELEMENT_HANDLERS(LoadProfilePostCloseElementHandler, LoadProfilePostCloseElement)
+DEFINE_ELEMENT_HANDLERS(LoadProfileInitElementHandler, LoadProfileInitElement)
 DEFINE_ELEMENT_HANDLERS(InitializeGameInitElementHandler, InitializeGameInitElement)
 
 void SaveProfileCode(FILE* fp)
@@ -33,8 +34,15 @@ void LoadProfileCode(FILE* fp)
     ExecuteLoadProfilePostCloseElementHandlers();
 }
 
+void LoadProfileInitCode()
+{
+    ExecuteLoadProfileInitElementHandlers();
+    ClearFade();
+}
+
 void InitializeGameCode()
 {
     ClearArmsData();
     ExecuteInitializeGameInitElementHandlers();
 }
+

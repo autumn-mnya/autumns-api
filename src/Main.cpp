@@ -199,7 +199,7 @@ void InitMod(void)
     // Profile API (unfinished, need a way for the user to use the FILE* fp pointer, and i dont know how ,)
     ModLoader_WriteCall((void*)0x41D239, (void*)SaveProfileCode);
     ModLoader_WriteCall((void*)0x41D353, (void*)LoadProfileCode);
-
+    ModLoader_WriteCall((void*)0x41D508, (void*)LoadProfileInitCode);
     ModLoader_WriteCall((void*)0x41D576, (void*)InitializeGameCode);
 
     // PutFPS API
