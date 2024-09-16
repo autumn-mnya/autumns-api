@@ -57,6 +57,11 @@ int lua_PlayerIndex(lua_State* L)
 		lua_pushnumber(L, empty_caret_timer);
 		return 1;
 	}
+	else if (strcmp(x, "unit") == 0)
+	{
+		lua_pushnumber(L, gMC.unit);
+		return 1;
+	}
 
 	return 0;
 }
@@ -81,6 +86,11 @@ int lua_PlayerNextIndex(lua_State* L)
 	else if (strcmp(x, "ammo_empty") == 0)
 	{
 		empty_caret_timer = (int)luaL_checknumber(L, 3);
+		return 0;
+	}
+	else if (strcmp(x, "unit") == 0)
+	{
+		gMC.unit = (int)luaL_checknumber(L, 3);
 		return 0;
 	}
 
