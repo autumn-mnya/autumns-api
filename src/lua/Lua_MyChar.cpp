@@ -62,6 +62,11 @@ int lua_PlayerIndex(lua_State* L)
 		lua_pushnumber(L, gMC.unit);
 		return 1;
 	}
+	else if (strcmp(x, "boost_sw") == 0)
+	{
+		lua_pushnumber(L, gMC.boost_sw);
+		return 1;
+	}
 
 	return 0;
 }
@@ -91,6 +96,11 @@ int lua_PlayerNextIndex(lua_State* L)
 	else if (strcmp(x, "unit") == 0)
 	{
 		gMC.unit = (int)luaL_checknumber(L, 3);
+		return 0;
+	}
+	else if (strcmp(x, "boost_sw") == 0)
+	{
+		gMC.boost_sw = (int)luaL_checknumber(L, 3);
 		return 0;
 	}
 
