@@ -21,6 +21,7 @@ extern FUNCTION_TABLE GameFunctionTable[FUNCTION_TABLE_GAME_SIZE];
 
 BOOL GameInitModScript(void);
 BOOL GameActModScript(void);
+BOOL GameActModScript2(void);
 BOOL GameUpdateModScript(void);
 BOOL GameDrawModScript(void);
 BOOL GameDrawBelowFadeModScript(void);

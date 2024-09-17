@@ -116,6 +116,33 @@ BOOL GameActModScript(void)
 	return TRUE;
 }
 
+BOOL GameActModScript2(void)
+{
+	lua_getglobal(gL, "ModCS");
+	lua_getfield(gL, -1, "Game");
+	lua_getfield(gL, -1, "Act2");
+
+	if (lua_isnil(gL, -1))
+	{
+		lua_settop(gL, 0); // Clear stack
+		return TRUE;
+	}
+
+	if (lua_pcall(gL, 0, 0, 0) != LUA_OK)
+	{
+		const char* error = lua_tostring(gL, -1);
+
+		ErrorLog(error, 0);
+		printf("ERROR: %s\n", error);
+		MessageBoxA(ghWnd, "Couldn't execute game act2 function", "ModScript Error", MB_OK);
+		return FALSE;
+	}
+
+	lua_settop(gL, 0); // Clear stack
+
+	return TRUE;
+}
+
 BOOL GameUpdateModScript(void)
 {
 	lua_getglobal(gL, "ModCS");

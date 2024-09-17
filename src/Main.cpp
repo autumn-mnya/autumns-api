@@ -255,7 +255,7 @@ void InitMod(void)
 
     RegisterInitElement(Lua_GameInit);
     ModLoader_WriteCall((void*)0x4104D0, (void*)Lua_GameActTrg);
-    // RegisterEarlyActionElement(Lua_GameAct); // This needs to change in the future (Acting should occur in the ModeAction GetTrg() call)
+    RegisterEarlyActionElement(Lua_GameAct2); // Act2 runs like old ModCS, and is useful for many scenarios
     RegisterActionElement(Lua_GameUpdate);
     RegisterModeActionAbovePutFPSElement(Lua_GameDraw);
 

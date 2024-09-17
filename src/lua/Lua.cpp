@@ -864,6 +864,12 @@ void Lua_GameAct()
 		return;
 }
 
+void Lua_GameAct2()
+{
+	if (!GameActModScript2())
+		return;
+}
+
 void Lua_GameActTrg()
 {
 	GetTrg();

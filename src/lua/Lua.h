@@ -64,6 +64,7 @@ void InitMod_Lua();
 
 void Lua_GameInit();
 void Lua_GameAct();
+void Lua_GameAct2();
 void Lua_GameActTrg();
 void Lua_GameUpdate();
 void Lua_GameDraw();

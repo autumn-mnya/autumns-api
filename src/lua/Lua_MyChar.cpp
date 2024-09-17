@@ -67,6 +67,46 @@ int lua_PlayerIndex(lua_State* L)
 		lua_pushnumber(L, gMC.boost_sw);
 		return 1;
 	}
+	else if (strcmp(x, "ques") == 0)
+	{
+		lua_pushnumber(L, gMC.ques);
+		return 1;
+	}
+	else if (strcmp(x, "up") == 0)
+	{
+		lua_pushnumber(L, gMC.up);
+		return 1;
+	}
+	else if (strcmp(x, "down") == 0)
+	{
+		lua_pushnumber(L, gMC.down);
+		return 1;
+	}
+	else if (strcmp(x, "splash") == 0)
+	{
+		lua_pushnumber(L, gMC.sprash);
+		return 1;
+	}
+	else if (strcmp(x, "tgt_x") == 0)
+	{
+		lua_pushnumber(L, gMC.tgt_x);
+		return 1;
+	}
+	else if (strcmp(x, "tgt_y") == 0)
+	{
+		lua_pushnumber(L, gMC.tgt_y);
+		return 1;
+	}
+	else if (strcmp(x, "index_x") == 0)
+	{
+		lua_pushnumber(L, gMC.index_x);
+		return 1;
+	}
+	else if (strcmp(x, "index_y") == 0)
+	{
+		lua_pushnumber(L, gMC.index_y);
+		return 1;
+	}
 
 	return 0;
 }
@@ -101,6 +141,46 @@ int lua_PlayerNextIndex(lua_State* L)
 	else if (strcmp(x, "boost_sw") == 0)
 	{
 		gMC.boost_sw = (int)luaL_checknumber(L, 3);
+		return 0;
+	}
+	else if (strcmp(x, "ques") == 0)
+	{
+		gMC.ques = (int)luaL_checknumber(L, 3);
+		return 0;
+	}
+	else if (strcmp(x, "up") == 0)
+	{
+		gMC.up = (int)luaL_checknumber(L, 3);
+		return 0;
+	}
+	else if (strcmp(x, "down") == 0)
+	{
+		gMC.down = (int)luaL_checknumber(L, 3);
+		return 0;
+	}
+	else if (strcmp(x, "splash") == 0)
+	{
+		gMC.sprash = (int)luaL_checknumber(L, 3);
+		return 0;
+	}
+	else if (strcmp(x, "tgt_x") == 0)
+	{
+		gMC.tgt_x = (int)luaL_checknumber(L, 3);
+		return 0;
+	}
+	else if (strcmp(x, "tgt_y") == 0)
+	{
+		gMC.tgt_y = (int)luaL_checknumber(L, 3);
+		return 0;
+	}
+	else if (strcmp(x, "index_x") == 0)
+	{
+		gMC.index_x = (int)luaL_checknumber(L, 3);
+		return 0;
+	}
+	else if (strcmp(x, "index_y") == 0)
+	{
+		gMC.index_y = (int)luaL_checknumber(L, 3);
 		return 0;
 	}
 
@@ -242,6 +322,18 @@ static int lua_PlayerGetRect(lua_State* L)
 	return 1;
 }
 
+static int lua_PlayerGetHitbox(lua_State* L)
+{
+	OTHER_RECT* hit = (OTHER_RECT*)lua_newuserdata(L, sizeof(OTHER_RECT));
+
+	*hit = gMC.hit;
+
+	luaL_getmetatable(L, "RangeRectMeta");
+	lua_setmetatable(L, -2);
+
+	return 1;
+}
+
 static int lua_PlayerGetViewbox(lua_State* L)
 {
 	OTHER_RECT* view = (OTHER_RECT*)lua_newuserdata(L, sizeof(OTHER_RECT));
@@ -372,6 +464,12 @@ static int lua_PlayerTouchWater(lua_State* L)
 	return 1;
 }
 
+static int lua_PlayerAirProcess(lua_State* L)
+{
+	AirProcess();
+	return 0;
+}
+
 FUNCTION_TABLE PlayerFunctionTable[FUNCTION_TABLE_PLAYER_SIZE] =
 {
 	{"IsHit", lua_PlayerIsHit},
@@ -386,6 +484,7 @@ FUNCTION_TABLE PlayerFunctionTable[FUNCTION_TABLE_PLAYER_SIZE] =
 	{"OffsetRect", lua_PlayerOffsetRect},
 	{"SetViewbox", lua_PlayerSetViewbox},
 	{"GetRect", lua_PlayerGetRect},
+	{"GetHitbox", lua_PlayerGetHitbox},
 	{"GetViewbox", lua_PlayerGetViewbox},
 	{"SetArmsYOffset", lua_PlayerSetArmsYOffset},
 	{"Equip", lua_PlayerEquip},
@@ -398,5 +497,6 @@ FUNCTION_TABLE PlayerFunctionTable[FUNCTION_TABLE_PLAYER_SIZE] =
 	{"TouchSlopeRight", lua_PlayerTouchSlopeRight},
 	{"TouchSlopeLeft", lua_PlayerTouchSlopeLeft},
 	{"TouchTile", lua_PlayerTouchTile},
-	{"TouchWater", lua_PlayerTouchWater}
+	{"TouchWater", lua_PlayerTouchWater},
+	{"ProcessAir", lua_PlayerAirProcess},
 };

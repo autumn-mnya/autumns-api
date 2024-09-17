@@ -1,14 +1,22 @@
 --require("arms")
 -- require("npc")
+require("mychar")
 
 print("Hello World!")
 
-function ModCS.Game.Act()
-	if ModCS.Key.Jump() then
-		if ModCS.Player.direct == 0 then
-			ModCS.Player.xm = -1535
-		else
-			ModCS.Player.xm = 1535
+function ModCS.Game.Act2()
+	if ModCS.Player.unit == 2 then
+		ModCS.Player.ProcessAir()
+		PlayerMovementRecreation()
+	else
+		if ModCS.Key.Map() then
+			ModCS.Player.Equip(32)
+			ModCS.Player.unit = 2
 		end
 	end
+end
+
+function ModCS.Game.Draw()
+	ModCS.PutNumber(ModCS.Player.x, 0, 0)
+	ModCS.PutNumber(ModCS.Player.y, 0, 8)
 end

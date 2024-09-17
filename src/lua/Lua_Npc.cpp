@@ -533,6 +533,35 @@ static int lua_SpawnNpc(lua_State* L)
 	return 1;
 }
 
+static int lua_SpawnNpc2(lua_State* L)
+{
+	int code_char = (int)luaL_checknumber(L, 1);
+	int x = (int)(luaL_checknumber(L, 2) * 0x200);
+	int y = (int)(luaL_checknumber(L, 3) * 0x200);
+	int xm = (int)(luaL_checknumber(L, 4));
+	int ym = (int)(luaL_checknumber(L, 5));
+	int dir = (int)(luaL_checknumber(L, 6));
+	unsigned int start_index = (int)luaL_optnumber(L, 7, 0x100);
+
+	int n = start_index;
+
+	while (n < NPC_MAX && gNPC[n].cond)
+		++n;
+
+	if (n == NPC_MAX)
+		return 0;
+
+	NPCHAR** npc = (NPCHAR**)lua_newuserdata(L, sizeof(NPCHAR*));
+	*npc = &gNPC[n];
+
+	luaL_getmetatable(L, "NpcMeta");
+	lua_setmetatable(L, -2);
+
+	SetNpChar(code_char, x, y, xm, ym, dir, NULL, start_index);
+
+	return 1;
+}
+
 static int lua_ActCodeNpc(lua_State* L)
 {
 	NPCHAR* npc = *(NPCHAR**)luaL_checkudata(L, 1, "NpcMeta");
@@ -575,6 +604,7 @@ FUNCTION_TABLE NpcFunctionTable[FUNCTION_TABLE_NPC_SIZE] =
 	{"TriggerBox", lua_NpcTriggerBox},
 	{"Change", lua_ChangeNpc},
 	{"Spawn", lua_SpawnNpc},
+	{"Spawn2", lua_SpawnNpc2},
 	{"ActCode", lua_ActCodeNpc},
 };
 
