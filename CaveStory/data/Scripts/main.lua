@@ -5,8 +5,14 @@ require("mychar")
 print("Hello World!")
 
 function ModCS.Game.Act2()
-	if ModCS.Key.Map() then
-		ModCS.Player.Equip(32)
+	if ModCS.Player.unit == 2 then
+		ModCS.Player.ProcessAir()
+		PlayerMovementRecreation()
+	else
+		if ModCS.Key.Map() then
+			ModCS.Player.Equip(32)
+			ModCS.Player.unit = 2
+		end
 	end
 end
 

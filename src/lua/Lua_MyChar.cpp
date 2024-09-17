@@ -25,11 +25,17 @@ static STRUCT_TABLE PlayerTable[] =
 	{"y", offsetof(MYCHAR, y), TYPE_PIXEL},
 	{"xm", offsetof(MYCHAR, xm), TYPE_NUMBER},
 	{"ym", offsetof(MYCHAR, ym), TYPE_NUMBER},
+	{"tgt_x", offsetof(MYCHAR, tgt_x), TYPE_NUMBER},
+	{"tgt_y", offsetof(MYCHAR, tgt_y), TYPE_NUMBER},
+	{"index_x", offsetof(MYCHAR, index_x), TYPE_NUMBER},
+	{"index_y", offsetof(MYCHAR, index_y), TYPE_NUMBER},
+	{"up", offsetof(MYCHAR, up), TYPE_NUMBER},
+	{"down", offsetof(MYCHAR, down), TYPE_NUMBER},
+	{"unit", offsetof(MYCHAR, unit), TYPE_NUMBER},
 	{"ani_no", offsetof(MYCHAR, ani_no), TYPE_NUMBER},
 	{"ani_wait", offsetof(MYCHAR, ani_wait), TYPE_NUMBER},
 	{"boost_fuel", offsetof(MYCHAR, boost_cnt), TYPE_NUMBER},
 	{"direct", offsetof(MYCHAR, direct), TYPE_NUMBER},
-	// don't use
 	{"cond", offsetof(MYCHAR, cond), TYPE_NUMBER},
 	{"hit_flag", offsetof(MYCHAR, flag), TYPE_NUMBER},
 	{"equip", offsetof(MYCHAR, equip), TYPE_NUMBER},
@@ -57,11 +63,6 @@ int lua_PlayerIndex(lua_State* L)
 		lua_pushnumber(L, empty_caret_timer);
 		return 1;
 	}
-	else if (strcmp(x, "unit") == 0)
-	{
-		lua_pushnumber(L, gMC.unit);
-		return 1;
-	}
 	else if (strcmp(x, "boost_sw") == 0)
 	{
 		lua_pushnumber(L, gMC.boost_sw);
@@ -72,39 +73,9 @@ int lua_PlayerIndex(lua_State* L)
 		lua_pushnumber(L, gMC.ques);
 		return 1;
 	}
-	else if (strcmp(x, "up") == 0)
-	{
-		lua_pushnumber(L, gMC.up);
-		return 1;
-	}
-	else if (strcmp(x, "down") == 0)
-	{
-		lua_pushnumber(L, gMC.down);
-		return 1;
-	}
 	else if (strcmp(x, "splash") == 0)
 	{
 		lua_pushnumber(L, gMC.sprash);
-		return 1;
-	}
-	else if (strcmp(x, "tgt_x") == 0)
-	{
-		lua_pushnumber(L, gMC.tgt_x);
-		return 1;
-	}
-	else if (strcmp(x, "tgt_y") == 0)
-	{
-		lua_pushnumber(L, gMC.tgt_y);
-		return 1;
-	}
-	else if (strcmp(x, "index_x") == 0)
-	{
-		lua_pushnumber(L, gMC.index_x);
-		return 1;
-	}
-	else if (strcmp(x, "index_y") == 0)
-	{
-		lua_pushnumber(L, gMC.index_y);
 		return 1;
 	}
 
@@ -133,11 +104,6 @@ int lua_PlayerNextIndex(lua_State* L)
 		empty_caret_timer = (int)luaL_checknumber(L, 3);
 		return 0;
 	}
-	else if (strcmp(x, "unit") == 0)
-	{
-		gMC.unit = (int)luaL_checknumber(L, 3);
-		return 0;
-	}
 	else if (strcmp(x, "boost_sw") == 0)
 	{
 		gMC.boost_sw = (int)luaL_checknumber(L, 3);
@@ -148,39 +114,9 @@ int lua_PlayerNextIndex(lua_State* L)
 		gMC.ques = (int)luaL_checknumber(L, 3);
 		return 0;
 	}
-	else if (strcmp(x, "up") == 0)
-	{
-		gMC.up = (int)luaL_checknumber(L, 3);
-		return 0;
-	}
-	else if (strcmp(x, "down") == 0)
-	{
-		gMC.down = (int)luaL_checknumber(L, 3);
-		return 0;
-	}
 	else if (strcmp(x, "splash") == 0)
 	{
 		gMC.sprash = (int)luaL_checknumber(L, 3);
-		return 0;
-	}
-	else if (strcmp(x, "tgt_x") == 0)
-	{
-		gMC.tgt_x = (int)luaL_checknumber(L, 3);
-		return 0;
-	}
-	else if (strcmp(x, "tgt_y") == 0)
-	{
-		gMC.tgt_y = (int)luaL_checknumber(L, 3);
-		return 0;
-	}
-	else if (strcmp(x, "index_x") == 0)
-	{
-		gMC.index_x = (int)luaL_checknumber(L, 3);
-		return 0;
-	}
-	else if (strcmp(x, "index_y") == 0)
-	{
-		gMC.index_y = (int)luaL_checknumber(L, 3);
 		return 0;
 	}
 
