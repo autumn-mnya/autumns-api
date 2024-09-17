@@ -73,6 +73,11 @@ int lua_PlayerIndex(lua_State* L)
 		lua_pushnumber(L, gMC.ques);
 		return 1;
 	}
+	else if (strcmp(x, "shock") == 0)
+	{
+		lua_pushnumber(L, gMC.shock);
+		return 1;
+	}
 	else if (strcmp(x, "splash") == 0)
 	{
 		lua_pushnumber(L, gMC.sprash);
@@ -112,6 +117,11 @@ int lua_PlayerNextIndex(lua_State* L)
 	else if (strcmp(x, "ques") == 0)
 	{
 		gMC.ques = (int)luaL_checknumber(L, 3);
+		return 0;
+	}
+	else if (strcmp(x, "shock") == 0)
+	{
+		gMC.shock = (int)luaL_checknumber(L, 3);
 		return 0;
 	}
 	else if (strcmp(x, "splash") == 0)
