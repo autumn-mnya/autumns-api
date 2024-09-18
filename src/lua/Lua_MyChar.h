@@ -13,5 +13,5 @@ extern "C"
 int lua_PlayerIndex(lua_State* L);
 int lua_PlayerNextIndex(lua_State* L);
 
-#define FUNCTION_TABLE_PLAYER_SIZE 27
+#define FUNCTION_TABLE_PLAYER_SIZE 29
 extern FUNCTION_TABLE PlayerFunctionTable[FUNCTION_TABLE_PLAYER_SIZE];

@@ -13,7 +13,7 @@ extern "C"
 int lua_NpcIndex(lua_State* L);
 int lua_NpcNextIndex(lua_State* L);
 
-#define FUNCTION_TABLE_NPC_SIZE 32
+#define FUNCTION_TABLE_NPC_SIZE 34
 extern FUNCTION_TABLE NpcFunctionTable[FUNCTION_TABLE_NPC_SIZE];
 
 int NpcActModScript(int char_code, int i);

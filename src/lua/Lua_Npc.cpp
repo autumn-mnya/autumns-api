@@ -53,7 +53,6 @@ static STRUCT_TABLE NpcTable[] =
 	{"act_wait", offsetof(NPCHAR, act_wait), TYPE_NUMBER},
 	{"damage", offsetof(NPCHAR, damage), TYPE_NUMBER},
 	{"pNpc", offsetof(NPCHAR, pNpc), TYPE_NPC},
-	// don't use
 	{"cond", offsetof(NPCHAR, cond), TYPE_NUMBER},
 	{"hit_flag", offsetof(NPCHAR, flag), TYPE_NUMBER},
 	{"shock", offsetof(NPCHAR, shock), TYPE_NUMBER},
@@ -398,6 +397,31 @@ static int lua_NpcTouchTile(lua_State* L)
 	return 1;
 }
 
+static int lua_NpcTouchWater(lua_State* L)
+{
+	NPCHAR* npc = *(NPCHAR**)luaL_checkudata(L, 1, "NpcMeta");
+
+	if (npc->flag & 0x100)
+		lua_pushboolean(L, 1);
+	else
+		lua_pushboolean(L, 0);
+
+	return 1;
+}
+
+static int lua_NpcCheckHitFlag(lua_State* L)
+{
+	NPCHAR* npc = *(NPCHAR**)luaL_checkudata(L, 1, "NpcMeta");
+	int flagID = (int)luaL_checknumber(L, 2);
+
+	if (npc->flag & flagID)
+		lua_pushboolean(L, 1);
+	else
+		lua_pushboolean(L, 0);
+
+	return 1;
+}
+
 static int lua_NpcTouchPlayer(lua_State* L)
 {
 	NPCHAR* npc = *(NPCHAR**)luaL_checkudata(L, 1, "NpcMeta");
@@ -597,6 +621,8 @@ FUNCTION_TABLE NpcFunctionTable[FUNCTION_TABLE_NPC_SIZE] =
 	{"TouchSlopeRight", lua_NpcTouchSlopeRight},
 	{"TouchSlopeLeft", lua_NpcTouchSlopeLeft},
 	{"TouchTile", lua_NpcTouchTile},
+	{"TouchWater", lua_NpcTouchWater},
+	{"HitFlag", lua_NpcCheckHitFlag},
 	{"TouchPlayer", lua_NpcTouchPlayer},
 	{"Move", lua_NpcMove},
 	{"Move2", lua_NpcMove2},

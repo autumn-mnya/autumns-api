@@ -256,6 +256,26 @@ static int lua_PlayerSetViewbox(lua_State* L)
 	return 0;
 }
 
+static int lua_PlayerSetHitbox(lua_State* L)
+{
+	if (lua_isnumber(L, 1))
+	{
+		gMC.hit.front = (int)(luaL_checknumber(L, 1) * 0x200);
+		gMC.hit.top = (int)(luaL_checknumber(L, 2) * 0x200);
+		gMC.hit.back = (int)(luaL_checknumber(L, 3) * 0x200);
+		gMC.hit.bottom = (int)(luaL_checknumber(L, 4) * 0x200);
+	}
+	else if (lua_isuserdata(L, 1)) {
+		gMC.hit = *(OTHER_RECT*)luaL_checkudata(L, 1, "RangeRectMeta");
+	}
+	else {
+		luaL_error(L, "bad argument #1 to 'SetHitbox' (number or RangeRectMeta expected, got %s)", luaL_typename(L, 1));
+		return 0;
+	}
+
+	return 0;
+}
+
 static int lua_PlayerGetRect(lua_State* L)
 {
 	RECT* rect = (RECT*)lua_newuserdata(L, sizeof(RECT));
@@ -410,6 +430,18 @@ static int lua_PlayerTouchWater(lua_State* L)
 	return 1;
 }
 
+static int lua_PlayerCheckHitFlag(lua_State* L)
+{
+	int flagID = (int)luaL_checknumber(L, 1);
+
+	if (gMC.flag & flagID)
+		lua_pushboolean(L, 1);
+	else
+		lua_pushboolean(L, 0);
+
+	return 1;
+}
+
 static int lua_PlayerAirProcess(lua_State* L)
 {
 	AirProcess();
@@ -429,6 +461,7 @@ FUNCTION_TABLE PlayerFunctionTable[FUNCTION_TABLE_PLAYER_SIZE] =
 	{"SetRect", lua_PlayerSetRect},
 	{"OffsetRect", lua_PlayerOffsetRect},
 	{"SetViewbox", lua_PlayerSetViewbox},
+	{"SetHitbox", lua_PlayerSetHitbox},
 	{"GetRect", lua_PlayerGetRect},
 	{"GetHitbox", lua_PlayerGetHitbox},
 	{"GetViewbox", lua_PlayerGetViewbox},
@@ -444,5 +477,6 @@ FUNCTION_TABLE PlayerFunctionTable[FUNCTION_TABLE_PLAYER_SIZE] =
 	{"TouchSlopeLeft", lua_PlayerTouchSlopeLeft},
 	{"TouchTile", lua_PlayerTouchTile},
 	{"TouchWater", lua_PlayerTouchWater},
+	{"HitFlag", lua_PlayerCheckHitFlag},
 	{"ProcessAir", lua_PlayerAirProcess},
 };
