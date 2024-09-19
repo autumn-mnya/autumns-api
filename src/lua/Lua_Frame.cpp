@@ -98,6 +98,18 @@ static int lua_CameraSetAltQuake(lua_State* L)
 	return 0;
 }
 
+static int lua_CameraSetXPos(lua_State* L)
+{
+	gFrame.x = (int)(luaL_checknumber(L, 1) * 0x200);
+	return 0;
+}
+
+static int lua_CameraSetYPos(lua_State* L)
+{
+	gFrame.y = (int)(luaL_checknumber(L, 1) * 0x200);
+	return 0;
+}
+
 FUNCTION_TABLE CameraFunctionTable[FUNCTION_TABLE_CAMERA_SIZE] =
 {
 	{"SetTarget", lua_CameraSetTarget},
@@ -105,6 +117,8 @@ FUNCTION_TABLE CameraFunctionTable[FUNCTION_TABLE_CAMERA_SIZE] =
 	{"Reset", lua_CameraReset},
 	{"GetXPos", lua_CameraGetXPos},
 	{"GetYPos", lua_CameraGetYPos},
+	{"SetXPos", lua_CameraSetXPos},
+	{"SetYPos", lua_CameraSetYPos},
 	{"SetQuake", lua_CameraSetQuake},
 	{"SetAltQuake", lua_CameraSetAltQuake}
 };

@@ -10,5 +10,5 @@ extern "C"
 
 #include "Lua.h"
 
-#define FUNCTION_TABLE_CAMERA_SIZE 7
+#define FUNCTION_TABLE_CAMERA_SIZE 9
 extern FUNCTION_TABLE CameraFunctionTable[FUNCTION_TABLE_CAMERA_SIZE];
