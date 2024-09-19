@@ -28,9 +28,9 @@ BOOL IsProfileCustom(const char* name)
 
 	// Get path
 	if (name != NULL)
-		sprintf(path, "%s\\%s", exeModulePath, name);
+		ProfilePath(path, "%s\\%s", exeModulePath, name);
 	else
-		sprintf(path, "%s\\%s", exeModulePath, gDefaultName);
+		ProfilePath(path, "%s\\%s", exeModulePath, gDefaultName);
 
 	HANDLE hFile = CreateFileA(path, 0, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hFile == INVALID_HANDLE_VALUE)
@@ -61,11 +61,18 @@ static int lua_ProfileExists(lua_State* L)
 	return 1;
 }
 
+static int lua_ProfileGetName(lua_State* L)
+{
+	lua_pushstring(L, GetCustomSaveName());
+	return 1;
+}
+
 FUNCTION_TABLE ProfileFunctionTable[FUNCTION_TABLE_PROFILE_SIZE] =
 {
 	{"Save", lua_ProfileSave},
 	{"Load", lua_ProfileLoad},
 	{"Exists", lua_ProfileExists},
+	{"GetName", lua_ProfileGetName},
 };
 
 BOOL ProfileSavingModScript(void)

@@ -20,6 +20,14 @@ DEFINE_ELEMENT_HANDLERS(LoadProfilePostCloseElementHandler, LoadProfilePostClose
 DEFINE_ELEMENT_HANDLERS(LoadProfileInitElementHandler, LoadProfileInitElement)
 DEFINE_ELEMENT_HANDLERS(InitializeGameInitElementHandler, InitializeGameInitElement)
 
+char gCustomSaveName[260];
+
+void ProfilePath(char* p, const char* fm, const char* mp, const char* nm)
+{
+    sprintf(p, fm, mp, nm);
+    strcpy(gCustomSaveName, nm);
+}
+
 void SaveProfileCode(FILE* fp)
 {
     ExecuteSaveProfilePreCloseElementHandlers();
@@ -46,3 +54,7 @@ void InitializeGameCode()
     ExecuteInitializeGameInitElementHandlers();
 }
 
+char* GetCustomSaveName()
+{
+    return gCustomSaveName;
+}
