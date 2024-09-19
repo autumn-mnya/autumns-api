@@ -211,7 +211,12 @@ void InitMod(void)
     ModLoader_WriteCall((void*)0x410643, (void*)PutStage_BackCode);
     ModLoader_WriteCall((void*)0x4106C3, (void*)PutStage_FrontCode);
 
-    // Profile API (unfinished, need a way for the user to use the FILE* fp pointer, and i dont know how ,)
+    // Profile API
+    // ModLoader_WriteCall((void*)0x41CFE8, (void*)ProfilePath); //IsProfile
+    ModLoader_WriteCall((void*)0x41D095, (void*)ProfilePath); //Save
+    ModLoader_WriteCall((void*)0x41D2A9, (void*)ProfilePath); //Load
+    ModLoader_WriteCall((void*)0x41D073, (void*)ProfilePath); //Save (Custom)
+    ModLoader_WriteCall((void*)0x41D287, (void*)ProfilePath); //Load (Custom)
     ModLoader_WriteCall((void*)0x41D239, (void*)SaveProfileCode);
     ModLoader_WriteCall((void*)0x41D353, (void*)LoadProfileCode);
     ModLoader_WriteCall((void*)0x41D508, (void*)LoadProfileInitCode);

@@ -86,6 +86,7 @@ typedef void (*SaveProfilePreCloseElementHandler)();
 typedef void (*SaveProfilePostCloseElementHandler)();
 typedef void (*LoadProfilePreCloseElementHandler)();
 typedef void (*LoadProfilePostCloseElementHandler)();
+typedef void (*LoadProfileInitElementHandler)();
 typedef void (*InitializeGameInitElementHandler)();
 // PutFPS
 typedef void (*PutFPSElementHandler)();
@@ -154,6 +155,7 @@ DEFINE_REGISTER_HEADER(SaveProfilePreCloseElementHandler, SaveProfilePreCloseEle
 DEFINE_REGISTER_HEADER(SaveProfilePostCloseElementHandler, SaveProfilePostCloseElement)
 DEFINE_REGISTER_HEADER(LoadProfilePreCloseElementHandler, LoadProfilePreCloseElement)
 DEFINE_REGISTER_HEADER(LoadProfilePostCloseElementHandler, LoadProfilePostCloseElement)
+DEFINE_REGISTER_HEADER(LoadProfileInitElementHandler, LoadProfileInitElement)
 DEFINE_REGISTER_HEADER(InitializeGameInitElementHandler, InitializeGameInitElement)
 DEFINE_REGISTER_HEADER(PutFPSElementHandler, PutFPSElement)
 DEFINE_REGISTER_HEADER(TextScriptSVPElementHandler, SVPElement)
@@ -174,3 +176,4 @@ BOOL ReloadModScript();
 unsigned char ModLoader_GetByte(void* address);
 unsigned short ModLoader_GetWord(void* address);
 unsigned long ModLoader_GetLong(void* address);
+char* GetCustomSaveName();
