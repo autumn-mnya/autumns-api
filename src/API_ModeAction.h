@@ -55,8 +55,6 @@ ELEMENT_HEADERS(AbovePutStage_FrontElementHandler, AbovePutStage_FrontElement)
 void PutStage_BackCode(int fx, int fy);
 void PutStage_FrontCode(int fx, int fy);
 void PutBackCode(int fx, int fy);
-void PlayerHUDCode();
-void CreditsUICode();
 void FadeCode();
 void TextBoxCode();
 void DrawPlayerCode(int fx, int fy);
