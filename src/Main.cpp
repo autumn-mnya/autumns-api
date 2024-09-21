@@ -199,7 +199,7 @@ void InitMod(void)
     ModLoader_WriteCall((void*)0x41D095, (void*)ProfilePath); //Save
     ModLoader_WriteCall((void*)0x41D2A9, (void*)ProfilePath); //Load
     ModLoader_WriteCall((void*)0x41D073, (void*)ProfilePath); //Save (Custom)
-    ModLoader_WriteCall((void*)0x41D287, (void*)ProfilePath); //Load (Custom)
+    ModLoader_WriteCall((void*)0x41D287, (void*)ProfilePathLoadCustom); //Load (Custom)
     ModLoader_WriteCall((void*)0x41D239, (void*)SaveProfileCode);
     ModLoader_WriteCall((void*)0x41D353, (void*)LoadProfileCode);
     ModLoader_WriteCall((void*)0x41D508, (void*)LoadProfileInitCode);
