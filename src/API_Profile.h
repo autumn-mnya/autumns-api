@@ -21,6 +21,7 @@ ELEMENT_HEADERS(LoadProfileInitElementHandler, LoadProfileInitElement)
 ELEMENT_HEADERS(InitializeGameInitElementHandler, InitializeGameInitElement)
 
 void ProfilePath(char* p, const char* fm, const char* mp, const char* nm);
+void ProfilePathLoadCustom(char* p, const char* fm, const char* nm);
 void SaveProfileCode(FILE* fp);
 void LoadProfileCode(FILE* fp);
 void LoadProfileInitCode();

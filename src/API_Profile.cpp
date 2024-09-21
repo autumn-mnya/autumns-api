@@ -28,6 +28,12 @@ void ProfilePath(char* p, const char* fm, const char* mp, const char* nm)
     strcpy(gCustomSaveName, nm);
 }
 
+void ProfilePathLoadCustom(char* p, const char* fm, const char* nm)
+{
+    sprintf(p, fm, nm);
+    strcpy(gCustomSaveName, nm);
+}
+
 void SaveProfileCode(FILE* fp)
 {
     ExecuteSaveProfilePreCloseElementHandlers();

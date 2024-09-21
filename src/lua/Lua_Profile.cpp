@@ -50,7 +50,9 @@ static int lua_ProfileSave(lua_State* L)
 static int lua_ProfileLoad(lua_State* L)
 {
 	const char* name = luaL_optstring(L, 1, NULL);
-	BOOL sc = LoadProfile(name);
+    char path[MAX_PATH];
+	sprintf(path, "%s\\%s", exeModulePath, name);
+	BOOL sc = LoadProfile(path);
 	lua_pushboolean(L, sc);
 	return 1;
 }
