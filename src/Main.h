@@ -32,7 +32,7 @@ extern BOOL gModeSetted;
 
 
 // Define the macros to automate handler creation
-#define DEFINE_ELEMENT_HANDLERS_ARG_1(Type, Name, Arg0Type) \
+/*#define DEFINE_ELEMENT_HANDLERS_ARG_1(Type, Name, Arg0Type) \
     std::vector<Type> Name##Handlers; \
     \
     void Register##Name(Type handler) \
@@ -50,4 +50,4 @@ extern BOOL gModeSetted;
 
 #define ELEMENT_HEADERS_ARG_1(Type, Name, Arg0Type) \
     extern "C" __declspec(dllexport) void Register##Name(Type handler); \
-    void Execute##Name##Handlers(Arg0Type arg0);
+    void Execute##Name##Handlers(Arg0Type arg0);*/

@@ -13,9 +13,9 @@
 #include "mod_loader.h"
 #include "cave_story.h"
 
-DEFINE_ELEMENT_HANDLERS_ARG_1(SaveProfilePreCloseElementHandler, SaveProfilePreCloseElement, FILE*)
+DEFINE_ELEMENT_HANDLERS(SaveProfilePreCloseElementHandler, SaveProfilePreCloseElement)
 DEFINE_ELEMENT_HANDLERS(SaveProfilePostCloseElementHandler, SaveProfilePostCloseElement)
-DEFINE_ELEMENT_HANDLERS_ARG_1(LoadProfilePreCloseElementHandler, LoadProfilePreCloseElement, FILE*)
+DEFINE_ELEMENT_HANDLERS(LoadProfilePreCloseElementHandler, LoadProfilePreCloseElement)
 DEFINE_ELEMENT_HANDLERS(LoadProfilePostCloseElementHandler, LoadProfilePostCloseElement)
 DEFINE_ELEMENT_HANDLERS(LoadProfileInitElementHandler, LoadProfileInitElement)
 DEFINE_ELEMENT_HANDLERS(InitializeGameInitElementHandler, InitializeGameInitElement)
@@ -30,14 +30,14 @@ void ProfilePath(char* p, const char* fm, const char* mp, const char* nm)
 
 void SaveProfileCode(FILE* fp)
 {
-    ExecuteSaveProfilePreCloseElementHandlers(fp);
+    ExecuteSaveProfilePreCloseElementHandlers();
     Freeware_fclose(fp);
     ExecuteSaveProfilePostCloseElementHandlers();
 }
 
 void LoadProfileCode(FILE* fp)
 {
-    ExecuteLoadProfilePreCloseElementHandlers(fp);
+    ExecuteLoadProfilePreCloseElementHandlers();
     Freeware_fclose(fp);
     ExecuteLoadProfilePostCloseElementHandlers();
 }
