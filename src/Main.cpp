@@ -196,8 +196,6 @@ void InitMod(void)
     ModLoader_WriteCall((void*)0x410369, (void*)ModeTitlePutFPSCode);
 
     // ModeAction API
-    ModLoader_WriteCall((void*)0x410856, (void*)PlayerHUDCode);
-    ModLoader_WriteCall((void*)0x41086A, (void*)CreditsUICode);
     ModLoader_WriteCall((void*)0x4106F5, (void*)FadeCode);
     ModLoader_WriteCall((void*)0x41086F, (void*)TextBoxCode);
     ModLoader_WriteCall((void*)0x410683, (void*)DrawPlayerCode);

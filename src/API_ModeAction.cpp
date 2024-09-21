@@ -59,18 +59,6 @@ void PutBackCode(int fx, int fy)
     ExecuteAbovePutBackElementHandlers();
 }
 
-void PlayerHUDCode()
-{
-    PutActiveArmsList();
-    ExecutePlayerHudElementHandlers();
-}
-
-void CreditsUICode()
-{
-    PutStripper();
-    ExecuteCreditsHudElementHandlers();
-}
-
 void FadeCode()
 {
     ExecuteBelowFadeElementHandlers();
@@ -80,6 +68,14 @@ void FadeCode()
 
 void TextBoxCode()
 {
+    // Run player HUD code here
+    if (g_GameFlags & 2)
+        ExecutePlayerHudElementHandlers();
+
+    // Run credits drawing code here
+    if (g_GameFlags & 8)
+        ExecuteCreditsHudElementHandlers();
+
     ExecuteBelowTextBoxElementHandlers();
     PutTextScript();
     ExecuteAboveTextBoxElementHandlers();
