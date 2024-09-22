@@ -27,11 +27,26 @@ static int lua_GameGetMode(lua_State* L)
 	return 1;
 }
 
+static int lua_GameSetMode(lua_State* L)
+{
+	gCurrentGameMode = (int)luaL_checkinteger(L, 1);
+	gModeSetted = TRUE;
+
+	return 0;
+}
+
 static int lua_GameIsNew(lua_State* L)
 {
 	lua_pushboolean(L, !bContinue);
 
 	return 1;
+}
+
+static int lua_GameSetNew(lua_State* L)
+{
+	bContinue = !lua_toboolean(L, 1);
+
+	return 0;
 }
 
 static int lua_GameCanAct(lua_State* L)
@@ -57,7 +72,9 @@ static int lua_GameCanControl(lua_State* L)
 FUNCTION_TABLE GameFunctionTable[FUNCTION_TABLE_GAME_SIZE] =
 {
 	{"GetMode", lua_GameGetMode},
+	{"SetMode", lua_GameSetMode},
 	{"IsNew", lua_GameIsNew},
+	{"SetNew", lua_GameSetNew},
 	{"CanAct", lua_GameCanAct},
 	{"CanControl", lua_GameCanControl}
 };

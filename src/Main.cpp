@@ -38,6 +38,7 @@
 #include "lua/Lua_Stage.h"
 
 int gCurrentGameMode = 0;
+BOOL gModeSetted = FALSE;
 
 void SetModeOpening()
 {
@@ -138,6 +139,16 @@ void LoadModTables()
     LoadCaretTable();
 }
 
+static int ModeSwitchFunction(MLHookCPURegisters* regs, void* ud) {
+    if (gModeSetted) {
+        gModeSetted = FALSE;
+        regs->eax = gCurrentGameMode; // Setting the return value
+        regs->eip += 14; // At each of the places I put this hook the JMP to the return is 14 bytes ahead
+        return 1;
+    }
+    return 0;
+}
+
 void InitMod(void)
 {
     InitMod_Settings();
@@ -145,6 +156,10 @@ void InitMod(void)
     // Tile Type api (unfinished, is complicated)
     // RegisterDefaultTileTypes();
     // ModLoader_WriteJump((void*)0x417E40, (void*)Replacement_HitMyCharMap);
+
+    ModLoader_AddStackableHook((void*)0x40F930, 8, ModeSwitchFunction, (void*)0); // intro
+    ModLoader_AddStackableHook((void*)0x410375, 8, ModeSwitchFunction, (void*)0); // title
+    ModLoader_AddStackableHook((void*)0x410880, 8, ModeSwitchFunction, (void*)0); // game
 
     // Boss API
     ModLoader_WriteJump((void*)ActBossChar, (void*)Replacement_ActBossChar);

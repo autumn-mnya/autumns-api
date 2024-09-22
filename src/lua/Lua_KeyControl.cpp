@@ -155,16 +155,16 @@ static int lua_GetKeyTrg(lua_State* L)
 	return 1;
 }
 
-static int lua_ClearKey(lua_State* L)
+static int lua_SetKey(lua_State* L)
 {
-	gKey = 0;
+	gKey = (int)luaL_checkinteger(L, 1);
 
 	return 0;
 }
 
-static int lua_ClearKeyTrg(lua_State* L)
+static int lua_SetKeyTrg(lua_State* L)
 {
-	gKeyTrg = 0;
+	gKeyTrg = (int)luaL_checkinteger(L, 1);
 
 	return 0;
 }
@@ -192,8 +192,8 @@ FUNCTION_TABLE KeyFunctionTable[FUNCTION_TABLE_KEY_SIZE] =
 	{"Shift", lua_KeyShift},
 	{"GetKey", lua_GetKey},
 	{"GetKeyTrg", lua_GetKeyTrg},
-	{"ClearKey", lua_ClearKey},
-	{"ClearKeyTrg", lua_ClearKeyTrg},
+	{"SetKey", lua_SetKey},
+	{"SetKeyTrg", lua_SetKeyTrg},
 	{"GetTrg", lua_GetTrg},
 };
 

@@ -665,6 +665,17 @@ static int lua_GetMag(lua_State* L)
 	return 1;
 }
 
+static int lua_PutFPS(lua_State* L) {
+	PutFramePerSecound();
+	return 0;
+}
+
+static int lua_SetFadeMask(lua_State* L) {
+	SetFadeMask();
+	gFade.mode = 0;
+	return 0;
+}
+
 BOOL InitModScript(void)
 {
 	char scriptpath[MAX_PATH];
@@ -758,6 +769,12 @@ BOOL InitModScript(void)
 
 	lua_pushcfunction(gL, lua_GetMag);
 	lua_setfield(gL, -2, "GetMag");
+
+	lua_pushcfunction(gL, lua_PutFPS);
+	lua_setfield(gL, -2, "PutFPS");
+
+	lua_pushcfunction(gL, lua_SetFadeMask);
+	lua_setfield(gL, -2, "SetFadeMask");
 
 	PushFunctionTable(gL, "RangeRect", OtherRectFunctionTable, FUNCTION_TABLE_OTHER_RECT_SIZE, TRUE);
 	PushFunctionTable(gL, "Game", GameFunctionTable, FUNCTION_TABLE_GAME_SIZE, TRUE);

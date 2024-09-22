@@ -10,7 +10,7 @@ extern "C"
 
 #include "Lua.h"
 
-#define FUNCTION_TABLE_PROFILE_SIZE 4
+#define FUNCTION_TABLE_PROFILE_SIZE 5
 extern FUNCTION_TABLE ProfileFunctionTable[FUNCTION_TABLE_PROFILE_SIZE];
 
 void RegisterSaveAndLoad();

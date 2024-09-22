@@ -50,10 +50,18 @@ static int lua_ProfileSave(lua_State* L)
 static int lua_ProfileLoad(lua_State* L)
 {
 	const char* name = luaL_optstring(L, 1, NULL);
-	char path[MAX_PATH];
+    char path[MAX_PATH];
 	sprintf(path, "%s\\%s", exeModulePath, name);
-	LoadProfile(path);
-	return 0;
+	BOOL sc = LoadProfile(path);
+	lua_pushboolean(L, sc);
+	return 1;
+}
+
+static int lua_ProfileInit(lua_State* L)
+{
+	BOOL sc = InitializeGame(ghWnd);
+	lua_pushboolean(L, sc);
+	return 1;
 }
 
 static int lua_ProfileExists(lua_State* L)
@@ -73,11 +81,21 @@ FUNCTION_TABLE ProfileFunctionTable[FUNCTION_TABLE_PROFILE_SIZE] =
 {
 	{"Save", lua_ProfileSave},
 	{"Load", lua_ProfileLoad},
+	{"Init", lua_ProfileInit},
 	{"Exists", lua_ProfileExists},
 	{"GetName", lua_ProfileGetName},
 };
 
-BOOL ProfileSavingModScript(void)
+/*static int dummyclosefunction(lua_State* L) {
+	luaL_Stream* p = (luaL_Stream*)luaL_checkudata(gL, 1, LUA_FILEHANDLE);
+	// No, we don't want to really close this file because we already do it ourselves
+	p->f = NULL;
+	p->closef = NULL;
+	errno = 0;
+	return luaL_fileresult(L, true, NULL);
+}*/
+
+BOOL ProfileSavingModScript(/*FILE* fp*/)
 {
 	lua_getglobal(gL, "ModCS");
 	lua_getfield(gL, -1, "Profile");
@@ -88,6 +106,12 @@ BOOL ProfileSavingModScript(void)
 		lua_settop(gL, 0); // Clear stack
 		return TRUE;
 	}
+
+	// Should already be pushed
+	/*luaL_Stream* lfp = (luaL_Stream*)lua_newuserdatauv(gL, sizeof(luaL_Stream), 0);
+	luaL_setmetatable(gL, LUA_FILEHANDLE);
+	lfp->f = fp;
+	lfp->closef = &dummyclosefunction;*/ // Don't do it man
 
 	if (lua_pcall(gL, 0, 0, 0) != LUA_OK)
 	{
@@ -104,7 +128,7 @@ BOOL ProfileSavingModScript(void)
 	return TRUE;
 }
 
-BOOL ProfileLoadingModScript(void)
+BOOL ProfileLoadingModScript(/*FILE* fp*/)
 {
 	lua_getglobal(gL, "ModCS");
 	lua_getfield(gL, -1, "Profile");
@@ -115,6 +139,12 @@ BOOL ProfileLoadingModScript(void)
 		lua_settop(gL, 0); // Clear stack
 		return TRUE;
 	}
+
+	// Should already be pushed
+	/*luaL_Stream* lfp = (luaL_Stream*)lua_newuserdatauv(gL, sizeof(luaL_Stream), 0);
+	luaL_setmetatable(gL, LUA_FILEHANDLE);
+	lfp->f = fp;
+	lfp->closef = &dummyclosefunction;*/ // Don't do it man
 
 	if (lua_pcall(gL, 0, 0, 0) != LUA_OK)
 	{
