@@ -326,3 +326,123 @@ char* GetCustomSaveName()
 
     return func();
 }
+
+char* GetStageTileset(int stageNo)
+{
+    typedef char* (*funcdef)(int);
+
+    funcdef func = reinterpret_cast<funcdef>(
+        GetProcAddress(autpiDLL, "GetStageTileset"));
+
+    if (func == nullptr) {
+        std::cerr << "Failed to get the function pointer for GetStageTileset\n";
+        return FALSE;
+    }
+
+    return func(stageNo);
+}
+
+char* GetStageFilename(int stageNo)
+{
+    typedef char* (*funcdef)(int);
+
+    funcdef func = reinterpret_cast<funcdef>(
+        GetProcAddress(autpiDLL, "GetStageFilename"));
+
+    if (func == nullptr) {
+        std::cerr << "Failed to get the function pointer for GetStageFilename\n";
+        return FALSE;
+    }
+
+    return func(stageNo);
+}
+
+int GetStageBackgroundMode(int stageNo)
+{
+    typedef int (*funcdef)(int);
+
+    funcdef func = reinterpret_cast<funcdef>(
+        GetProcAddress(autpiDLL, "GetStageBackgroundMode"));
+
+    if (func == nullptr) {
+        std::cerr << "Failed to get the function pointer for GetStageBackgroundMode\n";
+        return FALSE;
+    }
+
+    return func(stageNo);
+}
+
+char* GetStageBackground(int stageNo)
+{
+    typedef char* (*funcdef)(int);
+
+    funcdef func = reinterpret_cast<funcdef>(
+        GetProcAddress(autpiDLL, "GetStageBackground"));
+
+    if (func == nullptr) {
+        std::cerr << "Failed to get the function pointer for GetStageBackground\n";
+        return FALSE;
+    }
+
+    return func(stageNo);
+}
+
+char* GetStageNpcSheet1(int stageNo)
+{
+    typedef char* (*funcdef)(int);
+
+    funcdef func = reinterpret_cast<funcdef>(
+        GetProcAddress(autpiDLL, "GetStageNpcSheet1"));
+
+    if (func == nullptr) {
+        std::cerr << "Failed to get the function pointer for GetStageNpcSheet1\n";
+        return FALSE;
+    }
+
+    return func(stageNo);
+}
+
+char* GetStageNpcSheet2(int stageNo)
+{
+    typedef char* (*funcdef)(int);
+
+    funcdef func = reinterpret_cast<funcdef>(
+        GetProcAddress(autpiDLL, "GetStageNpcSheet2"));
+
+    if (func == nullptr) {
+        std::cerr << "Failed to get the function pointer for GetStageNpcSheet2\n";
+        return FALSE;
+    }
+
+    return func(stageNo);
+}
+
+int GetStageBossNo(int stageNo)
+{
+    typedef int (*funcdef)(int);
+
+    funcdef func = reinterpret_cast<funcdef>(
+        GetProcAddress(autpiDLL, "GetStageBossNo"));
+
+    if (func == nullptr) {
+        std::cerr << "Failed to get the function pointer for GetStageBossNo\n";
+        return FALSE;
+    }
+
+    return func(stageNo);
+}
+
+char* GetStageName(int stageNo)
+{
+    typedef char* (*funcdef)(int);
+
+    funcdef func = reinterpret_cast<funcdef>(
+        GetProcAddress(autpiDLL, "GetStageName"));
+
+    if (func == nullptr) {
+        std::cerr << "Failed to get the function pointer for GetStageName\n";
+        return FALSE;
+    }
+
+    return func(stageNo);
+}

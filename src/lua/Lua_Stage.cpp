@@ -37,14 +37,7 @@ static int lua_StageGetTileset(lua_State* L)
 {
 	int no = (int)luaL_optnumber(L, 1, gStageNo);
 
-	STAGE_TABLE* gStage;
-
-	if (stage_table_patched)
-		gStage = gStageTable;
-	else
-		gStage = gTMT;
-
-	lua_pushstring(L, gStage[no].parts);
+	lua_pushstring(L, GetStageTileset(no));
 
 	return 1;
 }
@@ -53,14 +46,7 @@ static int lua_StageGetFilename(lua_State* L)
 {
 	int no = (int)luaL_optnumber(L, 1, gStageNo);
 
-	STAGE_TABLE* gStage;
-
-	if (stage_table_patched)
-		gStage = gStageTable;
-	else
-		gStage = gTMT;
-
-	lua_pushstring(L, gStage[no].map);
+	lua_pushstring(L, GetStageFilename(no));
 
 	return 1;
 }
@@ -69,14 +55,7 @@ static int lua_StageGetBackgroundMode(lua_State* L)
 {
 	int no = (int)luaL_optnumber(L, 1, gStageNo);
 
-	STAGE_TABLE* gStage;
-
-	if (stage_table_patched)
-		gStage = gStageTable;
-	else
-		gStage = gTMT;
-
-	lua_pushnumber(L, gStage[no].bkType);
+	lua_pushnumber(L, GetStageBackgroundMode(no));
 
 	return 1;
 }
@@ -85,14 +64,7 @@ static int lua_StageGetBackground(lua_State* L)
 {
 	int no = (int)luaL_optnumber(L, 1, gStageNo);
 
-	STAGE_TABLE* gStage;
-
-	if (stage_table_patched)
-		gStage = gStageTable;
-	else
-		gStage = gTMT;
-
-	lua_pushstring(L, gStage[no].back);
+	lua_pushstring(L, GetStageBackground(no));
 
 	return 1;
 }
@@ -101,14 +73,7 @@ static int lua_StageGetNpcSheet1(lua_State* L)
 {
 	int no = (int)luaL_optnumber(L, 1, gStageNo);
 
-	STAGE_TABLE* gStage;
-
-	if (stage_table_patched)
-		gStage = gStageTable;
-	else
-		gStage = gTMT;
-
-	lua_pushstring(L, gStage[no].npc);
+	lua_pushstring(L, GetStageNpcSheet1(no));
 
 	return 1;
 }
@@ -117,14 +82,7 @@ static int lua_StageGetNpcSheet2(lua_State* L)
 {
 	int no = (int)luaL_optnumber(L, 1, gStageNo);
 
-	STAGE_TABLE* gStage;
-
-	if (stage_table_patched)
-		gStage = gStageTable;
-	else
-		gStage = gTMT;
-
-	lua_pushstring(L, gStage[no].boss);
+	lua_pushstring(L, GetStageNpcSheet2(no));
 
 	return 1;
 }
@@ -133,14 +91,7 @@ static int lua_StageGetBossNo(lua_State* L)
 {
 	int no = (int)luaL_optnumber(L, 1, gStageNo);
 
-	STAGE_TABLE* gStage;
-
-	if (stage_table_patched)
-		gStage = gStageTable;
-	else
-		gStage = gTMT;
-
-	lua_pushnumber(L, gStage[no].boss_no);
+	lua_pushnumber(L, GetStageBossNo(no));
 
 	return 1;
 }
@@ -149,14 +100,7 @@ static int lua_StageGetName(lua_State* L)
 {
 	int no = (int)luaL_optnumber(L, 1, gStageNo);
 
-	STAGE_TABLE* gStage;
-
-	if (stage_table_patched)
-		gStage = gStageTable;
-	else
-		gStage = gTMT;
-
-	lua_pushstring(L, gStage[no].name);
+	lua_pushstring(L, GetStageName(no));
 
 	return 1;
 }

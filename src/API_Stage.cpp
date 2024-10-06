@@ -110,3 +110,99 @@ STAGE_TABLE* GetStageTable()
 	else
 		return gTMT;
 }
+
+char* GetStageTileset(int stageNo)
+{
+	STAGE_TABLE* gStage;
+
+	if (stage_table_patched)
+		gStage = gStageTable;
+	else
+		gStage = gTMT;
+
+	return gStage[stageNo].parts;
+}
+
+char* GetStageFilename(int stageNo)
+{
+	STAGE_TABLE* gStage;
+
+	if (stage_table_patched)
+		gStage = gStageTable;
+	else
+		gStage = gTMT;
+
+	return gStage[stageNo].map;
+}
+
+int GetStageBackgroundMode(int stageNo)
+{
+	STAGE_TABLE* gStage;
+
+	if (stage_table_patched)
+		gStage = gStageTable;
+	else
+		gStage = gTMT;
+
+	return gStage[stageNo].bkType;
+}
+
+char* GetStageBackground(int stageNo)
+{	
+	STAGE_TABLE* gStage;
+
+	if (stage_table_patched)
+		gStage = gStageTable;
+	else
+		gStage = gTMT;
+
+	return gStage[stageNo].back;
+}
+
+char* GetStageNpcSheet1(int stageNo)
+{
+	STAGE_TABLE* gStage;
+
+	if (stage_table_patched)
+		gStage = gStageTable;
+	else
+		gStage = gTMT;
+
+	return gStage[stageNo].npc;
+}
+
+char* GetStageNpcSheet2(int stageNo)
+{
+	STAGE_TABLE* gStage;
+
+	if (stage_table_patched)
+		gStage = gStageTable;
+	else
+		gStage = gTMT;
+
+	return gStage[stageNo].boss;
+}
+
+int GetStageBossNo(int stageNo)
+{
+	STAGE_TABLE* gStage;
+
+	if (stage_table_patched)
+		gStage = gStageTable;
+	else
+		gStage = gTMT;
+
+	return gStage[stageNo].boss_no;
+}
+
+char* GetStageName(int stageNo)
+{
+	STAGE_TABLE* gStage;
+
+	if (stage_table_patched)
+		gStage = gStageTable;
+	else
+		gStage = gTMT;
+
+	return gStage[stageNo].name;
+}
