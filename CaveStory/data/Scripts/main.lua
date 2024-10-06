@@ -14,6 +14,7 @@ function ModCS.Game.Act2()
 			ModCS.Player.unit = 2
 		end
 	end
+	
 end
 
 function ModCS.Game.Draw()
