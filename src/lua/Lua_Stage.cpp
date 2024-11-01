@@ -167,6 +167,16 @@ static int lua_MapGetAttribute(lua_State* L)
 	return 1;
 }
 
+static int lua_MapGetTileID(lua_State* L)
+{
+	int x = (int)luaL_checknumber(L, 1);
+	int y = (int)luaL_checknumber(L, 2);
+	int tile = GetTileID(x, y);
+	lua_pushnumber(L, (lua_Number)tile);
+
+	return 1;
+}
+
 static int lua_MapChangeTile(lua_State* L)
 {
 	int no = (int)luaL_checknumber(L, 1);
@@ -183,6 +193,7 @@ FUNCTION_TABLE MapFunctionTable[FUNCTION_TABLE_MAP_SIZE] =
 	{"GetWidth", lua_MapGetWidth},
 	{"GetHeight", lua_MapGetHeight},
 	{"GetAttribute", lua_MapGetAttribute},
+	{"GetTile", lua_MapGetTileID},
 	{"ChangeTile", lua_MapChangeTile},
 };
 

@@ -17,15 +17,13 @@ function ModCS.Game.Act2()
 	
 end
 
+function ModCS.Game.Act()
+	if ModCS.Key.Jump() and not ModCS.Player.TouchFloor() then
+		ModCS.Player.ym = -1280
+	end
+end
+
 function ModCS.Game.Draw()
-	if ModCS.Key.Arms() then
-		ModCS.Profile.Load("Test.dat")
-	end
-	
-	if ModCS.Key.ArmsRev() then
-		ModCS.Profile.Save("Test.dat")
-	end
-	
 	ModCS.PutNumber(ModCS.Player.x, 0, 0)
 	ModCS.PutNumber(ModCS.Player.y, 0, 8)
 end

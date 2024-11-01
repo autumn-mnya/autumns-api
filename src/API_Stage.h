@@ -24,3 +24,4 @@ extern "C" __declspec(dllexport) char* GetStageNpcSheet1(int stageNo);
 extern "C" __declspec(dllexport) char* GetStageNpcSheet2(int stageNo);
 extern "C" __declspec(dllexport) int GetStageBossNo(int stageNo);
 extern "C" __declspec(dllexport) char* GetStageName(int stageNo);
+unsigned char GetTileID(int x, int y);

@@ -206,3 +206,14 @@ char* GetStageName(int stageNo)
 
 	return gStage[stageNo].name;
 }
+
+unsigned char GetTileID(int x, int y)
+{
+	size_t a;
+
+	if (x < 0 || y < 0 || x >= gMap.width || y >= gMap.length)
+		return 0;
+
+	a = *(gMap.data + x + (y * gMap.width));
+	return a;
+}
