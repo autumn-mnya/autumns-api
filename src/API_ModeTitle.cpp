@@ -28,7 +28,7 @@ void TitleInitCode()
 void TitleActionCode()
 {
     ExecuteTitleActionElementHandlers();
-    MoveFrame3();
+    ActCaret();
 }
 
 void TitleBelowCounterCode(int x, int y)
