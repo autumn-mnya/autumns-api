@@ -13,6 +13,7 @@ extern "C"
 }
 
 #include "Lua_Mod.h"
+#include "Lua_ModLoader.h"
 
 #include "Lua.h"
 
@@ -27,7 +28,9 @@ int gSpikeDamage = 10;
 static int ModVersion[4] = { 1, 0, 0, 6 };
 
 static int OpeningMap[5] = { 72, 3, 3, 100, 500 };
+static int OpeningMapDefault[5] = { 72, 3, 3, 100, 500 };
 static int StartingMap[4] = { 13, 10, 8, 200 };
+static int StartingMapDefault[4] = {13, 10, 8, 200};
 
 int initMyChar[3] = { 3, 3, 2 };
 
@@ -44,30 +47,88 @@ static int lua_ModSetAuthor(lua_State* L)
 	return 0;
 }
 
+bool custom_opening_set = false;
+bool custom_start_set = false;
+
+void GetDefaultOpening()
+{
+	OpeningMapDefault[0] = ModLoader_GetByte((void*)0x40F765); // map
+	OpeningMapDefault[1] = ModLoader_GetByte((void*)0x40F761); // x
+	OpeningMapDefault[2] = ModLoader_GetByte((void*)0x40F75F); // y
+	OpeningMapDefault[3] = ModLoader_GetByte((void*)0x40F763); // event
+	OpeningMapDefault[4] = ModLoader_GetLong((void*)0x40F7A0); // wait timer
+}
+
+void GetDefaultStart()
+{
+	StartingMapDefault[0] = ModLoader_GetByte((void*)0x41D599); // map
+	StartingMapDefault[1] = ModLoader_GetByte((void*)0x41D592); // x
+	StartingMapDefault[2] = ModLoader_GetByte((void*)0x41D590); // y
+	StartingMapDefault[3] = ModLoader_GetLong((void*)0x41D594); // event
+}
+
+// 0x40F766
+BOOL TransferToOpeningStage(int default_no, int default_event, int default_x, int default_y)
+{
+	if (custom_opening_set)
+		return TransferStage(OpeningMap[0], OpeningMap[3], OpeningMap[1], OpeningMap[2]);
+	else
+		return TransferStage(default_no, default_event, default_x, default_y);
+}
+
+// 0x41D59A
+BOOL TransferToStartingStage(int default_no, int default_event, int default_x, int default_y)
+{
+	if (custom_start_set)
+		return TransferStage(StartingMap[0], StartingMap[3], StartingMap[1], StartingMap[2]);
+	else
+		return TransferStage(default_no, default_event, default_x, default_y);
+}
+
 static int lua_ModSetOpening(lua_State* L)
 {
-	OpeningMap[0] = (int)luaL_checknumber(L, 1);
-	OpeningMap[3] = (int)luaL_optnumber(L, 2, 0);
-	OpeningMap[4] = (int)luaL_optnumber(L, 3, 500);
-
-	ModLoader_WriteByte((void*)0x40F765, OpeningMap[0]);
-	ModLoader_WriteByte((void*)0x40F763, OpeningMap[3]);
+	OpeningMap[0] = (int)luaL_checknumber(L, 1); // map
+	OpeningMap[1] = (int)luaL_checknumber(L, 2); // x
+	OpeningMap[2] = (int)luaL_checknumber(L, 3); // y
+	OpeningMap[3] = (int)luaL_optnumber(L, 4, 0); // event
+	OpeningMap[4] = (int)luaL_optnumber(L, 5, 500); // wait timer
 	ModLoader_WriteLong((void*)0x40F7A0, OpeningMap[4]);
+
+	bool same = true;
+	for (int i = 0; i < 5; i++)
+	{
+		if (OpeningMap[i] != OpeningMapDefault[i])
+		{
+			same = false;
+			break;
+		}
+
+	}
+	if (!same)
+		custom_opening_set = true;
 
 	return 0;
 }
 
 static int lua_ModSetStart(lua_State* L)
 {
-	StartingMap[0] = (int)luaL_checknumber(L, 1);
-	StartingMap[1] = (int)luaL_checknumber(L, 2);
-	StartingMap[2] = (int)luaL_checknumber(L, 3);
-	StartingMap[3] = (int)luaL_optnumber(L, 4, 0);
+	StartingMap[0] = (int)luaL_checknumber(L, 1); // map
+	StartingMap[1] = (int)luaL_checknumber(L, 2); // x
+	StartingMap[2] = (int)luaL_checknumber(L, 3); // y
+	StartingMap[3] = (int)luaL_optnumber(L, 4, 0); // event
 
-	ModLoader_WriteByte((void*)0x41D599, StartingMap[0]);
-	ModLoader_WriteByte((void*)0x41D594, StartingMap[1]);
-	ModLoader_WriteByte((void*)0x41D592, StartingMap[2]);
-	ModLoader_WriteByte((void*)0x41D590, StartingMap[3]);
+	bool same = true;
+	for (int i = 0; i < 4; i++)
+	{
+		if (StartingMap[i] != StartingMapDefault[i])
+		{
+			same = false;
+			break;
+		}
+
+	}
+	if (!same)
+		custom_start_set = true;
 
 	return 0;
 }

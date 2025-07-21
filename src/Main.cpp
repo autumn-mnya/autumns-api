@@ -245,6 +245,11 @@ void InitMod(void)
 
     ModLoader_WriteCall((void*)0x40B42D, (void*)Replacement_RestoreSurfaces);
 
+    GetDefaultOpening(); // get default opening from exe before doing stuff
+    GetDefaultStart(); // get default start from exe before doing stuff
+    ModLoader_WriteCall((void*)0x40F766, (void*)TransferToOpeningStage);
+    ModLoader_WriteCall((void*)0x41D59A, (void*)TransferToStartingStage);
+
     InitTSC();
     InitKeyControl();
 

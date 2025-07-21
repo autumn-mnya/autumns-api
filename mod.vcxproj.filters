@@ -72,8 +72,10 @@
     <ClCompile Include="src\API_Draw.cpp" />
     <ClCompile Include="src\KeyControl.cpp" />
     <ClCompile Include="src\File.cpp" />
-    <ClCompile Include="src\lua\Lua_ModLoader.cpp" />
     <ClCompile Include="src\lua\Lua_Mod.cpp">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lua\Lua_ModLoader.cpp">
       <Filter>lua</Filter>
     </ClCompile>
   </ItemGroup>
@@ -151,8 +153,10 @@
     <ClInclude Include="src\API_Draw.h" />
     <ClInclude Include="src\KeyControl.h" />
     <ClInclude Include="src\File.h" />
-    <ClInclude Include="src\lua\Lua_ModLoader.h" />
     <ClInclude Include="src\lua\Lua_Mod.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lua\Lua_ModLoader.h">
       <Filter>lua</Filter>
     </ClInclude>
   </ItemGroup>

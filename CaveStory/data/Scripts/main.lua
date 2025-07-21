@@ -4,6 +4,9 @@ require("mychar")
 
 print("Hello World!")
 
+ModCS.Mod.SetOpening(72, 3, 3, 100, 500)
+ModCS.Mod.SetStart(13, 10, 8, 200)
+
 function ModCS.Game.Act2()
 	if ModCS.Player.unit == 2 then
 		ModCS.Player.ProcessAir()
