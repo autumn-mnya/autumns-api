@@ -863,89 +863,11 @@ BOOL ReloadModScript()
 	return TRUE;
 }
 
-void InitMod_Lua()
-{
-	if (!InitModScript())
-		return;
-}
-
-void Lua_GameInit()
-{
-	if (!GameInitModScript())
-		return;
-}
-
-void Lua_GameAct()
-{
-	if (!GameActModScript())
-		return;
-}
-
-void Lua_GameAct2()
-{
-	if (!GameActModScript2())
-		return;
-}
-
 void Lua_GameActTrg()
 {
 	GetTrg();
 
 	if (!GameActModScript())
-		return;
-}
-
-void Lua_GameUpdate()
-{
-	if (!GameUpdateModScript())
-		return;
-}
-
-void Lua_GameDraw()
-{
-	if (!GameDrawModScript())
-		return;
-}
-
-void Lua_GameDrawBelowFade()
-{
-	if (!GameDrawBelowFadeModScript())
-		return;
-}
-
-void Lua_GameDrawAboveFade()
-{
-	if (!GameDrawAboveFadeModScript())
-		return;
-}
-
-void Lua_GameDrawBelowTextBox()
-{
-	if (!GameDrawBelowTextBoxModScript())
-		return;
-}
-
-void Lua_GameDrawAboveTextBox()
-{
-	if (!GameDrawAboveTextBoxModScript())
-		return;
-}
-
-void Lua_GameDrawHUD()
-{
-	if (!GameDrawHUDModScript())
-		return;
-}
-
-void Lua_GameDrawBelowPlayer()
-{
-	if (!GameDrawBelowPlayerModScript())
-		return;
-}
-
-void Lua_GameDrawAbovePlayer()
-{
-	if (!GameDrawAbovePlayerModScript())
 		return;
 }
 

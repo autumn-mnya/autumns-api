@@ -197,33 +197,6 @@ FUNCTION_TABLE MapFunctionTable[FUNCTION_TABLE_MAP_SIZE] =
 	{"ChangeTile", lua_MapChangeTile},
 };
 
-BOOL StageOnTransferModScript(void)
-{
-	lua_getglobal(gL, "ModCS");
-	lua_getfield(gL, -1, "Stage");
-	lua_getfield(gL, -1, "OnTransfer");
-
-	if (lua_isnil(gL, -1))
-	{
-		lua_settop(gL, 0); // Clear stack
-		return TRUE;
-	}
-
-	if (lua_pcall(gL, 0, 0, 0) != LUA_OK)
-	{
-		const char* error = lua_tostring(gL, -1);
-
-		ErrorLog(error, 0);
-		printf("ERROR: %s\n", error);
-		MessageBoxA(ghWnd, "Couldn't execute stage transfer function", "ModScript Error", MB_OK);
-		return FALSE;
-	}
-
-	lua_settop(gL, 0); // Clear stack
-
-	return TRUE;
-}
-
 bool modcs_has_transferred_stage;
 
 void OnTransfer_Init()

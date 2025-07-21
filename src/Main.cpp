@@ -261,6 +261,10 @@ void InitMod(void)
     RegisterOpeningActionElement(Lua_GameUpdate);
     RegisterModeOpeningAbovePutFPSElement(Lua_GameDraw);
 
+    RegisterOpeningBelowPutStage_BackElement(Lua_GameDrawBelowPutStage_Back);
+    RegisterOpeningAbovePutStage_BackElement(Lua_GameDrawAbovePutStage_Back);
+    RegisterOpeningBelowPutStage_FrontElement(Lua_GameDrawBelowPutStage_Front);
+    RegisterOpeningAbovePutStage_FrontElement(Lua_GameDrawAbovePutStage_Front);
     RegisterOpeningBelowFadeElement(Lua_GameDrawBelowFade);
     RegisterOpeningAboveFadeElement(Lua_GameDrawAboveFade);
     RegisterOpeningBelowTextBoxElement(Lua_GameDrawBelowTextBox);
@@ -277,7 +281,10 @@ void InitMod(void)
     RegisterActionElement(Lua_GameUpdate);
     RegisterModeActionAbovePutFPSElement(Lua_GameDraw);
 
-
+    RegisterBelowPutStage_BackElement(Lua_GameDrawBelowPutStage_Back);
+    RegisterAbovePutStage_BackElement(Lua_GameDrawAbovePutStage_Back);
+    RegisterBelowPutStage_FrontElement(Lua_GameDrawBelowPutStage_Front);
+    RegisterAbovePutStage_FrontElement(Lua_GameDrawAbovePutStage_Front);
     RegisterBelowPlayerElement(Lua_GameDrawBelowPlayer);
     RegisterAbovePlayerElement(Lua_GameDrawAbovePlayer);
     RegisterBelowFadeElement(Lua_GameDrawBelowFade);
