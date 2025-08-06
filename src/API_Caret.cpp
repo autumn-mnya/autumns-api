@@ -11,7 +11,7 @@
 #include "mod_loader.h"
 #include "cave_story.h"
 
-#include "lua/Lua_Caret.h"
+#include "lua/Caret.h"
 
 // Global variables
 CARET_TABLE autpiCaretTable[MAX_CARET_TABLE_SIZE];
@@ -52,7 +52,6 @@ void LoadCaretTable()
 	fp = fopen(path, "rb");
 	if (fp == NULL) {
 		// Handle the error...
-		printf("%s%s", "caret.tbl", " was not found.\nUsing default caret table inside executable instead!\n");
 		SetDefaultCaretTable();
 		return;
 	}
@@ -62,6 +61,8 @@ void LoadCaretTable()
 
 	// Close the file
 	fclose(fp);
+
+	printf("Loaded caret table from file\n");
 }
 
 #pragma runtime_checks("s", off)

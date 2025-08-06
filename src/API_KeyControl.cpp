@@ -8,7 +8,8 @@
 #include "mod_loader.h"
 #include "cave_story.h"
 
-#include "lua/Lua_KeyControl.h"
+#include "API_KeyControl.h"
+#include "lua/KeyControl.h"
 
 static int KeyDownFunction(MLHookCPURegisters* regs, void* ud) {
     unsigned int wp = *(unsigned int*)(regs->ebp + 0x10);

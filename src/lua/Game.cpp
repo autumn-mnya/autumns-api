@@ -12,17 +12,21 @@ extern "C"
 #include <lualib.h>
 }
 
-#include "Lua_Game.h"
+#include "Game.h"
 
 #include "Lua.h"
 
 #include "../Main.h"
 #include "../mod_loader.h"
 #include "../cave_story.h"
+#include "../ModSettings.h"
 
 static int lua_GameGetMode(lua_State* L)
 {
-	lua_pushnumber(L, (lua_Number)gCurrentGameMode);
+	if (use_mode_overhaul)
+		lua_pushnumber(L, (lua_Number)gGameMode);
+	else
+		lua_pushnumber(L, (lua_Number)gCurrentGameMode);
 
 	return 1;
 }

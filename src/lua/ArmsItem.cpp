@@ -12,7 +12,7 @@ extern "C"
 #include <lualib.h>
 }
 
-#include "Lua_ArmsItem.h"
+#include "ArmsItem.h"
 
 #include "Lua.h"
 

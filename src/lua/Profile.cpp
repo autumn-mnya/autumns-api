@@ -12,7 +12,7 @@ extern "C"
 #include <lualib.h>
 }
 
-#include "Lua_Profile.h"
+#include "Profile.h"
 
 #include "Lua.h"
 

@@ -6,8 +6,6 @@
 
 #include "Main.h"
 
-typedef void (*PutFPSElementHandler)();
-
 ELEMENT_HEADERS(PutFPSElementHandler, PutFPSElement)
 
 void Replacement_PutFPS(void);

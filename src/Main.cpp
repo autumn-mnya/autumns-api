@@ -11,14 +11,13 @@
 #include "mod_loader.h"
 #include "cave_story.h"
 #include "ModSettings.h"
-#include "TextScr.h"
-#include "KeyControl.h"
 
 #include "API_Boss.h"
 #include "API_Caret.h"
 #include "API_LoadGenericData.h"
 #include "API_Game.h"
 #include "API_GetTrg.h"
+#include "API_KeyControl.h"
 #include "API_ModeOpening.h"
 #include "API_ModeTitle.h"
 #include "API_ModeAction.h"
@@ -26,18 +25,17 @@
 #include "API_Profile.h"
 #include "API_PutFPS.h"
 #include "API_Stage.h"
-#include "API_Tile.h"
 #include "API_TextScript.h"
 #include "API_Weapon.h"
 #include "API_Draw.h"
 #include "ASM_Patches.h"
 
 #include "lua/Lua.h"
-#include "lua/Lua_Mod.h"
-#include "lua/Lua_ModLoader.h"
-#include "lua/Lua_Mode.h"
-#include "lua/Lua_Profile.h"
-#include "lua/Lua_Stage.h"
+#include "lua/Mod.h"
+#include "lua/ModLoader.h"
+#include "lua/Mode.h"
+#include "lua/Profile.h"
+#include "lua/Stage.h"
 
 int gCurrentGameMode = 0;
 BOOL gModeSetted = FALSE;
@@ -201,10 +199,6 @@ void InitMod(void)
 {
     InitMod_Settings();
 
-    // Tile Type api (unfinished, is complicated)
-    // RegisterDefaultTileTypes();
-    // ModLoader_WriteJump((void*)0x417E40, (void*)Replacement_HitMyCharMap);
-
     if (use_mode_overhaul == false)
     {
         ModLoader_AddStackableHook((void*)0x40F930, 8, ModeSwitchFunction, (void*)0); // intro
@@ -315,9 +309,12 @@ void InitMod(void)
     RegisterPreModeElement(InitMod_Lua);
     RegisterPreModeElement(RegisterPreModeModScript);
 
-    RegisterOpeningInitElement(SetModeOpening);
-    RegisterTitleInitElement(SetModeTitle);
-    RegisterInitElement(SetModeAction);
+    if (use_mode_overhaul == false)
+    {
+        RegisterOpeningInitElement(SetModeOpening);
+        RegisterTitleInitElement(SetModeTitle);
+        RegisterInitElement(SetModeAction);
+    }
    
     RegisterOpeningInitElement(Lua_GameInit);
     RegisterOpeningEarlyActionElement(Lua_GameAct);

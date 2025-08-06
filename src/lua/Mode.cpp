@@ -5,7 +5,7 @@
 #include <string.h>
 #include <string>
 
-#include "Lua_Mode.h"
+#include "Mode.h"
 
 extern "C"
 {
@@ -16,7 +16,7 @@ extern "C"
 
 #include "../cave_story.h"
 #include "Lua.h"
-#include "Lua_Game.h"
+#include "Game.h"
 
 #include "../API_Boss.h"
 #include "../API_Caret.h"

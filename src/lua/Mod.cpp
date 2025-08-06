@@ -12,8 +12,8 @@ extern "C"
 #include <lualib.h>
 }
 
-#include "Lua_Mod.h"
-#include "Lua_ModLoader.h"
+#include "Mod.h"
+#include "ModLoader.h"
 
 #include "Lua.h"
 

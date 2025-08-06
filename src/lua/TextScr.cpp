@@ -12,7 +12,7 @@ extern "C"
 #include <lualib.h>
 }
 
-#include "Lua_TextScr.h"
+#include "TextScr.h"
 
 #include "Lua.h"
 

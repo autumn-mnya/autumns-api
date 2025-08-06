@@ -12,7 +12,7 @@ extern "C"
 #include <lualib.h>
 }
 
-#include "Lua_Sound.h"
+#include "Sound.h"
 
 #include "Lua.h"
 

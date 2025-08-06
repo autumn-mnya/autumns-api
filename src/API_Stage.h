@@ -6,8 +6,6 @@
 #include "cave_story.h"
 #include "Main.h"
 
-typedef void (*TransferStageInitElementHandler)();
-
 ELEMENT_HEADERS(TransferStageInitElementHandler, TransferStageInitElement)
 
 extern bool stage_table_patched;

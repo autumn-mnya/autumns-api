@@ -12,11 +12,11 @@ extern "C"
 #include <lualib.h>
 }
 
-#include "Lua_Stage.h"
+#include "Stage.h"
 
 #include "Lua.h"
 
-#include "Lua_TextScr.h"
+#include "TextScr.h"
 
 #include "../mod_loader.h"
 #include "../cave_story.h"

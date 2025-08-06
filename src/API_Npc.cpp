@@ -6,7 +6,7 @@
 #include <string>
 
 #include "API_Npc.h"
-#include "lua/Lua_Npc.h"
+#include "lua/Npc.h"
 
 #include "mod_loader.h"
 #include "cave_story.h"

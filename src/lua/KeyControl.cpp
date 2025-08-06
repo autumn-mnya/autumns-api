@@ -12,7 +12,8 @@ extern "C"
 #include <lualib.h>
 }
 
-#include "Lua_KeyControl.h"
+#include "KeyControl.h"
+#include "../API_KeyControl.h"
 
 #include "Lua.h"
 

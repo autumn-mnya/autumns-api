@@ -19,6 +19,7 @@ extern "C"
     }
 
 #define DEFINE_REGISTER_HEADER(HandlerType, HandlerName) \
+    typedef void (*HandlerType)(); \
     void Register##HandlerName##(HandlerType handler);
 
 extern HMODULE autpiDLL;  // Global variable
@@ -28,76 +29,6 @@ void AutPI_AddBoss(BOSSFUNCTION func, char* author, char* name);
 
 // Caret API
 void AutPI_AddCaret(CARETFUNCTION func, char* author, char* name);
-
-// Game()
-typedef void (*OpeningBelowFadeElementHandler)();
-typedef void (*OpeningAboveFadeElementHandler)();
-// GetTrg()
-typedef void (*GetTrgElementHandler)();
-// ModeOpening()
-typedef void (*PreModeElementHandler)();
-typedef void (*ReleaseElementHandler)();
-typedef void (*OpeningBelowTextBoxElementHandler)();
-typedef void (*OpeningAboveTextBoxElementHandler)();
-typedef void (*OpeningEarlyActionElementHandler)();
-typedef void (*OpeningActionElementHandler)();
-typedef void (*OpeningInitElementHandler)();
-typedef void (*OpeningBelowPutCaretElementHandler)();
-typedef void (*OpeningAbovePutCaretElementHandler)();
-typedef void (*OpeningBelowPutBackElementHandler)();
-typedef void (*OpeningAbovePutBackElementHandler)();
-typedef void (*MOBelowPutFPSElementHandler)();
-typedef void (*MOAbovePutFPSElementHandler)();
-typedef void (*OpeningBelowPutStage_BackElementHandler)();
-typedef void (*OpeningAbovePutStage_BackElementHandler)();
-typedef void (*OpeningBelowPutStage_FrontElementHandler)();
-typedef void (*OpeningAbovePutStage_FrontElementHandler)();
-// ModeTitle()
-typedef void (*TitleInitElementHandler)();
-typedef void (*TitleActionElementHandler)();
-typedef void (*TitleBelowCounterElementHandler)();
-typedef void (*MTBelowPutFPSElementHandler)();
-typedef void (*MTAbovePutFPSElementHandler)();
-// ModeAction()
-typedef void (*PlayerHudElementHandler)();
-typedef void (*CreditsHudElementHandler)();
-typedef void (*BelowFadeElementHandler)();
-typedef void (*AboveFadeElementHandler)();
-typedef void (*BelowTextBoxElementHandler)();
-typedef void (*AboveTextBoxElementHandler)();
-typedef void (*BelowPlayerElementHandler)();
-typedef void (*AbovePlayerElementHandler)();
-typedef void (*EarlyActionElementHandler)();
-typedef void (*ActionElementHandler)();
-typedef void (*CreditsActionElementHandler)();
-typedef void (*InitElementHandler)();
-typedef void (*BelowPutCaretElementHandler)();
-typedef void (*AbovePutCaretElementHandler)();
-typedef void (*MABelowPutFPSElementHandler)();
-typedef void (*MAAbovePutFPSElementHandler)();
-typedef void (*BelowPutBackElementHandler)();
-typedef void (*AbovePutBackElementHandler)();
-typedef void (*BelowPutStage_BackElementHandler)();
-typedef void (*AbovePutStage_BackElementHandler)();
-typedef void (*BelowPutStage_FrontElementHandler)();
-typedef void (*AbovePutStage_FrontElementHandler)();
-// Profile
-typedef void (*SaveProfilePreCloseElementHandler)();
-typedef void (*SaveProfilePostCloseElementHandler)();
-typedef void (*LoadProfilePreCloseElementHandler)();
-typedef void (*LoadProfilePostCloseElementHandler)();
-typedef void (*LoadProfileInitElementHandler)();
-typedef void (*InitializeGameInitElementHandler)();
-// PutFPS
-typedef void (*PutFPSElementHandler)();
-// TextScript
-typedef void (*TextScriptSVPElementHandler)();
-// TransferStage()
-typedef void (*TransferStageInitElementHandler)();
-// Lua
-typedef void (*LuaPreGlobalModCSElementHandler)();
-typedef void (*LuaMetadataElementHandler)();
-typedef void (*LuaFuncElementHandler)();
 
 void LoadAutPiDll();
 

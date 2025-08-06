@@ -6,12 +6,6 @@
 
 #include "Main.h"
 
-typedef void (*TitleInitElementHandler)();
-typedef void (*TitleActionElementHandler)();
-typedef void (*TitleBelowCounterElementHandler)();
-typedef void (*MTBelowPutFPSElementHandler)();
-typedef void (*MTAbovePutFPSElementHandler)();
-
 ELEMENT_HEADERS(TitleInitElementHandler, TitleInitElement)
 ELEMENT_HEADERS(TitleActionElementHandler, TitleActionElement)
 ELEMENT_HEADERS(TitleBelowCounterElementHandler, TitleBelowCounterElement)
