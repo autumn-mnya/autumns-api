@@ -35,6 +35,7 @@ extern "C"
 #include "Lua_Game.h"
 #include "Lua_KeyControl.h"
 #include "Lua_Mod.h"
+#include "Lua_Mode.h"
 #include "Lua_ModLoader.h"
 #include "Lua_MyChar.h"
 #include "Lua_Npc.h"
@@ -676,6 +677,18 @@ static int lua_SetFadeMask(lua_State* L) {
 	return 0;
 }
 
+static int lua_GetWindowWidth(lua_State* L)
+{
+	lua_pushnumber(L, (lua_Number)WINDOW_WIDTH);
+	return 1;
+}
+
+static int lua_GetWindowHeight(lua_State* L)
+{
+	lua_pushnumber(L, (lua_Number)WINDOW_HEIGHT);
+	return 1;
+}
+
 BOOL InitModScript(void)
 {
 	char scriptpath[MAX_PATH];
@@ -776,6 +789,12 @@ BOOL InitModScript(void)
 	lua_pushcfunction(gL, lua_SetFadeMask);
 	lua_setfield(gL, -2, "SetFadeMask");
 
+	lua_pushcfunction(gL, lua_GetWindowWidth);
+	lua_setfield(gL, -2, "GetWindowWidth");
+
+	lua_pushcfunction(gL, lua_GetWindowHeight);
+	lua_setfield(gL, -2, "GetWindowHeight");
+
 	PushFunctionTable(gL, "RangeRect", OtherRectFunctionTable, FUNCTION_TABLE_OTHER_RECT_SIZE, TRUE);
 	PushFunctionTable(gL, "Game", GameFunctionTable, FUNCTION_TABLE_GAME_SIZE, TRUE);
 	PushFunctionTable(gL, "Rect", RectFunctionTable, FUNCTION_TABLE_RECT_SIZE, TRUE);
@@ -786,6 +805,7 @@ BOOL InitModScript(void)
 	PushFunctionTable(gL, "Stage", StageFunctionTable, FUNCTION_TABLE_STAGE_SIZE, TRUE);
 	PushFunctionTable(gL, "Map", MapFunctionTable, FUNCTION_TABLE_MAP_SIZE, TRUE);
 	PushFunctionTable(gL, "Mod", ModFunctionTable, FUNCTION_TABLE_MOD_SIZE, TRUE);
+	PushFunctionTable(gL, "Mode", ModeFunctionTable, FUNCTION_TABLE_MODE_SIZE, TRUE);
 	PushFunctionTable(gL, "ModLoader", ModLoaderFunctionTable, FUNCTION_TABLE_MOD_LOADER_SIZE, TRUE);
 	
 	PushFunctionTable(gL, "Sound", SoundFunctionTable, FUNCTION_TABLE_SOUND_SIZE, TRUE);

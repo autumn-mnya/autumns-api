@@ -78,6 +78,9 @@
     <ClCompile Include="src\lua\Lua_ModLoader.cpp">
       <Filter>lua</Filter>
     </ClCompile>
+    <ClCompile Include="src\lua\Lua_Mode.cpp">
+      <Filter>lua</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\API_Boss.h" />
@@ -157,6 +160,9 @@
       <Filter>lua</Filter>
     </ClInclude>
     <ClInclude Include="src\lua\Lua_ModLoader.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lua\Lua_Mode.h">
       <Filter>lua</Filter>
     </ClInclude>
   </ItemGroup>

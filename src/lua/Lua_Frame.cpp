@@ -110,6 +110,13 @@ static int lua_CameraSetYPos(lua_State* L)
 	return 0;
 }
 
+static int lua_SetTargetPlayer(lua_State* L)
+{
+	int wait = (int)luaL_checknumber(L, 1);
+	SetFrameTargetMyChar(wait);
+	return 0;
+}
+
 FUNCTION_TABLE CameraFunctionTable[FUNCTION_TABLE_CAMERA_SIZE] =
 {
 	{"SetTarget", lua_CameraSetTarget},
@@ -120,5 +127,6 @@ FUNCTION_TABLE CameraFunctionTable[FUNCTION_TABLE_CAMERA_SIZE] =
 	{"SetXPos", lua_CameraSetXPos},
 	{"SetYPos", lua_CameraSetYPos},
 	{"SetQuake", lua_CameraSetQuake},
-	{"SetAltQuake", lua_CameraSetAltQuake}
+	{"SetAltQuake", lua_CameraSetAltQuake},
+	{"SetTargetPlayer", lua_SetTargetPlayer},
 };

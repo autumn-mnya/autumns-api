@@ -141,6 +141,13 @@ static int lua_KeyShift(lua_State* L)
 	return 1;
 }
 
+static int lua_KeyPause(lua_State* L)
+{
+	KeyCheck(L, gKey, gKeyTrg, KEY_ESCAPE);
+
+	return 1;
+}
+
 static int lua_GetKey(lua_State* L)
 {
 	lua_pushnumber(L, gKey);
@@ -190,6 +197,7 @@ FUNCTION_TABLE KeyFunctionTable[FUNCTION_TABLE_KEY_SIZE] =
 	{"Right", lua_KeyRight},
 	{"Down", lua_KeyDown},
 	{"Shift", lua_KeyShift},
+	{"Pause", lua_KeyPause},
 	{"GetKey", lua_GetKey},
 	{"GetKeyTrg", lua_GetKeyTrg},
 	{"SetKey", lua_SetKey},

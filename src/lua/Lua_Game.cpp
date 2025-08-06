@@ -69,6 +69,18 @@ static int lua_GameCanControl(lua_State* L)
 	return 1;
 }
 
+static int lua_GameGetGameFlags(lua_State* L)
+{
+	lua_pushnumber(L, (lua_Number)g_GameFlags);
+	return 1;
+}
+
+static int lua_GameSetGameFlags(lua_State* L)
+{
+	g_GameFlags = luaL_checknumber(L, 1);
+	return 0;
+}
+
 FUNCTION_TABLE GameFunctionTable[FUNCTION_TABLE_GAME_SIZE] =
 {
 	{"GetMode", lua_GameGetMode},
@@ -76,5 +88,7 @@ FUNCTION_TABLE GameFunctionTable[FUNCTION_TABLE_GAME_SIZE] =
 	{"IsNew", lua_GameIsNew},
 	{"SetNew", lua_GameSetNew},
 	{"CanAct", lua_GameCanAct},
-	{"CanControl", lua_GameCanControl}
+	{"CanControl", lua_GameCanControl},
+	{"GetGameFlags", lua_GameGetGameFlags},
+	{"SetGameFlags", lua_GameSetGameFlags},
 };

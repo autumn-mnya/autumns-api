@@ -34,6 +34,8 @@
 
 #include "lua/Lua.h"
 #include "lua/Lua_Mod.h"
+#include "lua/Lua_ModLoader.h"
+#include "lua/Lua_Mode.h"
 #include "lua/Lua_Profile.h"
 #include "lua/Lua_Stage.h"
 
@@ -149,6 +151,52 @@ static int ModeSwitchFunction(MLHookCPURegisters* regs, void* ud) {
     return 0;
 }
 
+int Replacement_ModeCall(HWND hWNd)
+{
+    return 0;
+}
+
+int gGameMode = 1;
+
+void Replacement_Game_PlaySound7(int sound, int mode)
+{
+    gGameMode = ModLoader_GetByte((void*)0x40F693);
+
+    while (gGameMode)
+    {
+        int result = ModeModScript(gGameMode);
+
+        if (result >= 0)
+        {
+            gGameMode = result;
+        }
+        else if (result == -2)
+        {
+            if (gGameMode == 1)
+                gGameMode = ModeOpening(ghWnd);
+            else if (gGameMode == 2)
+                gGameMode = ModeTitle(ghWnd);
+            else if (gGameMode == 3)
+                gGameMode = ModeAction(ghWnd);
+            else
+                gGameMode = 0;
+        }
+        else
+        {
+            gGameMode = 0;
+        }
+    }
+
+    PlaySoundObject(sound, mode);
+}
+
+void WriteDebugTables()
+{
+    SaveArmsTable();
+    SaveBulletTable();
+    SaveCaretTable();
+}
+
 void InitMod(void)
 {
     InitMod_Settings();
@@ -157,9 +205,19 @@ void InitMod(void)
     // RegisterDefaultTileTypes();
     // ModLoader_WriteJump((void*)0x417E40, (void*)Replacement_HitMyCharMap);
 
-    ModLoader_AddStackableHook((void*)0x40F930, 8, ModeSwitchFunction, (void*)0); // intro
-    ModLoader_AddStackableHook((void*)0x410375, 8, ModeSwitchFunction, (void*)0); // title
-    ModLoader_AddStackableHook((void*)0x410880, 8, ModeSwitchFunction, (void*)0); // game
+    if (use_mode_overhaul == false)
+    {
+        ModLoader_AddStackableHook((void*)0x40F930, 8, ModeSwitchFunction, (void*)0); // intro
+        ModLoader_AddStackableHook((void*)0x410375, 8, ModeSwitchFunction, (void*)0); // title
+        ModLoader_AddStackableHook((void*)0x410880, 8, ModeSwitchFunction, (void*)0); // game
+    }
+    else
+    {
+        ModLoader_WriteCall((void*)0x40F6A7, Replacement_ModeCall);
+        ModLoader_WriteCall((void*)0x40F6BC, Replacement_ModeCall);
+        ModLoader_WriteCall((void*)0x40F6D1, Replacement_ModeCall);
+        ModLoader_WriteCall((void*)0x40F6E2, Replacement_Game_PlaySound7);
+    }
 
     // Boss API
     ModLoader_WriteJump((void*)ActBossChar, (void*)Replacement_ActBossChar);
@@ -303,11 +361,7 @@ void InitMod(void)
 
     // If a modder needs the tables from their exe, they can enable that.
     if (debug_write_tables)
-    {
-        SaveArmsTable();
-        SaveBulletTable();
-        SaveCaretTable();
-    }
+        RegisterPreModeElement(WriteDebugTables);
 
     RegisterGetTrgElement(AutPI_GetTrg_ForInput);
 
