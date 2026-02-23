@@ -1,4 +1,4 @@
-#include <Windows.h>
+#include <windows.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,23 +16,52 @@ size_t bossFuncCount = 0;
 #pragma runtime_checks("s", off)
 void CallBossActFunction(int code_char)
 {
-	// MSVC syntax
-	__asm {
-		push ebx
-		push esi
-		push edi
-	}
+#if defined(_MSC_VER) && defined(_M_IX86)
 
-	if (code_char < 10)
-		gpBossFuncTbl[code_char]();
-	else
-		gpBossAPIFuncTbl[code_char - 10]();
+    __asm {
+        push ebx
+        push esi
+        push edi
+    }
 
-	__asm {
-		pop edi
-		pop esi
-		pop ebx
-	}
+#elif defined(__GNUC__) && defined(__i386__)
+
+    __asm__ __volatile__ (
+        "push %%ebx\n\t"
+        "push %%esi\n\t"
+        "push %%edi\n\t"
+        :
+        :
+        : "memory"
+    );
+
+#endif
+
+    if (code_char < 10)
+        gpBossFuncTbl[code_char]();
+    else
+        gpBossAPIFuncTbl[code_char - 10]();
+
+#if defined(_MSC_VER) && defined(_M_IX86)
+
+    __asm {
+        pop edi
+        pop esi
+        pop ebx
+    }
+
+#elif defined(__GNUC__) && defined(__i386__)
+
+    __asm__ __volatile__ (
+        "pop %%edi\n\t"
+        "pop %%esi\n\t"
+        "pop %%ebx\n\t"
+        :
+        :
+        : "memory"
+    );
+
+#endif
 }
 #pragma runtime_checks("s", restore)
 

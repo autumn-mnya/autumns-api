@@ -6,7 +6,7 @@
 #include <string>
 
 #include "API_Npc.h"
-#include "lua/Lua_Npc.h"
+#include "lua/Npc.h"
 
 #include "mod_loader.h"
 #include "cave_story.h"
@@ -50,23 +50,52 @@ void ChangeNpChar(NPCHAR* npc, int code_char)
 #pragma runtime_checks("s", off)
 void CallNPCActFunction(NPCHAR* npc)
 {
-	// MSVC syntax
-	__asm {
-		push ebx
-		push esi
-		push edi
-	}
+#if defined(_MSC_VER) && defined(_M_IX86)
 
-	if (npc->code_char <= 360)
-		gpNpcFuncTbl[npc->code_char](npc);
-	else
-		gpEntityFuncTbl[npc->code_char - 361](npc);
+    __asm {
+        push ebx
+        push esi
+        push edi
+    }
 
-	__asm {
-		pop edi
-		pop esi
-		pop ebx
-	}
+#elif defined(__GNUC__) && defined(__i386__)
+
+    __asm__ __volatile__ (
+        "push %%ebx\n\t"
+        "push %%esi\n\t"
+        "push %%edi\n\t"
+        :
+        :
+        : "memory"
+    );
+
+#endif
+
+    if (npc->code_char <= 360)
+        gpNpcFuncTbl[npc->code_char](npc);
+    else
+        gpEntityFuncTbl[npc->code_char - 361](npc);
+
+#if defined(_MSC_VER) && defined(_M_IX86)
+
+    __asm {
+        pop edi
+        pop esi
+        pop ebx
+    }
+
+#elif defined(__GNUC__) && defined(__i386__)
+
+    __asm__ __volatile__ (
+        "pop %%edi\n\t"
+        "pop %%esi\n\t"
+        "pop %%ebx\n\t"
+        :
+        :
+        : "memory"
+    );
+
+#endif
 }
 #pragma runtime_checks("s", restore)
 

@@ -1,2 +1,1 @@
 autpi
-graphics_enhancement

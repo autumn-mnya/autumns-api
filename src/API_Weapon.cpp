@@ -11,8 +11,8 @@
 #include "cave_story.h"
 #include "Main.h"
 
-#include "lua/Lua_ArmsItem.h"
-#include "lua/Lua_Bullet.h"
+#include "lua/ArmsItem.h"
+#include "lua/Bullet.h"
 
 ARMS_LEVEL* autpiArmsLevelTable;
 BULLET_TABLE* autpiBulTbl;
@@ -66,7 +66,6 @@ void LoadLevelsTable()
 	size = GetFileSizeLong(path);
 	if (size == INVALID_FILE_SIZE)
 	{
-		printf("%s%s", "arms_level.tbl", " had invalid size.\nUsing default arms_level table inside executable instead!\n");
 		SetDefaultArmsTable();
 		return;
 	}
@@ -76,7 +75,6 @@ void LoadLevelsTable()
 	fp = fopen(path, "rb");
 	if (fp == NULL)
 	{
-		printf("%s%s", "arms_level.tbl", " was not found.\nUsing default arms_level table inside executable instead!\n");
 		SetDefaultArmsTable();
 		return;
 	}
@@ -87,7 +85,6 @@ void LoadLevelsTable()
 	{
 		fclose(fp);
 		free(autpiArmsLevelTable);
-		printf("%s%s", "arms_level.tbl", " was null.\nUsing default arms_level table inside executable instead!\n");
 		SetDefaultArmsTable();
 		return;
 	}
@@ -96,7 +93,8 @@ void LoadLevelsTable()
 		fread(&autpiArmsLevelTable[i].exp, 12, 1, fp);
 
 	fclose(fp);
-	return;
+
+	printf("Loaded levels table from file\n");
 }
 
 void LoadBulletTable()
@@ -111,7 +109,6 @@ void LoadBulletTable()
 	size = GetFileSizeLong(path);
 	if (size == INVALID_FILE_SIZE)
 	{
-		printf("%s%s", "bullet.tbl", " had invalid size.\nUsing default bullet table inside executable instead!\n");
 		SetDefaultBulletTable();
 		return;
 	}
@@ -121,7 +118,6 @@ void LoadBulletTable()
 	fp = fopen(path, "rb");
 	if (fp == NULL)
 	{
-		printf("%s%s", "bullet.tbl", " was not found.\nUsing default bullet table inside executable instead!\n");
 		SetDefaultBulletTable();
 		return;
 	}
@@ -132,7 +128,6 @@ void LoadBulletTable()
 	{
 		fclose(fp);
 		free(autpiBulTbl);
-		printf("%s%s", "bullet.tbl", " was null.\nUsing default bullet table inside executable instead!\n");
 		SetDefaultBulletTable();
 		return;
 	}
@@ -151,7 +146,8 @@ void LoadBulletTable()
 	}
 
 	fclose(fp);
-	return;
+
+	printf("Loaded bullet table from file\n");
 }
 
 void Replacement_AddExpMyChar(int x)

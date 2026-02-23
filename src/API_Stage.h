@@ -1,12 +1,10 @@
 #pragma once
 
-#include <Windows.h>
+#include <windows.h>
 #include <vector>
 
 #include "cave_story.h"
 #include "Main.h"
-
-typedef void (*TransferStageInitElementHandler)();
 
 ELEMENT_HEADERS(TransferStageInitElementHandler, TransferStageInitElement)
 

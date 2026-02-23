@@ -15,70 +15,68 @@
     <ClCompile Include="src\API_Stage.cpp" />
     <ClCompile Include="src\API_Weapon.cpp" />
     <ClCompile Include="src\Main.cpp" />
-    <ClCompile Include="src\API_Tile.cpp" />
     <ClCompile Include="src\\mod_loader.cpp" />
     <ClCompile Include="src\lua\Lua.cpp">
       <Filter>lua</Filter>
     </ClCompile>
-    <ClCompile Include="src\lua\Lua_Draw.cpp">
+    <ClCompile Include="src\lua\Draw.cpp">
       <Filter>lua</Filter>
     </ClCompile>
-    <ClCompile Include="src\lua\Lua_Npc.cpp">
+    <ClCompile Include="src\lua\Npc.cpp">
       <Filter>lua</Filter>
     </ClCompile>
-    <ClCompile Include="src\lua\Lua_Game.cpp">
+    <ClCompile Include="src\lua\Game.cpp">
       <Filter>lua</Filter>
     </ClCompile>
-    <ClCompile Include="src\lua\Lua_MyChar.cpp">
+    <ClCompile Include="src\lua\MyChar.cpp">
       <Filter>lua</Filter>
     </ClCompile>
-    <ClCompile Include="src\lua\Lua_Flags.cpp">
+    <ClCompile Include="src\lua\Flags.cpp">
       <Filter>lua</Filter>
     </ClCompile>
-    <ClCompile Include="src\lua\Lua_Stage.cpp">
+    <ClCompile Include="src\lua\Stage.cpp">
       <Filter>lua</Filter>
     </ClCompile>
-    <ClCompile Include="src\lua\Lua_Sound.cpp">
+    <ClCompile Include="src\lua\Sound.cpp">
       <Filter>lua</Filter>
     </ClCompile>
-    <ClCompile Include="src\lua\Lua_KeyControl.cpp">
+    <ClCompile Include="src\lua\KeyControl.cpp">
       <Filter>lua</Filter>
     </ClCompile>
-    <ClCompile Include="src\lua\Lua_Profile.cpp">
+    <ClCompile Include="src\lua\Profile.cpp">
       <Filter>lua</Filter>
     </ClCompile>
-    <ClCompile Include="src\lua\Lua_ArmsItem.cpp">
+    <ClCompile Include="src\lua\ArmsItem.cpp">
       <Filter>lua</Filter>
     </ClCompile>
-    <ClCompile Include="src\lua\Lua_Frame.cpp">
+    <ClCompile Include="src\lua\Frame.cpp">
       <Filter>lua</Filter>
     </ClCompile>
-    <ClCompile Include="src\lua\Lua_Caret.cpp">
+    <ClCompile Include="src\lua\Caret.cpp">
       <Filter>lua</Filter>
     </ClCompile>
-    <ClCompile Include="src\TextScr.cpp" />
-    <ClCompile Include="src\lua\Lua_TextScr.cpp">
+    <ClCompile Include="src\lua\TextScr.cpp">
       <Filter>lua</Filter>
     </ClCompile>
     <ClCompile Include="src\lua\API_Lua.cpp">
       <Filter>lua</Filter>
     </ClCompile>
     <ClCompile Include="src\ModSettings.cpp" />
-    <ClCompile Include="src\lua\Lua_Bullet.cpp">
+    <ClCompile Include="src\lua\Bullet.cpp">
       <Filter>lua</Filter>
     </ClCompile>
     <ClCompile Include="src\ASM_Patches.cpp" />
     <ClCompile Include="src\API_PutFPS.cpp" />
     <ClCompile Include="src\API_Draw.cpp" />
-    <ClCompile Include="src\KeyControl.cpp" />
+    <ClCompile Include="src\API_KeyControl.cpp" />
     <ClCompile Include="src\File.cpp" />
-    <ClCompile Include="src\lua\Lua_Mod.cpp">
+    <ClCompile Include="src\lua\Mod.cpp">
       <Filter>lua</Filter>
     </ClCompile>
-    <ClCompile Include="src\lua\Lua_ModLoader.cpp">
+    <ClCompile Include="src\lua\ModLoader.cpp">
       <Filter>lua</Filter>
     </ClCompile>
-    <ClCompile Include="src\lua\Lua_Mode.cpp">
+    <ClCompile Include="src\lua\Mode.cpp">
       <Filter>lua</Filter>
     </ClCompile>
   </ItemGroup>
@@ -98,71 +96,69 @@
     <ClInclude Include="src\API_Weapon.h" />
     <ClInclude Include="src\cave_story.h" />
     <ClInclude Include="src\Main.h" />
-    <ClInclude Include="src\API_Tile.h" />
     <ClInclude Include="src\\mod_loader.h" />
     <ClInclude Include="src\\mod_loader_hooks.h" />
     <ClInclude Include="src\lua\Lua.h">
       <Filter>lua</Filter>
     </ClInclude>
-    <ClInclude Include="src\lua\Lua_Draw.h">
+    <ClInclude Include="src\lua\Draw.h">
       <Filter>lua</Filter>
     </ClInclude>
-    <ClInclude Include="src\lua\Lua_Npc.h">
+    <ClInclude Include="src\lua\Npc.h">
       <Filter>lua</Filter>
     </ClInclude>
-    <ClInclude Include="src\lua\Lua_Game.h">
+    <ClInclude Include="src\lua\Game.h">
       <Filter>lua</Filter>
     </ClInclude>
-    <ClInclude Include="src\lua\Lua_MyChar.h">
+    <ClInclude Include="src\lua\MyChar.h">
       <Filter>lua</Filter>
     </ClInclude>
-    <ClInclude Include="src\lua\Lua_Flags.h">
+    <ClInclude Include="src\lua\Flags.h">
       <Filter>lua</Filter>
     </ClInclude>
-    <ClInclude Include="src\lua\Lua_Stage.h">
+    <ClInclude Include="src\lua\Stage.h">
       <Filter>lua</Filter>
     </ClInclude>
-    <ClInclude Include="src\lua\Lua_Sound.h">
+    <ClInclude Include="src\lua\Sound.h">
       <Filter>lua</Filter>
     </ClInclude>
-    <ClInclude Include="src\lua\Lua_KeyControl.h">
+    <ClInclude Include="src\lua\KeyControl.h">
       <Filter>lua</Filter>
     </ClInclude>
-    <ClInclude Include="src\lua\Lua_Profile.h">
+    <ClInclude Include="src\lua\Profile.h">
       <Filter>lua</Filter>
     </ClInclude>
-    <ClInclude Include="src\lua\Lua_ArmsItem.h">
+    <ClInclude Include="src\lua\ArmsItem.h">
       <Filter>lua</Filter>
     </ClInclude>
-    <ClInclude Include="src\lua\Lua_Frame.h">
+    <ClInclude Include="src\lua\Frame.h">
       <Filter>lua</Filter>
     </ClInclude>
-    <ClInclude Include="src\lua\Lua_Caret.h">
+    <ClInclude Include="src\lua\Caret.h">
       <Filter>lua</Filter>
     </ClInclude>
-    <ClInclude Include="src\TextScr.h" />
-    <ClInclude Include="src\lua\Lua_TextScr.h">
+    <ClInclude Include="src\lua\TextScr.h">
       <Filter>lua</Filter>
     </ClInclude>
     <ClInclude Include="src\lua\API_Lua.h">
       <Filter>lua</Filter>
     </ClInclude>
     <ClInclude Include="src\ModSettings.h" />
-    <ClInclude Include="src\lua\Lua_Bullet.h">
+    <ClInclude Include="src\lua\Bullet.h">
       <Filter>lua</Filter>
     </ClInclude>
     <ClInclude Include="src\ASM_Patches.h" />
     <ClInclude Include="src\API_PutFPS.h" />
     <ClInclude Include="src\API_Draw.h" />
-    <ClInclude Include="src\KeyControl.h" />
+    <ClInclude Include="src\API_KeyControl.h" />
     <ClInclude Include="src\File.h" />
-    <ClInclude Include="src\lua\Lua_Mod.h">
+    <ClInclude Include="src\lua\Mod.h">
       <Filter>lua</Filter>
     </ClInclude>
-    <ClInclude Include="src\lua\Lua_ModLoader.h">
+    <ClInclude Include="src\lua\ModLoader.h">
       <Filter>lua</Filter>
     </ClInclude>
-    <ClInclude Include="src\lua\Lua_Mode.h">
+    <ClInclude Include="src\lua\Mode.h">
       <Filter>lua</Filter>
     </ClInclude>
   </ItemGroup>

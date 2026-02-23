@@ -6,8 +6,6 @@
 
 #include "Main.h"
 
-typedef void (*GenericDataElementHandler)();
-
 ELEMENT_HEADERS(GenericDataElementHandler, GenericDataElement)
 
 void GenericDataCode(int a, int b, SurfaceID c, BOOL d);

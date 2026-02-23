@@ -54,7 +54,7 @@
 
 #if defined(LUA_USE_WINDOWS)
 #define LUA_DL_DLL	/* enable support for DLL */
-//#define LUA_USE_C89	/* broadly, Windows is C89 */
+#define LUA_USE_C89	/* broadly, Windows is C89 */
 #endif
 
 
@@ -122,8 +122,7 @@
 /*
 @@ LUA_32BITS enables Lua with 32-bit integers and 32-bit floats.
 */
-#define LUA_32BITS	0
-
+#define LUA_32BITS 1
 
 /*
 @@ LUA_C89_NUMBERS ensures that Lua uses the largest types available for
@@ -275,7 +274,7 @@
 ** the libraries, you may want to use the following definition (define
 ** LUA_BUILD_AS_DLL to get it).
 */
-#if 1	/* { */
+#if defined(LUA_BUILD_AS_DLL)	/* { */
 
 #if defined(LUA_CORE) || defined(LUA_LIB)	/* { */
 #define LUA_API __declspec(dllexport)

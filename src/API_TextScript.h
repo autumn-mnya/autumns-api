@@ -4,8 +4,7 @@
 
 #include "Main.h"
 
-typedef void (*TextScriptSVPElementHandler)();
-
 ELEMENT_HEADERS(TextScriptSVPElementHandler, SVPElement)
 
 void TextScriptSVPCode(const char* name);
+void InitTSC();

@@ -6,29 +6,6 @@
 
 #include "Main.h"
 
-typedef void (*PlayerHudElementHandler)();
-typedef void (*CreditsHudElementHandler)();
-typedef void (*BelowFadeElementHandler)();
-typedef void (*AboveFadeElementHandler)();
-typedef void (*BelowTextBoxElementHandler)();
-typedef void (*AboveTextBoxElementHandler)();
-typedef void (*BelowPlayerElementHandler)();
-typedef void (*AbovePlayerElementHandler)();
-typedef void (*EarlyActionElementHandler)();
-typedef void (*ActionElementHandler)();
-typedef void (*CreditsActionElementHandler)();
-typedef void (*InitElementHandler)();
-typedef void (*BelowPutCaretElementHandler)();
-typedef void (*AbovePutCaretElementHandler)();
-typedef void (*MABelowPutFPSElementHandler)();
-typedef void (*MAAbovePutFPSElementHandler)();
-typedef void (*BelowPutBackElementHandler)();
-typedef void (*AbovePutBackElementHandler)();
-typedef void (*BelowPutStage_BackElementHandler)();
-typedef void (*AbovePutStage_BackElementHandler)();
-typedef void (*BelowPutStage_FrontElementHandler)();
-typedef void (*AbovePutStage_FrontElementHandler)();
-
 ELEMENT_HEADERS(PlayerHudElementHandler, PlayerHudElement)
 ELEMENT_HEADERS(CreditsHudElementHandler, CreditsHudElement)
 ELEMENT_HEADERS(BelowFadeElementHandler, BelowFadeElement)

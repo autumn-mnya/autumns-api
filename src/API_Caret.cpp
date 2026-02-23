@@ -1,4 +1,4 @@
-#include <Windows.h>
+#include <windows.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,7 +11,7 @@
 #include "mod_loader.h"
 #include "cave_story.h"
 
-#include "lua/Lua_Caret.h"
+#include "lua/Caret.h"
 
 // Global variables
 CARET_TABLE autpiCaretTable[MAX_CARET_TABLE_SIZE];
@@ -52,7 +52,6 @@ void LoadCaretTable()
 	fp = fopen(path, "rb");
 	if (fp == NULL) {
 		// Handle the error...
-		printf("%s%s", "caret.tbl", " was not found.\nUsing default caret table inside executable instead!\n");
 		SetDefaultCaretTable();
 		return;
 	}
@@ -62,28 +61,59 @@ void LoadCaretTable()
 
 	// Close the file
 	fclose(fp);
+
+	printf("Loaded caret table from file\n");
 }
 
 #pragma runtime_checks("s", off)
 void CallCaretActFunction(int code, CARET* crt)
 {
-	// MSVC syntax
-	__asm {
-		push ebx
-		push esi
-		push edi
-	}
+#if defined(_MSC_VER) && defined(_M_IX86)
 
-	if (code <= 17)
-		gpCaretFuncTbl[code](crt);
-	else
-		gpCaretAPIFuncTbl[code - 18](crt);
+    __asm {
+        push ebx
+        push esi
+        push edi
+    }
 
-	__asm {
-		pop edi
-		pop esi
-		pop ebx
-	}
+#elif defined(__GNUC__) && defined(__i386__)
+
+    __asm__ __volatile__ (
+        "push %%ebx\n\t"
+        "push %%esi\n\t"
+        "push %%edi\n\t"
+        :
+        :
+        : "memory"
+    );
+
+#endif
+
+    if (code <= 17)
+        gpCaretFuncTbl[code](crt);
+    else
+        gpCaretAPIFuncTbl[code - 18](crt);
+
+#if defined(_MSC_VER) && defined(_M_IX86)
+
+    __asm {
+        pop edi
+        pop esi
+        pop ebx
+    }
+
+#elif defined(__GNUC__) && defined(__i386__)
+
+    __asm__ __volatile__ (
+        "pop %%edi\n\t"
+        "pop %%esi\n\t"
+        "pop %%ebx\n\t"
+        :
+        :
+        : "memory"
+    );
+
+#endif
 }
 #pragma runtime_checks("s", restore)
 

@@ -6,8 +6,6 @@
 
 #include "Main.h"
 
-typedef void (*DrawFrameElementHandler)();
-
 ELEMENT_HEADERS(DrawFrameElementHandler, DrawFrameElement)
 
 int Replacement_RestoreSurfaces(void);
