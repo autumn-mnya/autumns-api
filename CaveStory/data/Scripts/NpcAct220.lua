@@ -613,6 +613,75 @@ ModCS.Npc.Act[231] = function(npc)
 end
 
 -- Orangebell
+ModCS.Npc.Act[232] = function(npc)
+    local i = 0
+
+    if (npc.act_no == 0) then
+        npc.act_no = 1
+        npc.tgt_x = npc.x
+        npc.tgt_y = npc.y
+        npc.ym = 1
+
+        for i = 0, 7 do
+            ModCS.Npc.Spawn3(233, npc.x, npc.y, 0, 0, npc.direct, npc)
+        end
+        -- Fallthrough
+    end
+
+    if (npc.act_no == 1) then
+        if (npc.xm < 0 and npc:TouchLeftWall()) then
+            npc.direct = 2
+        end
+
+        if (npc.xm > 0 and npc:TouchRightWall()) then
+            npc.direct = 0
+        end
+
+        if (npc.y < npc.tgt_y) then
+            npc.ym = npc.ym + 0.015625
+        else
+            npc.ym = npc.ym - 0.015625
+        end
+
+        if (npc.ym > 1) then
+            npc.ym = 1
+        end
+
+        if (npc.ym < -1) then
+            npc.ym = -1
+        end
+
+        npc.ani_wait = npc.ani_wait + 1
+        if (npc.ani_wait > 5) then
+            npc.ani_wait = 0
+            npc.ani_no = npc.ani_no + 1
+        end
+
+        if (npc.ani_no > 2) then
+            npc.ani_no = 0
+        end
+    end
+
+    npc:Move()
+
+    local rcLeft = {
+        ModCS.Rect.Create(128, 0, 160, 32),
+        ModCS.Rect.Create(160, 0, 192, 32),
+        ModCS.Rect.Create(192, 0, 224, 32),
+    }
+
+    local rcRight = {
+        ModCS.Rect.Create(128, 32, 160, 64),
+        ModCS.Rect.Create(160, 32, 192, 64),
+        ModCS.Rect.Create(192, 32, 224, 64),
+    }
+
+    if (npc.direct == 0) then
+        npc:SetRect(rcLeft[npc.ani_no+1])
+    else
+        npc:SetRect(rcRight[npc.ani_no+1])
+    end
+end
 
 -- Orangebell bat
 
