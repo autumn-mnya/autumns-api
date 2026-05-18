@@ -6,6 +6,8 @@
 
 extern int gCurrentGameMode; // if vanilla
 extern int gGameMode; // in mode overhaul
+extern char gSavesPath[MAX_PATH];
+extern char gDebugSavesPath[MAX_PATH];
 extern BOOL gModeSetted;
 
 // Define the macros to automate handler creation
@@ -29,3 +31,5 @@ extern BOOL gModeSetted;
     typedef void (*Type)(); \
     extern "C" __declspec(dllexport) void Register##Name(Type handler); \
     void Execute##Name##Handlers();
+
+bool EnsureDir(const char* path);

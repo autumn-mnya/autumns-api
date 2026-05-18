@@ -19,27 +19,6 @@ extern "C"
 #include "../mod_loader.h"
 #include "../cave_story.h"
 
-unsigned char ModLoader_GetByte(void* address)
-{
-	if (!address)
-		return 0;
-	return *reinterpret_cast<unsigned char*>(address);
-}
-
-unsigned short ModLoader_GetWord(void* address)
-{
-	if (!address)
-		return 0;
-	return *reinterpret_cast<unsigned short*>(address);
-}
-
-unsigned long ModLoader_GetLong(void* address)
-{
-	if (!address)
-		return 0;
-	return *reinterpret_cast<unsigned long*>(address);
-}
-
 static int lua_ModLoaderWriteByte(lua_State* L)
 {
 	int address = (int)luaL_checknumber(L, 1);

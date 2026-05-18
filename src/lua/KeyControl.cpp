@@ -149,6 +149,27 @@ static int lua_KeyPause(lua_State* L)
 	return 1;
 }
 
+static int lua_KeyF1(lua_State* L)
+{
+	KeyCheck(L, gKey, gKeyTrg, KEY_F1);
+
+	return 1;
+}
+
+static int lua_KeyF2(lua_State* L)
+{
+	KeyCheck(L, gKey, gKeyTrg, KEY_F2);
+
+	return 1;
+}
+
+static int lua_KeyPlus(lua_State* L)
+{
+	KeyCheck(L, gKey, gKeyTrg, KEY_PLUS);
+
+	return 1;
+}
+
 static int lua_GetKey(lua_State* L)
 {
 	lua_pushnumber(L, gKey);
@@ -177,6 +198,20 @@ static int lua_SetKeyTrg(lua_State* L)
 	return 0;
 }
 
+static int lua_ClearKey(lua_State* L)
+{
+	gKey = 0;
+
+	return 0;
+}
+
+static int lua_ClearKeyTrg(lua_State* L)
+{
+	gKeyTrg = 0;
+
+	return 0;
+}
+
 static int lua_GetTrg(lua_State* L)
 {
 	GetTrg();
@@ -199,14 +234,21 @@ FUNCTION_TABLE KeyFunctionTable[FUNCTION_TABLE_KEY_SIZE] =
 	{"Down", lua_KeyDown},
 	{"Shift", lua_KeyShift},
 	{"Pause", lua_KeyPause},
+	{"F1", lua_KeyF1},
+	{"F2", lua_KeyF2},
+	{"Plus", lua_KeyPlus},
 	{"GetKey", lua_GetKey},
 	{"GetKeyTrg", lua_GetKeyTrg},
 	{"SetKey", lua_SetKey},
 	{"SetKeyTrg", lua_SetKeyTrg},
+	{"ClearKey", lua_ClearKey},
+	{"ClearKeyTrg", lua_ClearKeyTrg},
 	{"GetTrg", lua_GetTrg},
 };
 
 int KeyControlModScript(unsigned int vkey, bool down, bool repeat) {
+	if (!gL)
+		return TRUE;
 	lua_getglobal(gL, "ModCS");
 	lua_getfield(gL, -1, "Key");
 	lua_getfield(gL, -1, down ? "KeyDown" : "KeyUp");

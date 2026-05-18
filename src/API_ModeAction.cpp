@@ -13,6 +13,8 @@
 #include "mod_loader.h"
 #include "cave_story.h"
 
+#include "lua/Lua.h"
+
 // PLAYER UI //
 
 DEFINE_ELEMENT_HANDLERS(PlayerHudElementHandler, PlayerHudElement)
@@ -37,8 +39,6 @@ DEFINE_ELEMENT_HANDLERS(BelowPutStage_BackElementHandler, BelowPutStage_BackElem
 DEFINE_ELEMENT_HANDLERS(AbovePutStage_BackElementHandler, AbovePutStage_BackElement)
 DEFINE_ELEMENT_HANDLERS(BelowPutStage_FrontElementHandler, BelowPutStage_FrontElement)
 DEFINE_ELEMENT_HANDLERS(AbovePutStage_FrontElementHandler, AbovePutStage_FrontElement)
-
-
 
 void PutStage_BackCode(int fx, int fy)
 {
@@ -86,7 +86,8 @@ void TextBoxCode()
 void DrawPlayerCode(int fx, int fy)
 {
     ExecuteBelowPlayerElementHandlers();
-    PutMyChar(fx, fy);
+    if (!MyCharPutModScript())
+        PutMyChar(fx, fy);
     ExecuteAbovePlayerElementHandlers();
 }
 
@@ -126,4 +127,26 @@ void ModeActionPutFPSCode()
     ExecuteModeActionBelowPutFPSElementHandlers();
     PutFramePerSecound();
     ExecuteModeActionAbovePutFPSElementHandlers();
+}
+
+// 0x410725 -- Address where this function gets called normally, we replace it with our own.
+int Replacement_ModeAction_CampLoop()
+{
+    int ret = ItemInventoryModScript();
+
+    if (ret == -1)
+        return CampLoop();
+
+    return ret;
+}
+
+// 0x410785
+int Replacement_ModeAction_MiniMapLoop()
+{
+    int ret = MiniMapModScript();
+
+    if (ret == -1)
+        return MiniMapLoop();
+
+    return ret;
 }

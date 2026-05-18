@@ -55,8 +55,15 @@ static int lua_GetFlag(lua_State* L)
 	return 1;
 }
 
+static int lua_InitFlag(lua_State* L)
+{
+	InitFlags();
+	return 0;
+}
+
 FUNCTION_TABLE FlagFunctionTable[FUNCTION_TABLE_FLAG_SIZE] =
 {
+	{"Init", lua_InitFlag},
 	{"Set", lua_SetFlag},
 	{"Unset", lua_UnsetFlag},
 	{"Get", lua_GetFlag},

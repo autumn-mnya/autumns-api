@@ -1,0 +1,14 @@
+(Nothing)
+Snake
+Polar Star
+Fireball
+Machine Gun
+Missile Launcher
+(Used for Missiles)
+Bubbler
+(Unused)
+Blade
+Super Missiles
+(Used for Super Missiles)
+Nemesis
+Spur

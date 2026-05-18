@@ -1,9 +1,15 @@
 #pragma once
 
+#include <windows.h>
 #include "cave_story.h"
 
-void LoadLevelsTable();
-void LoadBulletTable();
+extern int arms_level_entries;
+extern int bullet_table_entries;
+
+BOOL LoadLevelsTable();
+void LoadLevelsTableOld();
+BOOL LoadBulletTable();
+void LoadBulletTableOld();
 void Replacement_AddExpMyChar(int x);
 BOOL ReplacementIsMaxExpMyChar(void);
 void Replacement_SetBullet(int no, int x, int y, int dir);

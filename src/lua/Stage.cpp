@@ -26,6 +26,28 @@ extern "C"
 #include "../API_ModeAction.h"
 #include "../API_Stage.h"
 
+static int lua_StageSetTileset(lua_State* L)
+{
+	char path[MAX_PATH];
+	char path_dir[20];
+
+    const char* tilesetName = luaL_checkstring(L, 1);
+
+	// Get path
+	strcpy(path_dir, "Stage");
+
+	// Load tileset
+	sprintf(path, "%s\\Prt%s", path_dir, tilesetName);
+	ReleaseSurface(SURFACE_ID_LEVEL_TILESET);
+	MakeSurface_File(path, SURFACE_ID_LEVEL_TILESET);
+
+	// Load tileset attributes
+	sprintf(path, "%s\\%s.pxa", path_dir, tilesetName);
+	LoadAttributeData(path);
+
+    return 0;
+}
+
 static int lua_StageGetCurrentNo(lua_State* L)
 {
 	lua_pushnumber(L, (lua_Number)gStageNo);
@@ -121,15 +143,49 @@ static int lua_StageTransfer(lua_State* L)
 
 static int lua_LoadStageTable(lua_State* L)
 {
-	const char* string = luaL_checkstring(L, 1);
-	char* tempString;
-	strcpy(tempString, string);
-	LoadStageTable(tempString);
+    const char* string = luaL_checkstring(L, 1);
+
+    char* tempString = strdup(string);
+
+    if (!tempString)
+        return luaL_error(L, "Out of memory");
+
+    LoadStageTable(tempString);
+
+    free(tempString);
+    return 0;
+}
+
+static int lua_StagePutVector(lua_State* L)
+{
+    int fx = (int)luaL_checknumber(L, 1);
+    int fy = (int)luaL_checknumber(L, 2);
+
+	PutMapDataVector(fx, fy);
+	return 0;
+}
+
+static int lua_StagePutBack(lua_State* L)
+{
+    int fx = (int)luaL_checknumber(L, 1);
+    int fy = (int)luaL_checknumber(L, 2);
+
+	PutStage_Back(fx, fy);
+	return 0;
+}
+
+static int lua_StagePutFront(lua_State* L)
+{
+    int fx = (int)luaL_checknumber(L, 1);
+    int fy = (int)luaL_checknumber(L, 2);
+
+	PutStage_Front(fx, fy);
 	return 0;
 }
 
 FUNCTION_TABLE StageFunctionTable[FUNCTION_TABLE_STAGE_SIZE] =
 {
+	{"SetTileset", lua_StageSetTileset},
 	{"GetCurrentNo", lua_StageGetCurrentNo},
 	{"GetTileset", lua_StageGetTileset},
 	{"GetFilename", lua_StageGetFilename},
@@ -141,6 +197,9 @@ FUNCTION_TABLE StageFunctionTable[FUNCTION_TABLE_STAGE_SIZE] =
 	{"GetName", lua_StageGetName},
 	{"Transfer", lua_StageTransfer},
 	{"LoadTable", lua_LoadStageTable},
+	{"DrawVector", lua_StagePutVector},
+	{"DrawBack", lua_StagePutBack},
+	{"DrawFront", lua_StagePutFront},
 };
 
 static int lua_MapGetWidth(lua_State* L)
@@ -183,8 +242,21 @@ static int lua_MapChangeTile(lua_State* L)
 	int x = (int)luaL_checknumber(L, 2);
 	int y = (int)luaL_checknumber(L, 3);
 
-	ChangeMapParts(x, y, no);
+	lua_pushboolean(L, ChangeMapParts(x, y, no));
 
+	return 1;
+}
+
+static int lua_MapPutName(lua_State* L)
+{
+	int should = 0;
+
+	if (!lua_isnoneornil(L, 1))
+	{
+		should = lua_toboolean(L, 1);
+	}
+
+	PutMapName(should);
 	return 0;
 }
 
@@ -195,6 +267,7 @@ FUNCTION_TABLE MapFunctionTable[FUNCTION_TABLE_MAP_SIZE] =
 	{"GetAttribute", lua_MapGetAttribute},
 	{"GetTile", lua_MapGetTileID},
 	{"ChangeTile", lua_MapChangeTile},
+	{"PutName", lua_MapPutName},
 };
 
 bool modcs_has_transferred_stage;

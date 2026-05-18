@@ -30,11 +30,14 @@ static int lua_TscRun(lua_State* L)
 {
 	int no = (int)luaL_checknumber(L, 1);
 
+	// ehe, we know what we're doing -- Function remakes require us to do this anyways
+	/*
 	if (g_GameFlags & 4)
 	{
 		SerenaAlert(L, "ModCS.Tsc.Run used while TSC was running");
 		printf("Are you sure you did not mean to use ModCS.Tsc.Jump instead?\n");
 	}
+	*/
 
 	if (!StartTextScript(no))
 		SerenaAlert(L, "Unable to run TSC event");
@@ -143,6 +146,49 @@ static int lua_TscIsRunning(lua_State* L)
 	return 1;
 }
 
+static int lua_TscActMain(lua_State *L)
+{
+	lua_pushnumber(L, (lua_Number)TextScriptProc());
+	return 1;
+}
+
+static int lua_TscPut(lua_State* L)
+{
+	PutTextScript();
+	return 0;
+}
+
+static int lua_TscGetPath(lua_State* L)
+{
+    char temp[256];
+
+    GetTextScriptPath(temp);
+    lua_pushstring(L, temp);
+
+    return 1;
+}
+static int lua_TscLoad(lua_State* L)
+{
+	char tscname[256];
+	strcpy(tscname, luaL_checkstring(L, 1));
+	LoadTextScript2(tscname);
+	return 0;
+}
+
+static int lua_TscLoad2(lua_State* L)
+{
+	char tscname[256];
+	strcpy(tscname, luaL_checkstring(L, 1));
+	LoadTextScript_Stage(tscname);
+	return 0;
+}
+
+static int lua_TscStop(lua_State* L)
+{
+	StopTextScript();
+	return 0;
+}
+
 FUNCTION_TABLE TscFunctionTable[FUNCTION_TABLE_TSC_SIZE] =
 {
 	{"Run", lua_TscRun},
@@ -150,11 +196,19 @@ FUNCTION_TABLE TscFunctionTable[FUNCTION_TABLE_TSC_SIZE] =
 	{"Wait", lua_TscWait},
 	{"GetArgument", lua_TscGetArgument},
 	{"GetString", lua_TscGetString},
-	{"IsRunning", lua_TscIsRunning}
+	{"IsRunning", lua_TscIsRunning},
+	{"ActMain", lua_TscActMain},
+	{"DrawMain", lua_TscPut},
+	{"GetPath", lua_TscGetPath},
+	{"Load", lua_TscLoad},
+	{"Load2", lua_TscLoad2},
+	{"Stop", lua_TscStop},
 };
 
 int TSCCommandModScript(char command[4])
 {
+	if (!gL)
+		return 1;
 	lua_getglobal(gL, "ModCS");
 	lua_getfield(gL, -1, "Tsc");
 	lua_getfield(gL, -1, "Command");

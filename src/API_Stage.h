@@ -8,6 +8,7 @@
 
 ELEMENT_HEADERS(TransferStageInitElementHandler, TransferStageInitElement)
 
+extern int stage_table_map_count;
 extern bool stage_table_patched;
 extern STAGE_TABLE* gStageTable;
 

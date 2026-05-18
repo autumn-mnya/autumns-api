@@ -1,0 +1,599 @@
+bullets:
+  - damage: 0
+    hits: 0
+    ticks: 0
+    bits: 0
+    enemyXL: 0
+    enemyYL: 0
+    blockXL: 0
+    blockYL: 0
+    view:
+      front: 0
+      top: 0
+      back: 0
+      bottom: 0
+  - damage: 4
+    hits: 1
+    ticks: 20
+    bits: 36
+    enemyXL: 4
+    enemyYL: 4
+    blockXL: 2
+    blockYL: 2
+    view:
+      front: 8
+      top: 8
+      back: 8
+      bottom: 8
+  - damage: 6
+    hits: 1
+    ticks: 23
+    bits: 36
+    enemyXL: 4
+    enemyYL: 4
+    blockXL: 2
+    blockYL: 2
+    view:
+      front: 8
+      top: 8
+      back: 8
+      bottom: 8
+  - damage: 8
+    hits: 1
+    ticks: 30
+    bits: 36
+    enemyXL: 4
+    enemyYL: 4
+    blockXL: 2
+    blockYL: 2
+    view:
+      front: 8
+      top: 8
+      back: 8
+      bottom: 8
+  - damage: 1
+    hits: 1
+    ticks: 8
+    bits: 32
+    enemyXL: 6
+    enemyYL: 6
+    blockXL: 2
+    blockYL: 2
+    view:
+      front: 8
+      top: 8
+      back: 8
+      bottom: 8
+  - damage: 2
+    hits: 1
+    ticks: 12
+    bits: 32
+    enemyXL: 6
+    enemyYL: 6
+    blockXL: 2
+    blockYL: 2
+    view:
+      front: 8
+      top: 8
+      back: 8
+      bottom: 8
+  - damage: 4
+    hits: 1
+    ticks: 16
+    bits: 32
+    enemyXL: 6
+    enemyYL: 6
+    blockXL: 2
+    blockYL: 2
+    view:
+      front: 8
+      top: 8
+      back: 8
+      bottom: 8
+  - damage: 2
+    hits: 2
+    ticks: 100
+    bits: 8
+    enemyXL: 8
+    enemyYL: 16
+    blockXL: 4
+    blockYL: 2
+    view:
+      front: 8
+      top: 8
+      back: 8
+      bottom: 8
+  - damage: 3
+    hits: 2
+    ticks: 100
+    bits: 8
+    enemyXL: 4
+    enemyYL: 4
+    blockXL: 4
+    blockYL: 2
+    view:
+      front: 8
+      top: 8
+      back: 8
+      bottom: 8
+  - damage: 3
+    hits: 2
+    ticks: 100
+    bits: 8
+    enemyXL: 4
+    enemyYL: 4
+    blockXL: 4
+    blockYL: 2
+    view:
+      front: 8
+      top: 8
+      back: 8
+      bottom: 8
+  - damage: 2
+    hits: 1
+    ticks: 20
+    bits: 32
+    enemyXL: 2
+    enemyYL: 2
+    blockXL: 2
+    blockYL: 2
+    view:
+      front: 8
+      top: 8
+      back: 8
+      bottom: 8
+  - damage: 4
+    hits: 1
+    ticks: 20
+    bits: 32
+    enemyXL: 2
+    enemyYL: 2
+    blockXL: 2
+    blockYL: 2
+    view:
+      front: 8
+      top: 8
+      back: 8
+      bottom: 8
+  - damage: 6
+    hits: 1
+    ticks: 20
+    bits: 32
+    enemyXL: 2
+    enemyYL: 2
+    blockXL: 2
+    blockYL: 2
+    view:
+      front: 8
+      top: 8
+      back: 8
+      bottom: 8
+  - damage: 0
+    hits: 10
+    ticks: 50
+    bits: 40
+    enemyXL: 2
+    enemyYL: 2
+    blockXL: 2
+    blockYL: 2
+    view:
+      front: 8
+      top: 8
+      back: 8
+      bottom: 8
+  - damage: 0
+    hits: 10
+    ticks: 70
+    bits: 40
+    enemyXL: 4
+    enemyYL: 4
+    blockXL: 4
+    blockYL: 4
+    view:
+      front: 8
+      top: 8
+      back: 8
+      bottom: 8
+  - damage: 0
+    hits: 10
+    ticks: 90
+    bits: 40
+    enemyXL: 4
+    enemyYL: 4
+    blockXL: 0
+    blockYL: 0
+    view:
+      front: 8
+      top: 8
+      back: 8
+      bottom: 8
+  - damage: 1
+    hits: 100
+    ticks: 100
+    bits: 20
+    enemyXL: 16
+    enemyYL: 16
+    blockXL: 0
+    blockYL: 0
+    view:
+      front: 0
+      top: 0
+      back: 0
+      bottom: 0
+  - damage: 1
+    hits: 100
+    ticks: 100
+    bits: 20
+    enemyXL: 16
+    enemyYL: 16
+    blockXL: 0
+    blockYL: 0
+    view:
+      front: 0
+      top: 0
+      back: 0
+      bottom: 0
+  - damage: 1
+    hits: 100
+    ticks: 100
+    bits: 20
+    enemyXL: 16
+    enemyYL: 16
+    blockXL: 0
+    blockYL: 0
+    view:
+      front: 0
+      top: 0
+      back: 0
+      bottom: 0
+  - damage: 1
+    hits: 1
+    ticks: 20
+    bits: 8
+    enemyXL: 2
+    enemyYL: 2
+    blockXL: 2
+    blockYL: 2
+    view:
+      front: 4
+      top: 4
+      back: 4
+      bottom: 4
+  - damage: 2
+    hits: 1
+    ticks: 20
+    bits: 8
+    enemyXL: 2
+    enemyYL: 2
+    blockXL: 2
+    blockYL: 2
+    view:
+      front: 4
+      top: 4
+      back: 4
+      bottom: 4
+  - damage: 2
+    hits: 1
+    ticks: 20
+    bits: 8
+    enemyXL: 4
+    enemyYL: 4
+    blockXL: 4
+    blockYL: 4
+    view:
+      front: 4
+      top: 4
+      back: 4
+      bottom: 4
+  - damage: 3
+    hits: 1
+    ticks: 32
+    bits: 32
+    enemyXL: 2
+    enemyYL: 2
+    blockXL: 2
+    blockYL: 2
+    view:
+      front: 4
+      top: 4
+      back: 4
+      bottom: 4
+  - damage: 0
+    hits: 100
+    ticks: 0
+    bits: 36
+    enemyXL: 8
+    enemyYL: 8
+    blockXL: 8
+    blockYL: 8
+    view:
+      front: 12
+      top: 12
+      back: 12
+      bottom: 12
+  - damage: 127
+    hits: 1
+    ticks: 2
+    bits: 4
+    enemyXL: 8
+    enemyYL: 4
+    blockXL: 8
+    blockYL: 4
+    view:
+      front: 0
+      top: 0
+      back: 0
+      bottom: 0
+  - damage: 15
+    hits: 1
+    ticks: 30
+    bits: 36
+    enemyXL: 8
+    enemyYL: 8
+    blockXL: 4
+    blockYL: 2
+    view:
+      front: 8
+      top: 8
+      back: 8
+      bottom: 8
+  - damage: 6
+    hits: 3
+    ticks: 18
+    bits: 36
+    enemyXL: 10
+    enemyYL: 10
+    blockXL: 4
+    blockYL: 2
+    view:
+      front: 12
+      top: 12
+      back: 12
+      bottom: 12
+  - damage: 1
+    hits: 100
+    ticks: 30
+    bits: 36
+    enemyXL: 6
+    enemyYL: 6
+    blockXL: 4
+    blockYL: 4
+    view:
+      front: 12
+      top: 12
+      back: 12
+      bottom: 12
+  - damage: 0
+    hits: 10
+    ticks: 30
+    bits: 40
+    enemyXL: 2
+    enemyYL: 2
+    blockXL: 2
+    blockYL: 2
+    view:
+      front: 8
+      top: 8
+      back: 8
+      bottom: 8
+  - damage: 0
+    hits: 10
+    ticks: 40
+    bits: 40
+    enemyXL: 4
+    enemyYL: 4
+    blockXL: 4
+    blockYL: 4
+    view:
+      front: 8
+      top: 8
+      back: 8
+      bottom: 8
+  - damage: 0
+    hits: 10
+    ticks: 40
+    bits: 40
+    enemyXL: 4
+    enemyYL: 4
+    blockXL: 0
+    blockYL: 0
+    view:
+      front: 8
+      top: 8
+      back: 8
+      bottom: 8
+  - damage: 2
+    hits: 100
+    ticks: 100
+    bits: 20
+    enemyXL: 12
+    enemyYL: 12
+    blockXL: 0
+    blockYL: 0
+    view:
+      front: 0
+      top: 0
+      back: 0
+      bottom: 0
+  - damage: 2
+    hits: 100
+    ticks: 100
+    bits: 20
+    enemyXL: 12
+    enemyYL: 12
+    blockXL: 0
+    blockYL: 0
+    view:
+      front: 0
+      top: 0
+      back: 0
+      bottom: 0
+  - damage: 2
+    hits: 100
+    ticks: 100
+    bits: 20
+    enemyXL: 12
+    enemyYL: 12
+    blockXL: 0
+    blockYL: 0
+    view:
+      front: 0
+      top: 0
+      back: 0
+      bottom: 0
+  - damage: 4
+    hits: 4
+    ticks: 20
+    bits: 32
+    enemyXL: 4
+    enemyYL: 4
+    blockXL: 3
+    blockYL: 3
+    view:
+      front: 8
+      top: 8
+      back: 24
+      bottom: 8
+  - damage: 4
+    hits: 2
+    ticks: 20
+    bits: 32
+    enemyXL: 2
+    enemyYL: 2
+    blockXL: 2
+    blockYL: 2
+    view:
+      front: 8
+      top: 8
+      back: 24
+      bottom: 8
+  - damage: 1
+    hits: 1
+    ticks: 20
+    bits: 32
+    enemyXL: 2
+    enemyYL: 2
+    blockXL: 2
+    blockYL: 2
+    view:
+      front: 8
+      top: 8
+      back: 24
+      bottom: 8
+  - damage: 4
+    hits: 4
+    ticks: 30
+    bits: 64
+    enemyXL: 6
+    enemyYL: 6
+    blockXL: 3
+    blockYL: 3
+    view:
+      front: 8
+      top: 8
+      back: 8
+      bottom: 8
+  - damage: 8
+    hits: 8
+    ticks: 30
+    bits: 64
+    enemyXL: 6
+    enemyYL: 6
+    blockXL: 3
+    blockYL: 3
+    view:
+      front: 8
+      top: 8
+      back: 8
+      bottom: 8
+  - damage: 12
+    hits: 12
+    ticks: 30
+    bits: 64
+    enemyXL: 6
+    enemyYL: 6
+    blockXL: 3
+    blockYL: 3
+    view:
+      front: 8
+      top: 8
+      back: 8
+      bottom: 8
+  - damage: 3
+    hits: 100
+    ticks: 30
+    bits: 32
+    enemyXL: 6
+    enemyYL: 6
+    blockXL: 3
+    blockYL: 3
+    view:
+      front: 4
+      top: 4
+      back: 4
+      bottom: 4
+  - damage: 6
+    hits: 100
+    ticks: 30
+    bits: 32
+    enemyXL: 6
+    enemyYL: 6
+    blockXL: 3
+    blockYL: 3
+    view:
+      front: 4
+      top: 4
+      back: 4
+      bottom: 4
+  - damage: 11
+    hits: 100
+    ticks: 30
+    bits: 32
+    enemyXL: 6
+    enemyYL: 6
+    blockXL: 3
+    blockYL: 3
+    view:
+      front: 4
+      top: 4
+      back: 4
+      bottom: 4
+  - damage: 4
+    hits: 4
+    ticks: 20
+    bits: 32
+    enemyXL: 4
+    enemyYL: 4
+    blockXL: 3
+    blockYL: 3
+    view:
+      front: 8
+      top: 8
+      back: 24
+      bottom: 8
+  - damage: 0
+    hits: 4
+    ticks: 4
+    bits: 4
+    enemyXL: 0
+    enemyYL: 0
+    blockXL: 0
+    blockYL: 0
+    view:
+      front: 0
+      top: 0
+      back: 0
+      bottom: 0
+  - damage: 1
+    hits: 1
+    ticks: 1
+    bits: 36
+    enemyXL: 1
+    enemyYL: 1
+    blockXL: 1
+    blockYL: 1
+    view:
+      front: 1
+      top: 1
+      back: 1
+      bottom: 1

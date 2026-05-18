@@ -85,6 +85,61 @@ static int lua_GameSetGameFlags(lua_State* L)
 	return 0;
 }
 
+static int lua_GameRandom(lua_State* L)
+{
+	int min = (int)luaL_checknumber(L, 1);
+	int max = (int)luaL_checknumber(L, 2);
+
+	int val = (Random(min, max));
+	lua_pushnumber(L, (lua_Number)val);
+	return 1;
+}
+
+static int lua_GameRandom2(lua_State* L) 
+{
+    double min = luaL_checknumber(L, 1);
+    double max = luaL_checknumber(L, 2);
+
+    int min_fp = (int)(min * 512.0);
+    int max_fp = (int)(max * 512.0);
+
+    int val = Random(min_fp, max_fp);
+
+    lua_pushnumber(L, (lua_Number)val / 512.0);
+    return 1;
+}
+
+static int lua_GameSetBit(lua_State* L)
+{
+    int variable = (int)luaL_checknumber(L, 1);
+    int bit = (int)luaL_checknumber(L, 2);
+
+    variable |= bit;
+
+    lua_pushinteger(L, variable);
+    return 1;
+}
+
+static int lua_GameUnsetBit(lua_State* L)
+{
+    int variable = (int)luaL_checknumber(L, 1);
+    int bit = (int)luaL_checknumber(L, 2);
+
+    variable &= ~bit;
+
+    lua_pushinteger(L, variable);
+    return 1;
+}
+
+static int lua_GameCheckBit(lua_State* L)
+{
+    int variable = (int)luaL_checknumber(L, 1);
+    int bit = (int)luaL_checknumber(L, 2);
+
+    lua_pushboolean(L, (variable & bit) != 0);
+    return 1;
+}
+
 FUNCTION_TABLE GameFunctionTable[FUNCTION_TABLE_GAME_SIZE] =
 {
 	{"GetMode", lua_GameGetMode},
@@ -95,4 +150,9 @@ FUNCTION_TABLE GameFunctionTable[FUNCTION_TABLE_GAME_SIZE] =
 	{"CanControl", lua_GameCanControl},
 	{"GetGameFlags", lua_GameGetGameFlags},
 	{"SetGameFlags", lua_GameSetGameFlags},
+	{"Random", lua_GameRandom},
+	{"Random2", lua_GameRandom2},
+	{"SetBit", lua_GameSetBit},
+	{"UnsetBit", lua_GameUnsetBit},
+	{"CheckBit", lua_GameCheckBit},
 };

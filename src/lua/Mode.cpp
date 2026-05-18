@@ -27,6 +27,7 @@ extern "C"
 #include "../API_ModeAction.h"
 #include "../API_ModeOpening.h"
 #include "../API_ModeTitle.h"
+#include "../API_MyChar.h"
 
 int mode_fx = 0;
 int mode_fy = 0;
@@ -523,7 +524,7 @@ static int lua_Mode_ActMyChar(lua_State* L)
 	if (check)
 		should = 1;
 
-	ActMyChar(should);
+	Replacement_ModeAction_ActMyChar(should);
 	return 0;
 }
 
@@ -591,7 +592,7 @@ static int lua_Mode_AnimationMyChar(lua_State* L)
 	if (check)
 		should = 1;
 
-	AnimationMyChar(should);
+	Replacement_ModeAction_AnimationMyChar(should);
 	return 0;
 }
 
@@ -657,7 +658,7 @@ static int lua_Mode_ExecuteGameplayBelowPlayer(lua_State* L)
 
 static int lua_Mode_PutMyChar(lua_State* L)
 {
-	PutMyChar(mode_fx, mode_fy);
+	Replacement_ModeAction_PutMyChar(mode_fx, mode_fy);
 	return 0;
 }
 
@@ -729,7 +730,7 @@ static int lua_Mode_ExecuteGameplayAboveFade(lua_State* L)
 
 static int lua_Mode_CampLoop(lua_State *L)
 {
-	lua_pushnumber(L, (lua_Number)CampLoop());
+	lua_pushnumber(L, (lua_Number)Replacement_ModeAction_CampLoop());
 	return 1;
 }
 
@@ -854,7 +855,6 @@ static int lua_Mode_GameDrawLua(lua_State* L)
 	lua_pushboolean(L, GameDrawModScript());
 	return 1;
 }
-
 
 FUNCTION_TABLE ModeFunctionTable[FUNCTION_TABLE_MODE_SIZE] =
 {
@@ -1007,6 +1007,8 @@ FUNCTION_TABLE ModeFunctionTable[FUNCTION_TABLE_MODE_SIZE] =
 
 int ModeModScript(int mode_id)
 {
+	if (!gL)
+		return -2;
     lua_settop(gL, 0);
     lua_getglobal(gL, "ModCS");
     if (!lua_istable(gL, -1)) return -2;

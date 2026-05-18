@@ -54,23 +54,7 @@ Fought off Balrog!<WAI0140<NOD
 #0500
 
 #1000
-<KEY<FL+0360<FL+0361<FL+0440<FL-0326<MSGEeeeeek!<NOD<CLRSave me, save me!!<NOD<CLR.....<NODHuh?<NOD<MYB0002<WAI0030<MYD0002<CNP1000:0060:0004<CLR<FAC0006You're...you're not
-with the Doctor?<NOD<CLROh! I'm sorry.<NOD
-You had me worried.
-The Doctor's such a
-mean guy.<NOD
-Popping up in our village
-and taking us away,<NOD
-sometimes even killing
-us...<NOD<CLRLike my brother.
-He killed my brother.<NOD<CLROh!<NOD
-That pendant!<GIT1004<NOD<CLRYou found it for me?<NOD
-Sue gave that to me!<NOD<CLR.....<NOD<CLRWell... I shouldn't have
-it anymore.<NOD
-<GIT0000King gets his ears all
-in a tangle when he sees
-Sue and I getting along...<NOD
-You can have it.<NOD<CLO
+<KEY<FL+0360<FL+0361<FL+0440<FL-0326<MYB0002<MYD0002<CNP1000:0060:0004
 <FAC0000<CMU0000
 <QUA0030<SOU0026
 <ANP1000:0008:0000
@@ -78,11 +62,11 @@ You can have it.<NOD<CLO
 <WAI0010
 <MYD0000
 <CNP1000:0060:0000
-<WAI0100
+<WAI0050
 <QUA0030<SOU0026
 <ANP1000:0008:0000
 <ANP0100:0001:0000
-<WAI0070
+<WAI0045
 <QUA0030<SOU0026
 <ANP1000:0008:0000
 <CNP0400:0019:0002
@@ -93,17 +77,8 @@ You can have it.<NOD<CLO
 <CMP0004:0009:0096
 <CMP0005:0009:0097
 <CMP0006:0009:0098
-
-
-<MSGHuzzah!<WAI0050<CNP0400:0012:0002<ANP0400:0030:0002<CLR<KEY<CMU0011<FAC0014There you are!<NOD<CLR<FAC0005You can't hide, no no!<NOD
-I've got the nose of a
-bloodhound!<NOD<FAC0000<CLRIndeed you do.<NOD
-<CNP0500:0067:0002<WAI0100<ANP0500:0013:0002<WAI0050<ANP1000:0008:0000<MSG<FAC0015The nose, and I dare
-say the brain as well.<NOD<CLR<FAC0005Misery!<NOD<CLRI found her first!<NOD<CLR<FAC0008You--you guys're with
-the Doctor, aren't you!<NOD<CLR<FAC0015.....<NOD<CLR<FAC0016So you're Sue, eh?
-The Doctor has called
-for you.<NOD
-Come along, now.<NOD<CLR<FAC0006Uh...what?<NOD<CLR
+<WAI0025<CNP0400:0012:0002<ANP0400:0030:0002<CMU0011
+<CNP0500:0067:0002<WAI0050<ANP0500:0013:0002<WAI0050<ANP1000:0008:0000<MSG<FAC0006Uh...what?<NOD<CLR
 I'm not Sue.<NOD<FAC0000<CLO
 <ANP0500:0015:0002<WAI0110
 <PRI<MSG<FAC0008Eyaah!<NOD<FAC0015<CLRBalrog.<NOD

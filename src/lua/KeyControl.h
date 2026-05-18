@@ -12,7 +12,7 @@ extern "C"
 
 void KeyCheck(lua_State* L, int Key, int KeyTrg, int button);
 
-#define FUNCTION_TABLE_KEY_SIZE 19
+#define FUNCTION_TABLE_KEY_SIZE 24
 extern FUNCTION_TABLE KeyFunctionTable[FUNCTION_TABLE_KEY_SIZE];
 
 int KeyControlModScript(unsigned int vkey, bool down, bool repeat);

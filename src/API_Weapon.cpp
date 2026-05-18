@@ -13,9 +13,13 @@
 
 #include "lua/ArmsItem.h"
 #include "lua/Bullet.h"
+#include <yaml-cpp/yaml.h>
 
 ARMS_LEVEL* autpiArmsLevelTable;
 BULLET_TABLE* autpiBulTbl;
+
+int arms_level_entries = 14;
+int bullet_table_entries = 46;
 
 void SetDefaultArmsTable()
 {
@@ -54,7 +58,127 @@ void SetDefaultBulletTable()
 	}
 }
 
-void LoadLevelsTable()
+BOOL LoadLevelsTableBinary(const char* name)
+{	
+	FILE *fp;
+	char path[MAX_PATH];
+	size_t size;
+	unsigned int entries;
+	sprintf(path, "%s\\%s.tbl", exeDataPath, name);
+
+	size = GetFileSizeLong(path);
+	if (size == (size_t)-1)
+	{
+		SetDefaultArmsTable();
+		return FALSE;
+	}
+
+	entries = (int)(size / 12);
+	arms_level_entries = entries; // set global variable
+
+	fp = fopen(path, "rb");
+	if(fp == NULL)
+	{
+		SetDefaultArmsTable();
+		return FALSE;
+	}
+	
+	autpiArmsLevelTable = (ARMS_LEVEL*)malloc(entries * sizeof(ARMS_LEVEL));
+
+	if (autpiArmsLevelTable == NULL)
+	{
+		fclose(fp);
+		free(autpiArmsLevelTable);
+		autpiArmsLevelTable = NULL;
+		return FALSE;
+	}
+	
+	for(int i = 0; i < entries; ++i)
+		fread(&autpiArmsLevelTable[i].exp, 12, 1, fp);
+
+	fclose(fp);
+
+	// printf("Loaded Arms Table as binary format.\n");
+
+	return TRUE;
+}
+
+BOOL LoadLevelsTableYaml(const char* name)
+{
+	char path[MAX_PATH];
+	sprintf(path, "%s\\%s.yaml", exeDataPath, name);
+
+	YAML::Node root;
+	try
+	{
+		root = YAML::LoadFile(path);
+	}
+	catch (const YAML::Exception& e)
+	{
+		fprintf(stderr, "YAML load error: %s\n", e.what());
+		SetDefaultArmsTable();
+		return FALSE;
+	}
+
+	if (!root["levels"] || !root["levels"].IsSequence())
+	{
+		fprintf(stderr, "YAML file missing 'levels' key or it is not a sequence\n");
+		SetDefaultArmsTable();
+		return FALSE;
+	}
+
+	const YAML::Node& levels = root["levels"];
+	const size_t entries = levels.size();
+
+	arms_level_entries = entries; // set global variable
+
+	autpiArmsLevelTable = static_cast<ARMS_LEVEL*>(malloc(entries * sizeof(ARMS_LEVEL)));
+	if (!autpiArmsLevelTable)
+	{
+		SetDefaultArmsTable();
+		return FALSE;
+	}
+
+	for (size_t i = 0; i < entries; ++i)
+	{
+		const YAML::Node& levelNode = levels[i];
+
+		if (!levelNode.IsSequence() || levelNode.size() != 3)
+		{
+			fprintf(stderr, "YAML error: Level %zu is not a valid triplet\n", i);
+			free(autpiArmsLevelTable);
+			autpiArmsLevelTable = nullptr;
+			return FALSE;
+		}
+
+		for (int j = 0; j < 3; ++j)
+		{
+			if (!levelNode[j].IsScalar())
+			{
+				fprintf(stderr, "YAML error: Non-scalar at level %zu index %d\n", i, j);
+				free(autpiArmsLevelTable);
+				autpiArmsLevelTable = nullptr;
+				return FALSE;
+			}
+
+			autpiArmsLevelTable[i].exp[j] = levelNode[j].as<int>();
+		}
+	}
+
+	return TRUE;
+}
+
+BOOL LoadLevelsTable()
+{
+	// Try loading as YAML
+	if (LoadLevelsTableYaml("arms_level"))
+		return TRUE;
+
+	// Fallback to binary
+	return LoadLevelsTableBinary("arms_level");
+}
+
+void LoadLevelsTableOld()
 {
 	FILE* fp;
 	char path[MAX_PATH];
@@ -71,6 +195,7 @@ void LoadLevelsTable()
 	}
 
 	entries = (int)(size / 12);
+	arms_level_entries = entries; // set global variable
 
 	fp = fopen(path, "rb");
 	if (fp == NULL)
@@ -97,7 +222,146 @@ void LoadLevelsTable()
 	printf("Loaded levels table from file\n");
 }
 
-void LoadBulletTable()
+BOOL LoadBulletTableBinary(const char* name)
+{	
+	FILE *fp;
+	char path[MAX_PATH];
+	size_t size;
+	unsigned int entries;
+	sprintf(path, "%s\\%s.tbl", exeDataPath, name);
+
+	size = GetFileSizeLong(path);
+	if (size == (size_t)-1)
+	{
+		SetDefaultBulletTable();
+		return FALSE;
+	}
+
+	entries = (int)(size / 42);
+	bullet_table_entries = entries; // set global variable
+
+	fp = fopen(path, "rb");
+	if(fp == NULL)
+	{
+		SetDefaultBulletTable();
+		return FALSE;
+	}
+	
+	autpiBulTbl = (BULLET_TABLE*)malloc(entries * sizeof(BULLET_TABLE));
+
+	if (autpiBulTbl == NULL)
+	{
+		fclose(fp);
+		free(autpiBulTbl);
+		autpiBulTbl = NULL;
+		SetDefaultBulletTable();
+		return FALSE;
+	}
+	
+	for(int i = 0; i < entries; ++i)
+	{
+		fread(&autpiBulTbl[i].damage, 1, 1, fp);
+		fread(&autpiBulTbl[i].life, 1, 1, fp);
+		fread(&autpiBulTbl[i].life_count, 4, 1, fp);
+		fread(&autpiBulTbl[i].bbits, 4, 1, fp);
+		fread(&autpiBulTbl[i].enemyXL, 4, 1, fp);
+		fread(&autpiBulTbl[i].enemyYL, 4, 1, fp);
+		fread(&autpiBulTbl[i].blockXL, 4, 1, fp);
+		fread(&autpiBulTbl[i].blockYL, 4, 1, fp);
+		fread(&autpiBulTbl[i].view, 16, 1, fp);
+	}
+
+	fclose(fp);
+
+	return TRUE;
+}
+
+BOOL LoadBulletTableYaml(const char* name)
+{
+	char path[MAX_PATH];
+	sprintf(path, "%s\\%s.yaml", exeDataPath, name);
+
+	YAML::Node root;
+	try
+	{
+		root = YAML::LoadFile(path);
+	}
+	catch (const YAML::Exception& e)
+	{
+		fprintf(stderr, "YAML load error: %s\n", e.what());
+		SetDefaultBulletTable();
+		return FALSE;
+	}
+
+	if (!root["bullets"] || !root["bullets"].IsSequence())
+	{
+		fprintf(stderr, "YAML: Missing or invalid 'bullets' list\n");
+		SetDefaultBulletTable();
+		return FALSE;
+	}
+
+	const YAML::Node& bullets = root["bullets"];
+	size_t count = bullets.size();
+
+	bullet_table_entries = count; // set global variable
+
+	autpiBulTbl = (BULLET_TABLE*)malloc(count * sizeof(BULLET_TABLE));
+	if (!autpiBulTbl)
+	{
+		SetDefaultBulletTable();
+		return FALSE;
+	}
+
+	for (size_t i = 0; i < count; ++i)
+	{
+		const YAML::Node& bullet = bullets[i];
+
+		if (!bullet.IsMap())
+		{
+			fprintf(stderr, "YAML: Bullet %zu is not a map\n", i);
+			free(autpiBulTbl);
+			autpiBulTbl = nullptr;
+			SetDefaultBulletTable();
+			return FALSE;
+		}
+
+		autpiBulTbl[i].damage    = bullet["damage"].as<int>();
+		autpiBulTbl[i].life      = bullet["hits"].as<int>();
+		autpiBulTbl[i].life_count = bullet["ticks"].as<int>();
+		autpiBulTbl[i].bbits     = bullet["bits"].as<int>();
+		autpiBulTbl[i].enemyXL   = bullet["enemyXL"].as<int>();
+		autpiBulTbl[i].enemyYL   = bullet["enemyYL"].as<int>();
+		autpiBulTbl[i].blockXL   = bullet["blockXL"].as<int>();
+		autpiBulTbl[i].blockYL   = bullet["blockYL"].as<int>();
+
+		const YAML::Node& view = bullet["view"];
+		if (!view || !view.IsMap())
+		{
+			fprintf(stderr, "YAML: Bullet %zu missing valid view\n", i);
+			free(autpiBulTbl);
+			autpiBulTbl = nullptr;
+			SetDefaultBulletTable();
+			return FALSE;
+		}
+
+		autpiBulTbl[i].view.front   = view["front"].as<int>();
+		autpiBulTbl[i].view.top    = view["top"].as<int>();
+		autpiBulTbl[i].view.back  = view["back"].as<int>();
+		autpiBulTbl[i].view.bottom = view["bottom"].as<int>();
+	}
+
+	return TRUE;
+}
+
+BOOL LoadBulletTable()
+{
+	if (LoadBulletTableYaml("bullet"))
+		return TRUE;
+
+	return LoadBulletTableBinary("bullet");
+}
+
+void LoadBulletTableOld()
 {
 	FILE* fp;
 	char path[MAX_PATH];
@@ -114,6 +378,7 @@ void LoadBulletTable()
 	}
 
 	entries = (int)(size / 42);
+	bullet_table_entries = entries; // set global variable
 
 	fp = fopen(path, "rb");
 	if (fp == NULL)

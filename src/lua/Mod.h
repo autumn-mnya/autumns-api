@@ -13,7 +13,7 @@ extern "C"
 extern char gModName[256];
 extern char gModAuthor[256];
 
-#define FUNCTION_TABLE_MOD_SIZE 7
+#define FUNCTION_TABLE_MOD_SIZE 10
 extern FUNCTION_TABLE ModFunctionTable[FUNCTION_TABLE_MOD_SIZE];
 
 void GetDefaultOpening();

@@ -29,3 +29,9 @@ extern void (*ModLoader_AddStackableHook)(void * address, unsigned int length, M
 const char* ModLoader_GetSettingString(const char* const setting_name, const char* const default_string);
 int ModLoader_GetSettingInt(const char* const setting_name, const int default_int);
 bool ModLoader_GetSettingBool(const char* const setting_name, const bool default_bool);
+
+extern "C" __declspec(dllexport) unsigned char ModLoader_GetByte(void* address);
+extern "C" __declspec(dllexport) unsigned short ModLoader_GetWord(void* address);
+extern "C" __declspec(dllexport) unsigned long ModLoader_GetLong(void* address);
+
+void Toggle60FPSPatch(bool enable);

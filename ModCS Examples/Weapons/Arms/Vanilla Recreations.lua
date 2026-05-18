@@ -31,26 +31,26 @@ ModCS.Arms.Shoot[1] = function()
 			if ModCS.Player.IsLookingUp() then
 				if ModCS.Player.direct == 0 then
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x - 3, ModCS.Player.y - 10, 1)
-					ModCS.Caret.Spawn(3, ModCS.Player.x - 3, ModCS.Player.y - 10, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x - 3, ModCS.Player.y - 10, 0)
 				else
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x + 3, ModCS.Player.y - 10, 1)
-					ModCS.Caret.Spawn(3, ModCS.Player.x + 3, ModCS.Player.y - 10, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x + 3, ModCS.Player.y - 10, 0)
 				end
 			elseif ModCS.Player.IsLookingDown() then
 				if ModCS.Player.direct == 0 then
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x - 3, ModCS.Player.y + 10, 3)
-					ModCS.Caret.Spawn(3, ModCS.Player.x - 3, ModCS.Player.y + 10, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x - 3, ModCS.Player.y + 10, 0)
 				else
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x + 3, ModCS.Player.y + 10, 3)
-					ModCS.Caret.Spawn(3, ModCS.Player.x + 3, ModCS.Player.y + 10, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x + 3, ModCS.Player.y + 10, 0)
 				end
 			else
 				if ModCS.Player.direct == 0 then
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x - 6, ModCS.Player.y + 2, 0)
-					ModCS.Caret.Spawn(3, ModCS.Player.x - 12, ModCS.Player.y + 2, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x - 12, ModCS.Player.y + 2, 0)
 				else
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x + 6, ModCS.Player.y + 2, 2)
-					ModCS.Caret.Spawn(3, ModCS.Player.x + 12, ModCS.Player.y + 2, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x + 12, ModCS.Player.y + 2, 0)
 				end
 			end
 			
@@ -74,26 +74,26 @@ ModCS.Arms.Shoot[2] = function()
 			if ModCS.Player.IsLookingUp() then
 				if ModCS.Player.direct == 0 then
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x - 1, ModCS.Player.y - 8, 1)
-					ModCS.Caret.Spawn(3, ModCS.Player.x - 1, ModCS.Player.y - 8, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x - 1, ModCS.Player.y - 8, 0)
 				else
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x + 1, ModCS.Player.y - 8, 1)
-					ModCS.Caret.Spawn(3, ModCS.Player.x + 1, ModCS.Player.y - 8, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x + 1, ModCS.Player.y - 8, 0)
 				end
 			elseif ModCS.Player.IsLookingDown() then
 				if ModCS.Player.direct == 0 then
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x - 1, ModCS.Player.y + 8, 3)
-					ModCS.Caret.Spawn(3, ModCS.Player.x - 1, ModCS.Player.y + 8, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x - 1, ModCS.Player.y + 8, 0)
 				else
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x + 1, ModCS.Player.y + 8, 3)
-					ModCS.Caret.Spawn(3, ModCS.Player.x + 1, ModCS.Player.y + 8, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x + 1, ModCS.Player.y + 8, 0)
 				end
 			else
 				if ModCS.Player.direct == 0 then
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x - 6, ModCS.Player.y + 3, 0)
-					ModCS.Caret.Spawn(3, ModCS.Player.x - 12, ModCS.Player.y + 3, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x - 12, ModCS.Player.y + 3, 0)
 				else
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x + 6, ModCS.Player.y + 3, 2)
-					ModCS.Caret.Spawn(3, ModCS.Player.x + 12, ModCS.Player.y + 3, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x + 12, ModCS.Player.y + 3, 0)
 				end
 			end
 			
@@ -131,26 +131,26 @@ ModCS.Arms.Shoot[3] = function()
 			if ModCS.Player.IsLookingUp() then
 				if ModCS.Player.direct == 0 then
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x - 4, ModCS.Player.y - 8, 1)
-					ModCS.Caret.Spawn(3, ModCS.Player.x - 4, ModCS.Player.y - 8, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x - 4, ModCS.Player.y - 8, 0)
 				else
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x + 4, ModCS.Player.y - 8, 1)
-					ModCS.Caret.Spawn(3, ModCS.Player.x + 4, ModCS.Player.y - 8, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x + 4, ModCS.Player.y - 8, 0)
 				end
 			elseif ModCS.Player.IsLookingDown() then
 				if ModCS.Player.direct == 0 then
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x - 4, ModCS.Player.y + 8, 3)
-					ModCS.Caret.Spawn(3, ModCS.Player.x - 4, ModCS.Player.y + 8, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x - 4, ModCS.Player.y + 8, 0)
 				else
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x + 4, ModCS.Player.y + 8, 3)
-					ModCS.Caret.Spawn(3, ModCS.Player.x + 4, ModCS.Player.y + 8, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x + 4, ModCS.Player.y + 8, 0)
 				end
 			else
 				if ModCS.Player.direct == 0 then
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x - 6, ModCS.Player.y + 2, 0)
-					ModCS.Caret.Spawn(3, ModCS.Player.x - 12, ModCS.Player.y + 2, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x - 12, ModCS.Player.y + 2, 0)
 				else
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x + 6, ModCS.Player.y + 2, 2)
-					ModCS.Caret.Spawn(3, ModCS.Player.x + 12, ModCS.Player.y + 2, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x + 12, ModCS.Player.y + 2, 0)
 				end
 			end
 			
@@ -179,7 +179,7 @@ ModCS.Arms.Shoot[4] = function()
 			ModCS.Sound.Play(37)
 			
 			if ModCS.Player.ammo_empty == 0 then
-				ModCS.Caret.Spawn(16, ModCS.Player.x, ModCS.Player.y, 0)
+				ModCS.Caret.Spawn(ModCS.Const.CARET_EMPTY, ModCS.Player.x, ModCS.Player.y, 0)
 				ModCS.Player.ammo_empty = 50
 			end
 			
@@ -193,10 +193,10 @@ ModCS.Arms.Shoot[4] = function()
 				
 			if ModCS.Player.direct == 0 then
 				ModCS.Bullet.Spawn(bul, ModCS.Player.x - 3, ModCS.Player.y - 8 , 1)
-				ModCS.Caret.Spawn(3, ModCS.Player.x - 3, ModCS.Player.y - 8, 0)
+				ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x - 3, ModCS.Player.y - 8, 0)
 			else
 				ModCS.Bullet.Spawn(bul, ModCS.Player.x + 3 , ModCS.Player.y - 8 , 1)
-				ModCS.Caret.Spawn(3, ModCS.Player.x + 3, ModCS.Player.y - 8, 0)
+				ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x + 3, ModCS.Player.y - 8, 0)
 			end
 		elseif ModCS.Player.IsLookingDown() then
 			if level == 3 then
@@ -215,18 +215,18 @@ ModCS.Arms.Shoot[4] = function()
 			
 			if ModCS.Player.direct == 0 then
 				ModCS.Bullet.Spawn(bul, ModCS.Player.x - 3, ModCS.Player.y + 8, 3)
-				ModCS.Caret.Spawn(3, ModCS.Player.x - 3, ModCS.Player.y + 8, 0)
+				ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x - 3, ModCS.Player.y + 8, 0)
 			else
 				ModCS.Bullet.Spawn(bul, ModCS.Player.x - 3, ModCS.Player.y + 8, 3)
-				ModCS.Caret.Spawn(3, ModCS.Player.x + 3, ModCS.Player.y + 8, 0)
+				ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x + 3, ModCS.Player.y + 8, 0)
 			end
 		else
 			if ModCS.Player.direct == 0 then
 				ModCS.Bullet.Spawn(bul, ModCS.Player.x - 12, ModCS.Player.y + 3, 0)
-				ModCS.Caret.Spawn(3, ModCS.Player.x - 12, ModCS.Player.y + 3, 0)
+				ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x - 12, ModCS.Player.y + 3, 0)
 			else
 				ModCS.Bullet.Spawn(bul, ModCS.Player.x + 12, ModCS.Player.y + 3, 2)
-				ModCS.Caret.Spawn(3, ModCS.Player.x + 12, ModCS.Player.y + 3, 0)
+				ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x + 12, ModCS.Player.y + 3, 0)
 			end
 		end
 		
@@ -317,7 +317,7 @@ function MissileLauncher(super)
 				ModCS.Sound.Play(37)
 				
 				if ModCS.Player.ammo_empty == 0 then
-					ModCS.Caret.Spawn(16, ModCS.Player.x, ModCS.Player.y, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_EMPTY, ModCS.Player.x, ModCS.Player.y, 0)
 					ModCS.Player.ammo_empty = 50
 				end
 				
@@ -327,26 +327,26 @@ function MissileLauncher(super)
 			if ModCS.Player.IsLookingUp() then
 				if ModCS.Player.direct == 0 then
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x - 1, ModCS.Player.y - 8, 1)
-					ModCS.Caret.Spawn(3, ModCS.Player.x - 1, ModCS.Player.y - 8, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x - 1, ModCS.Player.y - 8, 0)
 				else
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x + 1, ModCS.Player.y - 8, 1)
-					ModCS.Caret.Spawn(3, ModCS.Player.x + 1, ModCS.Player.y - 8, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x + 1, ModCS.Player.y - 8, 0)
 				end
 			elseif ModCS.Player.IsLookingDown() then
 				if ModCS.Player.direct == 0 then
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x - 1, ModCS.Player.y + 8, 3)
-					ModCS.Caret.Spawn(3, ModCS.Player.x - 1, ModCS.Player.y + 8, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x - 1, ModCS.Player.y + 8, 0)
 				else
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x + 1, ModCS.Player.y + 8, 3)
-					ModCS.Caret.Spawn(3, ModCS.Player.x + 1, ModCS.Player.y + 8, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x + 1, ModCS.Player.y + 8, 0)
 				end
 			else
 				if ModCS.Player.direct == 0 then
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x - 6, ModCS.Player.y, 0)
-					ModCS.Caret.Spawn(3, ModCS.Player.x - 12, ModCS.Player.y, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x - 12, ModCS.Player.y, 0)
 				else
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x + 6, ModCS.Player.y, 2)
-					ModCS.Caret.Spawn(3, ModCS.Player.x + 12, ModCS.Player.y, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x + 12, ModCS.Player.y, 0)
 				end
 			end
 		else -- level is 3
@@ -364,36 +364,36 @@ function MissileLauncher(super)
 			if ModCS.Player.IsLookingUp() then
 				if ModCS.Player.direct == 0 then
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x - 1, ModCS.Player.y - 8, 1)
-					ModCS.Caret.Spawn(3, ModCS.Player.x - 1, ModCS.Player.y - 8, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x - 1, ModCS.Player.y - 8, 0)
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x + 3, ModCS.Player.y, 1)
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x - 3, ModCS.Player.y, 1)
 				else
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x + 1, ModCS.Player.y - 8, 1)
-					ModCS.Caret.Spawn(3, ModCS.Player.x + 1, ModCS.Player.y - 8, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x + 1, ModCS.Player.y - 8, 0)
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x + 3, ModCS.Player.y, 1)
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x - 3, ModCS.Player.y, 1)
 				end
 			elseif ModCS.Player.IsLookingDown() then
 				if ModCS.Player.direct == 0 then
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x - 1, ModCS.Player.y + 8, 3)
-					ModCS.Caret.Spawn(3, ModCS.Player.x - 1, ModCS.Player.y + 8, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x - 1, ModCS.Player.y + 8, 0)
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x + 3, ModCS.Player.y, 3)
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x - 3, ModCS.Player.y, 3)
 				else
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x + 1, ModCS.Player.y + 8, 3)
-					ModCS.Caret.Spawn(3, ModCS.Player.x + 1, ModCS.Player.y + 8, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x + 1, ModCS.Player.y + 8, 0)
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x - 3, ModCS.Player.y, 3)
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x + 3, ModCS.Player.y, 3)
 				end
 			else
 				if ModCS.Player.direct == 0 then
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x - 6, ModCS.Player.y + 1, 0)
-					ModCS.Caret.Spawn(3, ModCS.Player.x - 12, ModCS.Player.y + 1, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x - 12, ModCS.Player.y + 1, 0)
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x, ModCS.Player.y - 8, 0)
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x + 4, ModCS.Player.y - 1, 0)
 				else
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x + 6, ModCS.Player.y + 1, 2)
-					ModCS.Caret.Spawn(3, ModCS.Player.x + 12, ModCS.Player.y + 1, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x + 12, ModCS.Player.y + 1, 0)
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x, ModCS.Player.y - 8, 2)
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x - 4, ModCS.Player.y - 1, 2)
 				end
@@ -422,7 +422,7 @@ function Bubbler1()
 			ModCS.Sound.Play(37)
 			
 			if ModCS.Player.ammo_empty == 0 then
-				ModCS.Caret.Spawn(16, ModCS.Player.x, ModCS.Player.y, 0)
+				ModCS.Caret.Spawn(ModCS.Const.CARET_EMPTY, ModCS.Player.x, ModCS.Player.y, 0)
 				ModCS.Player.ammo_empty = 50
 			end
 				
@@ -432,26 +432,26 @@ function Bubbler1()
 		if ModCS.Player.IsLookingUp() then
 			if ModCS.Player.direct == 0 then
 				ModCS.Bullet.Spawn(bul, ModCS.Player.x - 1, ModCS.Player.y - 2, 1)
-				ModCS.Caret.Spawn(3, ModCS.Player.x - 1, ModCS.Player.y - 2, 0)
+				ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x - 1, ModCS.Player.y - 2, 0)
 			else
 				ModCS.Bullet.Spawn(bul, ModCS.Player.x + 1, ModCS.Player.y - 2, 1)
-				ModCS.Caret.Spawn(3, ModCS.Player.x + 1, ModCS.Player.y - 2, 0)
+				ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x + 1, ModCS.Player.y - 2, 0)
 			end
 		elseif ModCS.Player.IsLookingDown() then
 			if ModCS.Player.direct == 0 then
 				ModCS.Bullet.Spawn(bul, ModCS.Player.x - 1, ModCS.Player.y + 2, 3)
-				ModCS.Caret.Spawn(3, ModCS.Player.x - 1, ModCS.Player.y + 2, 0)
+				ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x - 1, ModCS.Player.y + 2, 0)
 			else
 				ModCS.Bullet.Spawn(bul, ModCS.Player.x + 1, ModCS.Player.y + 2, 3)
-				ModCS.Caret.Spawn(3, ModCS.Player.x + 1, ModCS.Player.y + 2, 0)
+				ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x + 1, ModCS.Player.y + 2, 0)
 			end
 		else
 			if ModCS.Player.direct == 0 then
 				ModCS.Bullet.Spawn(bul, ModCS.Player.x - 6, ModCS.Player.y + 3, 0)
-				ModCS.Caret.Spawn(3, ModCS.Player.x - 12, ModCS.Player.y + 3, 0)
+				ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x - 12, ModCS.Player.y + 3, 0)
 			else
 				ModCS.Bullet.Spawn(bul, ModCS.Player.x + 6, ModCS.Player.y + 3, 2)
-				ModCS.Caret.Spawn(3, ModCS.Player.x + 12, ModCS.Player.y + 3, 0)
+				ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x + 12, ModCS.Player.y + 3, 0)
 			end
 		end
 		
@@ -489,7 +489,7 @@ function Bubbler2(num)
 			ModCS.Sound.Play(37)
 			
 			if ModCS.Player.ammo_empty == 0 then
-				ModCS.Caret.Spawn(16, ModCS.Player.x, ModCS.Player.y, 0)
+				ModCS.Caret.Spawn(ModCS.Const.CARET_EMPTY, ModCS.Player.x, ModCS.Player.y, 0)
 				ModCS.Player.ammo_empty = 50
 			end
 				
@@ -499,26 +499,26 @@ function Bubbler2(num)
 		if ModCS.Player.IsLookingUp() then
 			if ModCS.Player.direct == 0 then
 				ModCS.Bullet.Spawn(num, ModCS.Player.x - 3, ModCS.Player.y - 8, 1)
-				ModCS.Caret.Spawn(3, ModCS.Player.x - 3, ModCS.Player.y - 16, 0)
+				ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x - 3, ModCS.Player.y - 16, 0)
 			else
 				ModCS.Bullet.Spawn(num, ModCS.Player.x + 3, ModCS.Player.y - 8, 1)
-				ModCS.Caret.Spawn(3, ModCS.Player.x + 3, ModCS.Player.y - 16, 0)
+				ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x + 3, ModCS.Player.y - 16, 0)
 			end
 		elseif ModCS.Player.IsLookingDown() then
 			if ModCS.Player.direct == 0 then
 				ModCS.Bullet.Spawn(num, ModCS.Player.x - 3, ModCS.Player.y + 8, 3)
-				ModCS.Caret.Spawn(3, ModCS.Player.x - 3, ModCS.Player.y + 16, 0)
+				ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x - 3, ModCS.Player.y + 16, 0)
 			else
 				ModCS.Bullet.Spawn(num, ModCS.Player.x + 3, ModCS.Player.y + 8, 3)
-				ModCS.Caret.Spawn(3, ModCS.Player.x + 3, ModCS.Player.y + 16, 0)
+				ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x + 3, ModCS.Player.y + 16, 0)
 			end
 		else
 			if ModCS.Player.direct == 0 then
 				ModCS.Bullet.Spawn(num, ModCS.Player.x - 6, ModCS.Player.y + 3, 0)
-				ModCS.Caret.Spawn(3, ModCS.Player.x - 12, ModCS.Player.y + 3, 0)
+				ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x - 12, ModCS.Player.y + 3, 0)
 			else
 				ModCS.Bullet.Spawn(num, ModCS.Player.x + 6, ModCS.Player.y + 3, 2)
-				ModCS.Caret.Spawn(3, ModCS.Player.x + 12, ModCS.Player.y + 3, 0)
+				ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x + 12, ModCS.Player.y + 3, 0)
 			end
 		end
 		
@@ -596,26 +596,26 @@ ModCS.Arms.Shoot[12] = function()
 			if ModCS.Player.IsLookingUp() then
 				if ModCS.Player.direct == 0 then
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x - 1, ModCS.Player.y - 12, 1)
-					ModCS.Caret.Spawn(3, ModCS.Player.x - 1, ModCS.Player.y - 12, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x - 1, ModCS.Player.y - 12, 0)
 				else
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x + 1, ModCS.Player.y - 12, 1)
-					ModCS.Caret.Spawn(3, ModCS.Player.x + 1, ModCS.Player.y - 12, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x + 1, ModCS.Player.y - 12, 0)
 				end
 			elseif ModCS.Player.IsLookingDown() then
 				if ModCS.Player.direct == 0 then
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x - 1, ModCS.Player.y + 12, 3)
-					ModCS.Caret.Spawn(3, ModCS.Player.x - 1, ModCS.Player.y + 12, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x - 1, ModCS.Player.y + 12, 0)
 				else
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x + 1, ModCS.Player.y + 12, 3)
-					ModCS.Caret.Spawn(3, ModCS.Player.x + 1, ModCS.Player.y + 12, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x + 1, ModCS.Player.y + 12, 0)
 				end
 			else
 				if ModCS.Player.direct == 0 then
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x - 22, ModCS.Player.y + 3, 0)
-					ModCS.Caret.Spawn(3, ModCS.Player.x - 16, ModCS.Player.y + 3, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x - 16, ModCS.Player.y + 3, 0)
 				else
 					ModCS.Bullet.Spawn(bul, ModCS.Player.x + 22, ModCS.Player.y + 3, 2)
-					ModCS.Caret.Spawn(3, ModCS.Player.x + 16, ModCS.Player.y + 3, 0)
+					ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x + 16, ModCS.Player.y + 3, 0)
 				end
 			end
 			
@@ -717,26 +717,26 @@ ModCS.Arms.Shoot[13] = function()
             if ModCS.Player.IsLookingUp() then
                 if ModCS.Player.direct == 0 then
                     ModCS.Bullet.Spawn(bul, ModCS.Player.x - 1, ModCS.Player.y - 8, 1)
-                    ModCS.Caret.Spawn(3, ModCS.Player.x - 1, ModCS.Player.y - 8, 0)
+                    ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x - 1, ModCS.Player.y - 8, 0)
                 else
                     ModCS.Bullet.Spawn(bul, ModCS.Player.x + 1, ModCS.Player.y - 8, 1)
-                    ModCS.Caret.Spawn(3, ModCS.Player.x + 1, ModCS.Player.y - 8, 0)
+                    ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x + 1, ModCS.Player.y - 8, 0)
                 end
             elseif ModCS.Player.IsLookingDown() then
                 if ModCS.Player.direct == 0 then
                     ModCS.Bullet.Spawn(bul, ModCS.Player.x - 1, ModCS.Player.y + 8, 3)
-                    ModCS.Caret.Spawn(3, ModCS.Player.x - 1, ModCS.Player.y + 8, 0)
+                    ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x - 1, ModCS.Player.y + 8, 0)
                 else
                     ModCS.Bullet.Spawn(bul, ModCS.Player.x + 1, ModCS.Player.y + 8, 3)
-                    ModCS.Caret.Spawn(3, ModCS.Player.x + 1, ModCS.Player.y + 8, 0)
+                    ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x + 1, ModCS.Player.y + 8, 0)
                 end
             else
                 if ModCS.Player.direct == 0 then
                     ModCS.Bullet.Spawn(bul, ModCS.Player.x - 6, ModCS.Player.y + 3, 0)
-                    ModCS.Caret.Spawn(3, ModCS.Player.x - 12, ModCS.Player.y + 3, 0)
+                    ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x - 12, ModCS.Player.y + 3, 0)
                 else
                     ModCS.Bullet.Spawn(bul, ModCS.Player.x + 6, ModCS.Player.y + 3, 2)
-                    ModCS.Caret.Spawn(3, ModCS.Player.x + 12, ModCS.Player.y + 3, 0)
+                    ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, ModCS.Player.x + 12, ModCS.Player.y + 3, 0)
                 end
             end
             

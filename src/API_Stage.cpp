@@ -18,6 +18,7 @@ DEFINE_ELEMENT_HANDLERS(TransferStageInitElementHandler, TransferStageInitElemen
 
 STAGE_TABLE* gStageTable;
 
+int stage_table_map_count = 0;
 bool stage_table_patched = false;
 
 void PatchStageTable()
@@ -56,6 +57,7 @@ BOOL LoadStageTable(char* name)
 	if (file_buffer != NULL)
 	{
 		const unsigned long entry_count = file_size / 0xE5;
+		stage_table_map_count = entry_count;
 
 		STAGE_TABLE* pTMT = (STAGE_TABLE*)malloc(entry_count * sizeof(STAGE_TABLE));
 
@@ -78,8 +80,6 @@ BOOL LoadStageTable(char* name)
 				memcpy(pTMT[i].name, entry + 0xC5, 0x20);
 #endif
 			}
-
-
 
 			gStageTable = pTMT;
 

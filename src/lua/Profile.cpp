@@ -77,6 +77,12 @@ static int lua_ProfileGetName(lua_State* L)
 	return 1;
 }
 
+static int lua_ProfileShouldLoad(lua_State* L)
+{
+	lua_pushboolean(L, bContinue);
+	return 1;
+}
+
 FUNCTION_TABLE ProfileFunctionTable[FUNCTION_TABLE_PROFILE_SIZE] =
 {
 	{"Save", lua_ProfileSave},

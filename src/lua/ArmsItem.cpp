@@ -18,6 +18,8 @@ extern "C"
 
 #include "../mod_loader.h"
 #include "../cave_story.h"
+#include "../API_Weapon.h"
+#include "../API_ModeAction.h"
 
 void RemoveExpMyChar(int x)
 {
@@ -32,7 +34,7 @@ void RemoveExpMyChar(int x)
 			int lv = gArmsData[gSelectedArms].level - 1;
 			int arms_code = gArmsData[gSelectedArms].code;
 
-			gArmsData[gSelectedArms].exp = gArmsLevelTable[arms_code].exp[lv] + gArmsData[gSelectedArms].exp;
+			gArmsData[gSelectedArms].exp = autpiArmsLevelTable[arms_code].exp[lv] + gArmsData[gSelectedArms].exp;
 
 			if (gMC.life > 0 && gArmsData[gSelectedArms].code != 13)
 				PlaySoundObject(37, SOUND_MODE_PLAY);
@@ -95,7 +97,7 @@ static int lua_ArmsRemove(lua_State* L)
 	return 0;
 }
 
-static int lua_ArmsGetCurrent(lua_State* L)
+int lua_ArmsGetCurrent(lua_State* L)
 {
 	ARMS** arms = (ARMS**)lua_newuserdata(L, sizeof(ARMS*));
 	*arms = &gArmsData[gSelectedArms];
@@ -105,7 +107,7 @@ static int lua_ArmsGetCurrent(lua_State* L)
 	return 1;
 }
 
-static int lua_ArmsGetByID(lua_State* L)
+int lua_ArmsGetByID(lua_State* L)
 {
 	int id = (int)luaL_checknumber(L, 1);
 
@@ -125,7 +127,7 @@ static int lua_ArmsGetByID(lua_State* L)
 	return 0;
 }
 
-static int lua_ArmsGetByInvPos(lua_State* L)
+int lua_ArmsGetByInvPos(lua_State* L)
 {
 	int pos = (int)luaL_checknumber(L, 1);
 	if (pos > ARMS_MAX)
@@ -139,13 +141,21 @@ static int lua_ArmsGetByInvPos(lua_State* L)
 	return 1;
 }
 
-static int lua_ArmsGetCurrentInvPos(lua_State* L)
+int lua_ArmsGetCurrentInvPos(lua_State* L)
 {
 	lua_pushnumber(L, gSelectedArms + 1);
 	return 1;
 }
 
-static int lua_ArmsUseAmmo(lua_State* L)
+int lua_ArmsSetCurrentInvPos(lua_State* L)
+{
+	int pos = (int)luaL_checknumber(L, 1);
+	gSelectedArms = pos - 1;
+
+	return 0;
+}
+
+int lua_ArmsUseAmmo(lua_State* L)
 {
 	int num = (int)luaL_optnumber(L, 1, 1);
 
@@ -153,32 +163,32 @@ static int lua_ArmsUseAmmo(lua_State* L)
 	return 1;
 }
 
-static int lua_ArmsAddAmmo(lua_State* L)
+int lua_ArmsAddAmmo(lua_State* L)
 {
 	int num = (int)luaL_checknumber(L, 1);
 	ChargeArmsEnergy(num);
 	return 0;
 }
 
-static int lua_ArmsSwitchNext(lua_State* L)
+int lua_ArmsSwitchNext(lua_State* L)
 {
 	RotationArms();
 	return 0;
 }
 
-static int lua_ArmsSwitchPrev(lua_State* L)
+int lua_ArmsSwitchPrev(lua_State* L)
 {
 	RotationArmsRev();
 	return 0;
 }
 
-static int lua_ArmsSwitchFirst(lua_State* L)
+int lua_ArmsSwitchFirst(lua_State* L)
 {
 	ChangeToFirstArms();
 	return 0;
 }
 
-static int lua_ArmsAddExp(lua_State* L)
+int lua_ArmsAddExp(lua_State* L)
 {
 	int x = (int)luaL_checknumber(L, 1);
 	AddExpMyChar(x);
@@ -186,7 +196,7 @@ static int lua_ArmsAddExp(lua_State* L)
 	return 0;
 }
 
-static int lua_ArmsRemoveExp(lua_State* L)
+int lua_ArmsRemoveExp(lua_State* L)
 {
 	int x = (int)luaL_checknumber(L, 1);
 	RemoveExpMyChar(x);
@@ -201,28 +211,34 @@ static int lua_ArmsGetLevels(lua_State* L)
 
 	for (int i = 0; i < 3; ++i)
 	{
-		lua_pushnumber(L, gArmsLevelTable[id].exp[i]);
+		lua_pushnumber(L, autpiArmsLevelTable[id].exp[i]);
 		lua_seti(L, -2, i + 1);
 	}
 
 	return 1;
 }
 
-static int lua_ArmsCountArmsBullet(lua_State* L)
+static int lua_ArmsGetLevelsEntries(lua_State* L)
+{
+	lua_pushnumber(L, (lua_Number)arms_level_entries);
+	return 1;
+}
+
+int lua_ArmsCountArmsBullet(lua_State* L)
 {
 	int x = (int)luaL_checknumber(L, 1);
 	lua_pushnumber(L, CountArmsBullet(x));
 	return 1;
 }
 
-static int lua_ArmsZeroExp(lua_State* L)
+int lua_ArmsZeroExp(lua_State* L)
 {
 	ZeroExpMyChar();
 
 	return 0;
 }
 
-static int lua_ArmsCurrentMax(lua_State* L)
+int lua_ArmsCurrentMax(lua_State* L)
 {
 	if (IsMaxExpMyChar())
 		lua_pushboolean(L, 1);
@@ -230,6 +246,33 @@ static int lua_ArmsCurrentMax(lua_State* L)
 		lua_pushboolean(L, 0);
 
 	return 1;
+}
+
+static int lua_ArmsClearData(lua_State* L)
+{
+	ClearArmsData();
+	return 0;
+}
+
+int lua_ArmsGetExpX(lua_State* L)
+{
+	lua_pushnumber(L, (lua_Number)gArmsEnergyX);
+
+	return 1;
+}
+
+int lua_ArmsSetExpX(lua_State* L)
+{
+	int x = (int)luaL_checknumber(L, 1);
+	gArmsEnergyX = x;
+
+	return 0;
+}
+
+static int lua_ArmsShootBullet(lua_State* L)
+{
+    ShootBullet();
+    return 0;
 }
 
 FUNCTION_TABLE ArmsFunctionTable[FUNCTION_TABLE_ARMS_SIZE] =
@@ -240,6 +283,7 @@ FUNCTION_TABLE ArmsFunctionTable[FUNCTION_TABLE_ARMS_SIZE] =
 	{"GetByID", lua_ArmsGetByID},
 	{"GetByInvPos", lua_ArmsGetByInvPos},
 	{"GetCurrentInvPos", lua_ArmsGetCurrentInvPos},
+	{"SetCurrentInvPos", lua_ArmsSetCurrentInvPos},
 	{"UseAmmo", lua_ArmsUseAmmo},
 	{"AddAmmo", lua_ArmsAddAmmo},
 	{"SwitchNext", lua_ArmsSwitchNext},
@@ -248,13 +292,20 @@ FUNCTION_TABLE ArmsFunctionTable[FUNCTION_TABLE_ARMS_SIZE] =
 	{"AddExp", lua_ArmsAddExp},
 	{"RemoveExp", lua_ArmsRemoveExp},
 	{"GetLevels", lua_ArmsGetLevels},
+	{"GetAmount", lua_ArmsGetLevelsEntries},
 	{"CountBullet", lua_ArmsCountArmsBullet},
 	{"ResetCurrentExp", lua_ArmsZeroExp},
-	{"IsCurrentMaxExp", lua_ArmsCurrentMax}
+	{"IsCurrentMaxExp", lua_ArmsCurrentMax},
+	{"Clear", lua_ArmsClearData},
+	{"GetExpX", lua_ArmsGetExpX},
+	{"SetExpX", lua_ArmsSetExpX},
+	{"ActMain", lua_ArmsShootBullet},
 };
 
 int ShootActModScript(int chr)
 {
+	if (!gL)
+		return 1;
 	lua_getglobal(gL, "ModCS");
 	lua_getfield(gL, -1, "Arms");
 	lua_getfield(gL, -1, "Shoot");
@@ -360,10 +411,40 @@ static int lua_ItemGetByInvPos(lua_State* L)
 	return 1;
 }
 
+static int lua_ItemGetCurrentInvPos(lua_State* L)
+{
+	lua_pushnumber(L, gSelectedItem + 1);
+	return 1;
+}
+
+static int lua_ItemSetCurrentInvPos(lua_State* L)
+{
+	int pos = (int)luaL_checknumber(L, 1);
+	gSelectedItem = pos - 1;
+
+	return 0;
+}
+
+static int lua_ItemClearData(lua_State* L)
+{
+	ClearItemData();
+	return 0;
+}
+
+static int lua_InvLoop(lua_State *L)
+{
+	lua_pushnumber(L, (lua_Number)Replacement_ModeAction_CampLoop());
+	return 1;
+}
+
 FUNCTION_TABLE ItemFunctionTable[FUNCTION_TABLE_ITEM_SIZE] =
 {
 	{"Add", lua_ItemAdd},
 	{"Remove", lua_ItemRemove},
 	{"GetByID", lua_ItemGetByID},
-	{"GetByInvPos", lua_ItemGetByInvPos}
+	{"GetByInvPos", lua_ItemGetByInvPos},
+	{"GetCurrentInvPos", lua_ItemGetCurrentInvPos},
+	{"SetCurrentInvPos", lua_ItemSetCurrentInvPos},
+	{"Clear", lua_ItemClearData},
+	{"InvLoop", lua_InvLoop},
 };

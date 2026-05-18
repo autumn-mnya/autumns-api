@@ -41,3 +41,5 @@ void CreditsActionCode();
 void InitCode();
 void ActionCaretCode(int fx, int fy);
 void ModeActionPutFPSCode();
+int Replacement_ModeAction_CampLoop();
+int Replacement_ModeAction_MiniMapLoop();

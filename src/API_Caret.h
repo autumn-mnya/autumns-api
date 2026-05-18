@@ -7,7 +7,8 @@
 
 void ActCaretCode(CARET* crt, int code);
 void ActCaretNull(CARET* crt);
-void LoadCaretTable();
+BOOL LoadCaretTable();
+void LoadCaretTableOld();
 void Replacement_ActCaret(void);
 void Replacement_SetCaret(int x, int y, int code, int dir);
 extern "C" __declspec(dllexport) void AutPI_AddCaret(CARETFUNCTION func, char* author, char* name);

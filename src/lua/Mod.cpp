@@ -20,6 +20,8 @@ extern "C"
 #include "../mod_loader.h"
 #include "../cave_story.h"
 
+int StartMode = 1;
+
 char gModName[256] = "LuaApi";
 char gModAuthor[256] = "DllMod";
 
@@ -220,6 +222,37 @@ static int lua_ModSetInitMyChar(lua_State* L)
 	return 0;
 }
 
+static int lua_ModSetStartMode(lua_State *L)
+{
+	StartMode = (int)luaL_checknumber(L, 1);
+
+	ModLoader_WriteByte((void*)0x40F693, StartMode);
+	ModLoader_WriteByte((void*)0x40F7EE, StartMode);
+	ModLoader_WriteByte((void*)0x40F7EE, StartMode);
+	ModLoader_WriteByte((void*)0x40FF94, StartMode);
+	ModLoader_WriteByte((void*)0x410509, StartMode);
+	ModLoader_WriteByte((void*)0x41080C, StartMode);
+	ModLoader_WriteByte((void*)0x4107A3, StartMode);
+	ModLoader_WriteByte((void*)0x410743, StartMode);
+
+	return 0;
+}
+
+static int lua_ModGetStartMode(lua_State *L)
+{
+	lua_pushnumber(L, (lua_Number)ModLoader_GetByte((void*)0x40F693));
+	return 1;
+}
+
+static int lua_ModSet60fps(lua_State* L)
+{
+	bool toggle = lua_toboolean(L, 1);
+
+	Toggle60FPSPatch(toggle);
+
+	return 0;
+}
+
 FUNCTION_TABLE ModFunctionTable[FUNCTION_TABLE_MOD_SIZE] =
 {
 	{"SetName", lua_ModSetName},
@@ -229,10 +262,16 @@ FUNCTION_TABLE ModFunctionTable[FUNCTION_TABLE_MOD_SIZE] =
 	{"SetBossHP", lua_ModSetBossHealth},
 	{"SetSpikeDamage", lua_ModSetSpikeDamage},
 	{"SetStartMyChar", lua_ModSetInitMyChar},
+	{"SetStartMode", lua_ModSetStartMode},
+	{"GetStartMode", lua_ModGetStartMode},
+	{"Toggle60fps", lua_ModSet60fps},
 };
 
 BOOL PreModeInitModScript(void)
 {
+	if (!gL)
+		return TRUE;
+		
 	lua_getglobal(gL, "ModCS");
 	lua_getfield(gL, -1, "Mod");
 	lua_getfield(gL, -1, "Init");

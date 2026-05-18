@@ -15,6 +15,7 @@ extern "C"
 #include "Npc.h"
 
 #include "Lua.h"
+#include "KeyControl.h"
 
 #include "../mod_loader.h"
 #include "../cave_story.h"
@@ -33,8 +34,14 @@ static STRUCT_TABLE NpcTable[] =
 	{"ym2", offsetof(NPCHAR, ym2), TYPE_PIXEL},
 	{"tgt_x", offsetof(NPCHAR, tgt_x), TYPE_PIXEL},
 	{"tgt_y", offsetof(NPCHAR, tgt_y), TYPE_PIXEL},
-	{"tgt_1", offsetof(NPCHAR, tgt_x), TYPE_NUMBER},
-	{"tgt_2", offsetof(NPCHAR, tgt_y), TYPE_NUMBER},
+	{"x_cs", offsetof(NPCHAR, x), TYPE_NUMBER},
+	{"y_cs", offsetof(NPCHAR, y), TYPE_NUMBER},
+	{"xm_cs", offsetof(NPCHAR, xm), TYPE_NUMBER},
+	{"ym_cs", offsetof(NPCHAR, ym), TYPE_NUMBER},
+	{"xm2_cs", offsetof(NPCHAR, xm2), TYPE_NUMBER},
+	{"ym2_cs", offsetof(NPCHAR, ym2), TYPE_NUMBER},
+	{"tgt_x_cs", offsetof(NPCHAR, tgt_x), TYPE_NUMBER},
+	{"tgt_y_cs", offsetof(NPCHAR, tgt_y), TYPE_NUMBER},
 	{"id", offsetof(NPCHAR, code_char), TYPE_NUMBER},
 	{"flag", offsetof(NPCHAR, code_flag), TYPE_NUMBER},
 	{"event", offsetof(NPCHAR, code_event), TYPE_NUMBER},
@@ -64,6 +71,18 @@ int lua_NpcIndex(lua_State* L)
 	NPCHAR** npc = (NPCHAR**)luaL_checkudata(L, 1, "NpcMeta");
 	const char* x = luaL_checkstring(L, 2);
 
+	// For compat with CSE2LE multiplayer
+	if (strcmp(x, "tgt_mc") == 0)
+	{
+		MYCHAR** mc = (MYCHAR**)lua_newuserdata(L, sizeof(MYCHAR*));
+		*mc = &gMC;
+
+		luaL_getmetatable(L, "PlayerMeta");
+		lua_setmetatable(L, -2);
+
+		return 1;
+	}
+
 	if (ReadStructBasic(L, x, NpcTable, *npc, sizeof(NpcTable) / sizeof(STRUCT_TABLE)))
 		return 1;
 
@@ -80,6 +99,13 @@ int lua_NpcNextIndex(lua_State* L)
 	NPCHAR** npc = (NPCHAR**)luaL_checkudata(L, 1, "NpcMeta");
 	const char* x = luaL_checkstring(L, 2);
 
+	// For compat with CSE2LE multiplayer
+	if (strcmp(x, "tgt_mc") == 0)
+	{
+		gMC = **(MYCHAR**)luaL_checkudata(L, 3, "PlayerMeta");
+		return 0;
+	}
+
 	Write2StructBasic(L, x, NpcTable, *npc, sizeof(NpcTable) / sizeof(STRUCT_TABLE));
 
 	return 0;
@@ -92,6 +118,48 @@ static int lua_GetNpcByEvent(lua_State* L)
 	for (int i = 0; i < NPC_MAX; ++i)
 	{
 		if ((gNPC[i].cond & 0x80) && gNPC[i].code_event == code_event)
+		{
+			NPCHAR** npc = (NPCHAR**)lua_newuserdata(L, sizeof(NPCHAR*));
+			*npc = &gNPC[i];
+
+			luaL_getmetatable(L, "NpcMeta");
+			lua_setmetatable(L, -2);
+
+			return 1;
+		}
+	}
+
+	return 0;
+}
+
+static int lua_GetNpcByFlag(lua_State* L)
+{
+	int code_flag = (int)luaL_checknumber(L, 1);
+
+	for (int i = 0; i < NPC_MAX; ++i)
+	{
+		if ((gNPC[i].cond & 0x80) && gNPC[i].code_flag == code_flag)
+		{
+			NPCHAR** npc = (NPCHAR**)lua_newuserdata(L, sizeof(NPCHAR*));
+			*npc = &gNPC[i];
+
+			luaL_getmetatable(L, "NpcMeta");
+			lua_setmetatable(L, -2);
+
+			return 1;
+		}
+	}
+
+	return 0;
+}
+
+static int lua_GetNpcByID(lua_State* L)
+{
+	int code_char = (int)luaL_checknumber(L, 1);
+
+	for (int i = 0; i < NPC_MAX; ++i)
+	{
+		if ((gNPC[i].cond & 0x80) && gNPC[i].code_char == code_char)
 		{
 			NPCHAR** npc = (NPCHAR**)lua_newuserdata(L, sizeof(NPCHAR*));
 			*npc = &gNPC[i];
@@ -265,8 +333,14 @@ static int lua_NpcDelete(lua_State* L)
 static int lua_NpcKill(lua_State* L)
 {
 	NPCHAR* npc = *(NPCHAR**)luaL_checkudata(L, 1, "NpcMeta");
+	bool bvanish = true;
 
-	LoseNpChar(npc, TRUE);
+	if (!lua_isnoneornil(L, 2))
+	{
+		bvanish = lua_toboolean(L, 2);
+	}
+
+	LoseNpChar(npc, bvanish);
 
 	return 0;
 }
@@ -354,6 +428,18 @@ static int lua_NpcTouchFloor(lua_State* L)
 	NPCHAR* npc = *(NPCHAR**)luaL_checkudata(L, 1, "NpcMeta");
 
 	if (npc->flag & 8)
+		lua_pushboolean(L, 1);
+	else
+		lua_pushboolean(L, 0);
+
+	return 1;
+}
+
+static int lua_NpcTouchSurface(lua_State* L)
+{
+	NPCHAR* npc = *(NPCHAR**)luaL_checkudata(L, 1, "NpcMeta");
+
+	if (npc->flag & 0xF)
 		lua_pushboolean(L, 1);
 	else
 		lua_pushboolean(L, 0);
@@ -485,6 +571,18 @@ static int lua_NpcMove3(lua_State* L)
 	return 0;
 }
 
+static int lua_NpcSetXY(lua_State* L)
+{
+	NPCHAR* npc = *(NPCHAR**)luaL_checkudata(L, 1, "NpcMeta");
+	int x = (int)luaL_checknumber(L, 2);
+	int y = (int)luaL_checknumber(L, 3);
+
+	npc->x = x;
+	npc->y = y;
+
+	return 0;
+}
+
 static int lua_NpcTriggerBox(lua_State* L)
 {
 	NPCHAR* npc = *(NPCHAR**)luaL_checkudata(L, 1, "NpcMeta");
@@ -531,6 +629,14 @@ static int lua_ChangeNpc(lua_State* L)
 	return 0;
 }
 
+static int lua_VanishNpc(lua_State* L)
+{
+	NPCHAR* npc = *(NPCHAR**)luaL_checkudata(L, 1, "NpcMeta");
+	VanishNpChar(npc);
+
+	return 0;
+}
+
 static int lua_SpawnNpc(lua_State* L)
 {
 	int code_char = (int)luaL_checknumber(L, 1);
@@ -562,8 +668,8 @@ static int lua_SpawnNpc2(lua_State* L)
 	int code_char = (int)luaL_checknumber(L, 1);
 	int x = (int)(luaL_checknumber(L, 2) * 0x200);
 	int y = (int)(luaL_checknumber(L, 3) * 0x200);
-	int xm = (int)(luaL_checknumber(L, 4));
-	int ym = (int)(luaL_checknumber(L, 5));
+	int xm = (int)(luaL_checknumber(L, 4) * 0x200);
+	int ym = (int)(luaL_checknumber(L, 5) * 0x200);
 	int dir = (int)(luaL_checknumber(L, 6));
 	unsigned int start_index = (int)luaL_optnumber(L, 7, 0x100);
 
@@ -586,6 +692,37 @@ static int lua_SpawnNpc2(lua_State* L)
 	return 1;
 }
 
+static int lua_SpawnNpc3(lua_State* L)
+{
+	int code_char = (int)luaL_checknumber(L, 1);
+	int x = (int)(luaL_checknumber(L, 2) * 0x200);
+	int y = (int)(luaL_checknumber(L, 3) * 0x200);
+	int xm = (int)(luaL_checknumber(L, 4) * 0x200);
+	int ym = (int)(luaL_checknumber(L, 5) * 0x200);
+	int dir = (int)(luaL_checknumber(L, 6));
+	NPCHAR* child = *(NPCHAR**)luaL_checkudata(L, 7, "NpcMeta");
+	unsigned int start_index = (int)luaL_optnumber(L, 8, 0x100);
+	
+
+	int n = start_index;
+
+	while (n < NPC_MAX && gNPC[n].cond)
+		++n;
+
+	if (n == NPC_MAX)
+		return 0;
+
+	NPCHAR** npc = (NPCHAR**)lua_newuserdata(L, sizeof(NPCHAR*));
+	*npc = &gNPC[n];
+
+	luaL_getmetatable(L, "NpcMeta");
+	lua_setmetatable(L, -2);
+
+	SetNpChar(code_char, x, y, xm, ym, dir, child, start_index);
+
+	return 1;
+}
+
 static int lua_ActCodeNpc(lua_State* L)
 {
 	NPCHAR* npc = *(NPCHAR**)luaL_checkudata(L, 1, "NpcMeta");
@@ -596,9 +733,146 @@ static int lua_ActCodeNpc(lua_State* L)
 	return 0;
 }
 
+static int lua_NpcDestroyChar(lua_State* L)
+{
+	int x = (int)luaL_checknumber(L, 1);
+	int y = (int)luaL_checknumber(L, 2);
+	int w = (int)luaL_checknumber(L, 3);
+	int num = (int)luaL_checknumber(L, 4);
+
+	SetDestroyNpChar(x * 0x200, y * 0x200, w * 0x200, num);
+
+	return 0;
+}
+
+static int lua_NpcDestroyAllID(lua_State* L)
+{
+    int id = (int)luaL_checknumber(L, 1);
+    
+	int smoke = 0;
+
+	if (!lua_isnoneornil(L, 2))
+	{
+		smoke = lua_toboolean(L, 2);
+	}
+
+	DeleteNpCharCode(id, smoke);
+	return 0;
+}
+
+static int lua_NpcSpawnExp(lua_State* L)
+{
+	int x = (int)luaL_checknumber(L, 1);
+	int y = (int)luaL_checknumber(L, 2);
+	int amount = (int)luaL_checknumber(L, 3);
+
+	SetExpObjects(x * 0x200, y * 0x200, amount);
+
+	return 0;
+}
+
+static int lua_NpcInit(lua_State* L)
+{
+	InitNpChar();
+	return 0;
+}
+
+static int lua_NpcActMain(lua_State* L)
+{
+	ActNpChar();
+	return 0;
+}
+
+static int lua_NpcTileHitCode(lua_State* L)
+{
+	HitNpCharMap();
+	return 0;
+}
+
+static int lua_NpcPut(lua_State* L)
+{
+    int fx = (int)luaL_checknumber(L, 1);
+    int fy = (int)luaL_checknumber(L, 2);
+
+	PutNpChar(fx, fy);
+	return 0;
+}
+
+static int lua_NpcGetSuperX(lua_State* L)
+{
+	lua_pushnumber(L, (lua_Number)gSuperXpos / 0x200);
+
+	return 1;
+}
+
+static int lua_NpcGetSuperY(lua_State* L)
+{
+	lua_pushnumber(L, (lua_Number)gSuperYpos / 0x200);
+
+	return 1;
+}
+
+static int lua_NpcSetSuperX(lua_State* L)
+{
+	int x = (int)luaL_checknumber(L, 1) * 0x200;
+	gSuperXpos = x;
+	return 0;
+}
+
+static int lua_NpcSetSuperY(lua_State* L)
+{
+	int y = (int)luaL_checknumber(L, 1) * 0x200;
+	gSuperYpos = y;
+	return 0;
+}
+
+static int lua_NpcGetCurlyShootX(lua_State* L)
+{
+	lua_pushnumber(L, (lua_Number)gCurlyShoot_x / 0x200);
+
+	return 1;
+}
+
+static int lua_NpcGetCurlyShootY(lua_State* L)
+{
+	lua_pushnumber(L, (lua_Number)gCurlyShoot_y / 0x200);
+
+	return 1;
+}
+
+static int lua_NpcSetCurlyShootX(lua_State* L)
+{
+	int x = (int)luaL_checknumber(L, 1) * 0x200;
+	gCurlyShoot_x = x;
+	return 0;
+}
+
+static int lua_NpcSetCurlyShootY(lua_State* L)
+{
+	int y = (int)luaL_checknumber(L, 1) * 0x200;
+	gCurlyShoot_y = y;
+	return 0;
+}
+
+static int lua_NpcGetCurlyShootWait(lua_State* L)
+{
+	lua_pushnumber(L, (lua_Number)gCurlyShoot_wait);
+
+	return 1;
+}
+
+static int lua_NpcSetCurlyShootWait(lua_State* L)
+{
+	int wait = (int)luaL_checknumber(L, 1);
+	gCurlyShoot_wait = wait;
+	return 0;
+}
+
 FUNCTION_TABLE NpcFunctionTable[FUNCTION_TABLE_NPC_SIZE] =
 {
 	{"GetByEvent", lua_GetNpcByEvent},
+	{"GetByFlag", lua_GetNpcByFlag},
+	{"GetByID", lua_GetNpcByID},
 	{"GetByBufferIndex", lua_GetNpcByBufferIndex},
 	{"SetRect", lua_NpcSetRect},
 	{"OffsetRect", lua_NpcOffsetRect},
@@ -618,6 +892,7 @@ FUNCTION_TABLE NpcFunctionTable[FUNCTION_TABLE_NPC_SIZE] =
 	{"TouchRightWall", lua_NpcTouchRightWall},
 	{"TouchCeiling", lua_NpcTouchCeiling},
 	{"TouchFloor", lua_NpcTouchFloor},
+	{"TouchSurface", lua_NpcTouchSurface},
 	{"TouchSlopeRight", lua_NpcTouchSlopeRight},
 	{"TouchSlopeLeft", lua_NpcTouchSlopeLeft},
 	{"TouchTile", lua_NpcTouchTile},
@@ -627,15 +902,37 @@ FUNCTION_TABLE NpcFunctionTable[FUNCTION_TABLE_NPC_SIZE] =
 	{"Move", lua_NpcMove},
 	{"Move2", lua_NpcMove2},
 	{"Move3", lua_NpcMove3},
+	{"SetXY", lua_NpcSetXY},
 	{"TriggerBox", lua_NpcTriggerBox},
 	{"Change", lua_ChangeNpc},
 	{"Spawn", lua_SpawnNpc},
 	{"Spawn2", lua_SpawnNpc2},
+	{"Spawn3", lua_SpawnNpc3},
 	{"ActCode", lua_ActCodeNpc},
+	{"Explode", lua_NpcDestroyChar},
+	{"Init", lua_NpcInit},
+	{"ActMain", lua_NpcActMain},
+	{"TileHitCode", lua_NpcTileHitCode},
+	{"DrawMain", lua_NpcPut},
+	{"KillEveryID", lua_NpcDestroyAllID},
+	{"SpawnExp", lua_NpcSpawnExp},
+	{"GetSuperX", lua_NpcGetSuperX},
+	{"GetSuperY", lua_NpcGetSuperY},
+	{"SetSuperX", lua_NpcSetSuperX},
+	{"SetSuperY", lua_NpcSetSuperY},
+	{"Vanish", lua_VanishNpc},
+	{"GetCurlyShootX", lua_NpcGetCurlyShootX},
+	{"GetCurlyShootY", lua_NpcGetCurlyShootY},
+	{"SetCurlyShootX", lua_NpcSetCurlyShootX},
+	{"SetCurlyShootY", lua_NpcSetCurlyShootY},
+	{"GetCurlyShootWait", lua_NpcGetCurlyShootWait},
+	{"SetCurlyShootWait", lua_NpcSetCurlyShootWait},
 };
 
 int NpcActModScript(int char_code, int i)
 {
+	if (!gL)
+		return 1;
 	lua_getglobal(gL, "ModCS");
 	lua_getfield(gL, -1, "Npc");
 	lua_getfield(gL, -1, "Act");

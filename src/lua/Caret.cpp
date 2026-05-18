@@ -187,6 +187,27 @@ static int lua_ActCodeCaret(lua_State* L)
 	return 0;
 }
 
+static int lua_CaretInit(lua_State* L)
+{
+	InitCaret();
+	return 0;
+}
+
+static int lua_CaretActMain(lua_State* L)
+{
+	ActCaret();
+	return 0;
+}
+
+static int lua_CaretPut(lua_State* L)
+{
+    int fx = (int)luaL_checknumber(L, 1);
+    int fy = (int)luaL_checknumber(L, 2);
+
+	PutCaret(fx, fy);
+	return 0;
+}
+
 FUNCTION_TABLE CaretFunctionTable[FUNCTION_TABLE_CARET_SIZE] =
 {
 	{"GetByBufferIndex", lua_GetCaretByBufferIndex},
@@ -196,11 +217,16 @@ FUNCTION_TABLE CaretFunctionTable[FUNCTION_TABLE_CARET_SIZE] =
 	{"Delete", lua_CaretDelete},
 	{"Move", lua_CaretMove},
 	{"Spawn", lua_SpawnCaret},
-	{"ActCode", lua_ActCodeCaret}
+	{"ActCode", lua_ActCodeCaret},
+	{"Init", lua_CaretInit},
+	{"ActMain", lua_CaretActMain},
+	{"DrawMain", lua_CaretPut},
 };
 
 int CaretActModScript(int code, int i)
 {
+	if (!gL)
+		return 1;
 	lua_getglobal(gL, "ModCS");
 	lua_getfield(gL, -1, "Caret");
 	lua_getfield(gL, -1, "Act");

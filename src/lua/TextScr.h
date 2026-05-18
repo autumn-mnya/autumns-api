@@ -12,7 +12,7 @@ extern "C"
 
 extern int gReadValue;
 
-#define FUNCTION_TABLE_TSC_SIZE 6
+#define FUNCTION_TABLE_TSC_SIZE 12
 extern FUNCTION_TABLE TscFunctionTable[FUNCTION_TABLE_TSC_SIZE];
 
 int TSCCommandModScript(char command[4]);

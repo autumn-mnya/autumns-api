@@ -10,9 +10,9 @@ extern "C"
 
 #include "Lua.h"
 
-#define FUNCTION_TABLE_STAGE_SIZE 11
+#define FUNCTION_TABLE_STAGE_SIZE 15
 extern FUNCTION_TABLE StageFunctionTable[FUNCTION_TABLE_STAGE_SIZE];
-#define FUNCTION_TABLE_MAP_SIZE 5
+#define FUNCTION_TABLE_MAP_SIZE 6
 extern FUNCTION_TABLE MapFunctionTable[FUNCTION_TABLE_MAP_SIZE];
 
 void RegisterOnTransferStage();

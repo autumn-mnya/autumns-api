@@ -12,9 +12,10 @@
 #include "cave_story.h"
 
 #include "lua/Caret.h"
+#include <yaml-cpp/yaml.h>
 
 // Global variables
-CARET_TABLE autpiCaretTable[MAX_CARET_TABLE_SIZE];
+CARET_TABLE *autpiCaretTable;
 CARETFUNCTION gpCaretAPIFuncTbl[MAX_CARET_FUNC_TABLE_SIZE];
 size_t caretFuncCount = 0;
 
@@ -32,6 +33,8 @@ void SetDefaultCaretTable()
 {
 	int i = 0;
 
+	autpiCaretTable = (CARET_TABLE*)malloc(18 * sizeof(CARET_TABLE));
+
 	for (i = 0; i < 18; ++i)
 	{
 		autpiCaretTable[i].view_left = gCaretTable[i].view_left;
@@ -39,7 +42,115 @@ void SetDefaultCaretTable()
 	}
 }
 
-void LoadCaretTable()
+BOOL LoadCaretTableBinary(const char* name)
+{
+	FILE *fp;
+	char path[MAX_PATH];
+	size_t size;
+	unsigned int entries;
+
+	sprintf(path, "%s\\%s.yaml", exeDataPath, name);
+
+	size = GetFileSizeLong(path);
+	if (size == (size_t)-1 || size % 8 != 0)  // 8 bytes per entry
+		return FALSE;
+
+	entries = (unsigned int)(size / 8);
+
+	fp = fopen(path, "rb");
+	if (fp == NULL)
+	{
+		SetDefaultCaretTable();
+		return FALSE;
+	}
+	
+	autpiCaretTable = (CARET_TABLE*)calloc(entries, sizeof(CARET_TABLE));
+	if (autpiCaretTable == NULL)
+	{
+		fclose(fp);
+		SetDefaultCaretTable();
+		return FALSE;
+	}
+
+	for (unsigned int i = 0; i < entries; ++i)
+	{
+		if (fread(&autpiCaretTable[i].view_left, sizeof(int), 1, fp) != 1 ||
+		    fread(&autpiCaretTable[i].view_top, sizeof(int), 1, fp) != 1)
+		{
+			free(autpiCaretTable);
+			fclose(fp);
+			SetDefaultCaretTable();
+			return FALSE;
+		}
+	}
+
+	fclose(fp);
+
+	return TRUE;
+}
+
+BOOL LoadCaretTableYaml(const char* name)
+{
+	char path[MAX_PATH];
+	sprintf(path, "%s\\%s.yaml", exeDataPath, name);
+
+	YAML::Node root;
+	try
+	{
+		root = YAML::LoadFile(path);
+	}
+	catch (...)
+	{
+		SetDefaultCaretTable();
+		return FALSE;
+	}
+
+	if (!root["carets"] || !root["carets"].IsSequence())
+	{
+		SetDefaultCaretTable();
+		return FALSE;
+	}
+
+	YAML::Node carets = root["carets"];
+	size_t count = carets.size();
+
+	autpiCaretTable = (CARET_TABLE*)calloc(count, sizeof(CARET_TABLE));
+	if (!autpiCaretTable)
+	{
+		SetDefaultCaretTable();
+		return FALSE;
+	}
+
+	for (size_t i = 0; i < count; ++i)
+	{
+		const YAML::Node& entry = carets[i];
+		if (!entry.IsSequence() || entry.size() != 2)
+		{
+			free(autpiCaretTable);
+			SetDefaultCaretTable();
+			return FALSE;
+		}
+
+		autpiCaretTable[i].view_left = entry[0].as<int>();
+		autpiCaretTable[i].view_top = entry[1].as<int>();
+	}
+
+	// printf("Loaded Caret Table as yaml format.\n");
+
+	return TRUE;
+}
+
+BOOL LoadCaretTable()
+{
+	// First try YAML
+	if (LoadCaretTableYaml("caret"))
+		return TRUE;
+
+	// Fall back to binary
+	return LoadCaretTableBinary("caret");
+}
+
+void LoadCaretTableOld()
 {
 	FILE* fp;
 	char path[MAX_PATH];

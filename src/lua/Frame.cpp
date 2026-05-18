@@ -117,6 +117,37 @@ static int lua_SetTargetPlayer(lua_State* L)
 	return 0;
 }
 
+static int lua_CameraGetRealXPos(lua_State* L)
+{
+	lua_pushnumber(L, gFrame.x);
+	return 1;
+}
+
+static int lua_CameraGetRealYPos(lua_State* L)
+{
+	lua_pushnumber(L, gFrame.y);
+	return 1;
+}
+
+static int lua_CameraActMain(lua_State* L)
+{
+	MoveFrame3();
+	return 0;
+}
+
+static int lua_CameraGetFX(lua_State* L)
+{
+	int frame_x = (int)luaL_checknumber(L, 1);
+	int frame_y = (int)luaL_checknumber(L, 2);
+
+	GetFramePosition(&frame_x, &frame_y);
+
+	lua_pushnumber(L, frame_x);
+	lua_pushnumber(L, frame_y);
+
+	return 2;
+}
+
 FUNCTION_TABLE CameraFunctionTable[FUNCTION_TABLE_CAMERA_SIZE] =
 {
 	{"SetTarget", lua_CameraSetTarget},
@@ -129,4 +160,8 @@ FUNCTION_TABLE CameraFunctionTable[FUNCTION_TABLE_CAMERA_SIZE] =
 	{"SetQuake", lua_CameraSetQuake},
 	{"SetAltQuake", lua_CameraSetAltQuake},
 	{"SetTargetPlayer", lua_SetTargetPlayer},
+	{"GetRealXPos", lua_CameraGetRealXPos},
+	{"GetRealYPos", lua_CameraGetRealYPos},
+	{"ActMain", lua_CameraActMain},
+	{"GetFrame", lua_CameraGetFX},
 };

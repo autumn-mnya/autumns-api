@@ -28,3 +28,41 @@ void ArmsTablePatches()
 	const void* tableAddressPlus8 = &autpiArmsLevelTable[0].exp[2];
 	WriteProcessMemory(GetCurrentProcess(), (void*)(0x4198FB + 2), &tableAddressPlus8, 4, NULL);
 }
+
+// Helper function, can be reused for other on/off asm patches that would re-apply original game bytes
+void ApplyAsmPatch(AsmPatch& p, bool enable)
+{
+    if (!p.initialized)
+    {
+        for (size_t i = 0; i < p.size; ++i)
+        {
+            p.originalBytes[i] = ModLoader_GetByte((void*)((uintptr_t)p.address + i));
+        }
+        p.initialized = true;
+    }
+
+    if (enable)
+    {
+        if (p.applied)
+            return;
+
+        for (size_t i = 0; i < p.size; ++i)
+        {
+            ModLoader_WriteByte((void*)((uintptr_t)p.address + i), p.patchBytes[i]);
+        }
+
+        p.applied = true;
+    }
+    else
+    {
+        if (!p.applied)
+            return;
+
+        for (size_t i = 0; i < p.size; ++i)
+        {
+            ModLoader_WriteByte((void*)((uintptr_t)p.address + i), p.originalBytes[i]);
+        }
+
+        p.applied = false;
+    }
+}

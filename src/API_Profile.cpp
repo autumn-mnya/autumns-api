@@ -24,7 +24,7 @@ char gCustomSaveName[260];
 
 void ProfilePath(char* p, const char* fm, const char* mp, const char* nm)
 {
-    sprintf(p, fm, mp, nm);
+    sprintf(p, fm, gSavesPath, nm);
     strcpy(gCustomSaveName, nm);
 }
 

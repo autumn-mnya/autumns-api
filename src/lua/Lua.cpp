@@ -28,22 +28,35 @@ extern "C"
 #include "../API_Npc.h"
 
 #include "ArmsItem.h"
+#include "Back.h"
+#include "Boss.h"
 #include "Bullet.h"
 #include "Caret.h"
+#include "Config.h"
 #include "Draw.h"
+#include "Ending.h"
+#include "Fade.h"
 #include "Flags.h"
+#include "Flash.h"
 #include "Frame.h"
 #include "Game.h"
 #include "KeyControl.h"
+#include "MiniMap.h"
 #include "Mod.h"
 #include "Mode.h"
 #include "ModLoader.h"
 #include "MyChar.h"
 #include "Npc.h"
 #include "Profile.h"
+#include "SelStage.h"
 #include "Sound.h"
 #include "Stage.h"
+#include "Star.h"
 #include "TextScr.h"
+#include "Timer.h"
+#include "Triangle.h"
+#include "ValueView.h"
+#include "Constants.h"
 
 // Credit for the majority of this goes to yasinbread and aikyuu. All I did was port it and add some extra stuff.
 
@@ -176,6 +189,55 @@ BOOL ReadStructBasic(lua_State* L, const char* name, STRUCT_TABLE* table, void* 
 				lua_pushnumber(L, *(int*)((char*)data + table[i].offset) / 512.0f);
 				break;
 			}
+
+			case TYPE_BOOL:
+			{
+				BOOL val = *(BOOL *)((char *) data + table[i].offset);
+				lua_pushboolean(L, val != 0);
+				break;
+			}
+
+			case TYPE_SHORT:
+			{
+				lua_pushnumber(L, *(short*)((char*)data + table[i].offset));
+				break;
+			}
+
+			case TYPE_USHORT:
+			{
+				lua_pushnumber(L, *(unsigned short*)((char*)data + table[i].offset));
+				break;
+			}
+
+			case TYPE_U8:
+			{
+				lua_pushnumber(L, *(unsigned char*)((char*)data + table[i].offset));
+				break;
+			}
+
+			case TYPE_S8:
+			{
+				lua_pushnumber(L, *(signed char*)((char*)data + table[i].offset));
+				break;
+			}
+
+			case TYPE_PLAYER:
+			{
+				MYCHAR* tMc = *(MYCHAR **)((char *) data + table[i].offset);
+
+				if (tMc == NULL || !(tMc->cond & 0x80))
+				{
+					lua_pushnil(L);
+					break;
+				}
+
+				MYCHAR** mc = (MYCHAR**)lua_newuserdata(L, sizeof(MYCHAR*));
+				*mc = tMc;
+
+				luaL_getmetatable(L, "PlayerMeta");
+				lua_setmetatable(L, -2);
+				break;
+			}
 			}
 
 			return TRUE;
@@ -234,6 +296,63 @@ BOOL Write2StructBasic(lua_State* L, const char* name, STRUCT_TABLE* table, void
 				*(int*)((char*)data + table[i].offset) = (int)(luaL_checknumber(L, 3) * 0x200);
 				break;
 			}
+
+			case TYPE_BOOL:
+			{
+				BOOL val = lua_toboolean(L, 3) ? 1 : 0;
+				*(BOOL *)((char *) data + table[i].offset) = val;
+				break;
+			}
+
+			case TYPE_SHORT:
+			{
+				int val = (int)luaL_checknumber(L, 3);
+
+				if (val < -32768) val = -32768;
+				if (val > 32767) val = 32767;
+
+				*(short*)((char*)data + table[i].offset) = (short)val;
+				break;
+			}
+
+			case TYPE_USHORT:
+			{
+				int val = (int)luaL_checknumber(L, 3);
+
+				if (val < 0) val = 0;
+				if (val > 65535) val = 65535;
+
+				*(unsigned short*)((char*)data + table[i].offset) = (unsigned short)val;
+				break;
+			}
+
+			case TYPE_U8:
+			{
+				int val = (int)luaL_checknumber(L, 3);
+
+				if (val < 0) val = 0;
+				if (val > 255) val = 255;
+
+				*(unsigned char*)((char*)data + table[i].offset) = (unsigned char)val;
+				break;
+			}
+
+			case TYPE_S8:
+			{
+				int val = (int)luaL_checknumber(L, 3);
+
+				if (val < -128) val = -128;
+				if (val > 127) val = 127;
+
+				*(signed char*)((char*)data + table[i].offset) = (signed char)val;
+				break;
+			}
+
+			case TYPE_PLAYER:
+			{
+				*(MYCHAR**)((char *) data + table[i].offset) = *(MYCHAR**)luaL_checkudata(L, 3, "PlayerMeta");
+				break;
+			}
 			}
 
 			return TRUE;
@@ -249,11 +368,14 @@ static METATABLE_TABLE MetatableTable[] =
 	{"RectMeta", lua_RectIndex, lua_RectNextIndex},
 	{"ColorMeta", lua_ColorIndex, lua_ColorNextIndex},
 	{"NpcMeta", lua_NpcIndex, lua_NpcNextIndex},
+	{"BossMeta", lua_BossIndex, lua_BossNextIndex},
 	{"CaretMeta", lua_CaretIndex, lua_CaretNextIndex},
 	{"BulletMeta", lua_BulletIndex, lua_BulletNextIndex},
 	{"PlayerMeta", lua_PlayerIndex, lua_PlayerNextIndex},
 	{"ArmsMeta", lua_ArmsIndex, lua_ArmsNextIndex},
-	{"ItemMeta", lua_ItemIndex, lua_ItemNextIndex}
+	{"ItemMeta", lua_ItemIndex, lua_ItemNextIndex},
+	{"BackMeta", lua_BackIndex, lua_BackNextIndex},
+	{"ConfigMeta", lua_ConfigIndex, lua_ConfigNextIndex},
 };
 
 void PushFunctionTable(lua_State* L, const char* name, const FUNCTION_TABLE* table, int length, BOOL pop)
@@ -337,33 +459,6 @@ static int lua_PutNumber(lua_State* L)
 	return 0;
 }
 
-static int lua_AddCaret(lua_State* L)
-{
-	const char* caretName = luaL_checkstring(L, 1);
-	size_t len = strlen(caretName);
-	char* caretNameFunc = new char[len + 1];
-	strncpy(caretNameFunc, caretName, len);
-	caretNameFunc[len] = '\0';
-	char ModNamePath[MAX_PATH];
-	sprintf(ModNamePath, "%s%s", "Lua@", gModAuthor);
-	AutPI_AddCaret(ActCaretNull, ModNamePath, caretNameFunc);
-	return 0;
-}
-
-static int lua_AddEntity(lua_State* L)
-{
-	const char* entityName = luaL_checkstring(L, 1);
-	// Determine the length of the source string
-	size_t len = strlen(entityName);
-	char* entityNameFunc = new char[len + 1];
-	strncpy(entityNameFunc, entityName, len);
-	entityNameFunc[len] = '\0'; // Null-terminate the string
-	char ModNamePath[MAX_PATH];
-	sprintf(ModNamePath, "%s%s", "Lua@", gModAuthor);
-	AutPI_AddEntity(ActNpc000, ModNamePath, entityNameFunc);
-	return 0;
-}
-
 static int lua_ModPrintString(lua_State* L)
 {
 	const char* string = luaL_checkstring(L, 1);
@@ -409,6 +504,11 @@ static int lua_GetModulePath(lua_State* L)
 
 static int lua_GetDataPath(lua_State* L) {
 	lua_pushstring(L, exeDataPath);
+	return 1;
+}
+
+static int lua_GetSavePath(lua_State* L) {
+	lua_pushstring(L, gSavesPath);
 	return 1;
 }
 
@@ -672,6 +772,7 @@ static int lua_PutFPS(lua_State* L) {
 	return 0;
 }
 
+// Doesn't need to exist as ModCS.Fade is now a thing in 1.3.0
 static int lua_SetFadeMask(lua_State* L) {
 	SetFadeMask();
 	gFade.mode = 0;
@@ -751,17 +852,14 @@ BOOL InitModScript(void)
 	lua_pushcfunction(gL, lua_GetGameRect);
 	lua_setfield(gL, -2, "GetGameRect");
 
-	lua_pushcfunction(gL, lua_AddCaret);
-	lua_setfield(gL, -2, "AddCaret");
-
-	lua_pushcfunction(gL, lua_AddEntity);
-	lua_setfield(gL, -2, "AddEntity");
-
 	lua_pushcfunction(gL, lua_GetModulePath);
 	lua_setfield(gL, -2, "GetModulePath");
 
 	lua_pushcfunction(gL, lua_GetDataPath);
 	lua_setfield(gL, -2, "GetDataPath");
+
+	lua_pushcfunction(gL, lua_GetSavePath);
+	lua_setfield(gL, -2, "GetSavePath");
 
 	lua_pushcfunction(gL, lua_SetModulePath);
 	lua_setfield(gL, -2, "SetModulePath");
@@ -787,6 +885,7 @@ BOOL InitModScript(void)
 	lua_pushcfunction(gL, lua_PutFPS);
 	lua_setfield(gL, -2, "PutFPS");
 
+	// Isn't neccessary anymore
 	lua_pushcfunction(gL, lua_SetFadeMask);
 	lua_setfield(gL, -2, "SetFadeMask");
 
@@ -795,6 +894,8 @@ BOOL InitModScript(void)
 
 	lua_pushcfunction(gL, lua_GetWindowHeight);
 	lua_setfield(gL, -2, "GetWindowHeight");
+
+	PushConstantsTable(gL);
 
 	PushFunctionTable(gL, "RangeRect", OtherRectFunctionTable, FUNCTION_TABLE_OTHER_RECT_SIZE, TRUE);
 	PushFunctionTable(gL, "Game", GameFunctionTable, FUNCTION_TABLE_GAME_SIZE, TRUE);
@@ -818,7 +919,24 @@ BOOL InitModScript(void)
 	PushFunctionTable(gL, "Item", ItemFunctionTable, FUNCTION_TABLE_ITEM_SIZE, TRUE);
 	PushFunctionTable(gL, "Camera", CameraFunctionTable, FUNCTION_TABLE_CAMERA_SIZE, TRUE);
 
+	PushFunctionTable(gL, "Credits", CreditsFunctionTable, FUNCTION_TABLE_CREDITS_SIZE, TRUE);
+	PushFunctionTable(gL, "Config", ConfigFunctionTable, FUNCTION_TABLE_CONFIG_SIZE, TRUE);
 	PushFunctionTable(gL, "Mouse", MouseKeyFunctionTable, FUNCTION_TABLE_MOUSE_KEY_SIZE, TRUE);
+	PushFunctionTable(gL, "Fade", FadeFunctionTable, FUNCTION_TABLE_FADE_SIZE, TRUE);
+	PushFunctionTable(gL, "Flash", FlashFunctionTable, FUNCTION_TABLE_FLASH_SIZE, TRUE);
+	PushFunctionTable(gL, "MiniMap", MiniMapFunctionTable, FUNCTION_TABLE_MINIMAP_SIZE, TRUE);
+	PushFunctionTable(gL, "Multiplayer", MultiplayerFunctionTable, FUNCTION_TABLE_MULTIPLAYER_SIZE, TRUE); // fake, CSE2LE compat thing
+	PushFunctionTable(gL, "Star", StarFunctionTable, FUNCTION_TABLE_STAR_SIZE, TRUE);
+	PushFunctionTable(gL, "Timer", TimerFunctionTable, FUNCTION_TABLE_TIMER_SIZE, TRUE);
+	PushFunctionTable(gL, "Triangle", TriangleFunctionTable, FUNCTION_TABLE_TRIANGLE_SIZE, TRUE);
+	PushFunctionTable(gL, "ValueView", ValueViewFunctionTable, FUNCTION_TABLE_VALUEVIEW_SIZE, TRUE);
+	PushFunctionTable(gL, "Warp", SelStageFunctionTable, FUNCTION_TABLE_SELSTAGE_SIZE, TRUE);
+
+	PushFunctionTable(gL, "Boss", BossFunctionTable, FUNCTION_TABLE_BOSS_SIZE, FALSE);
+	lua_newtable(gL);
+	lua_pushvalue(gL, -1);
+	lua_setfield(gL, -3, "Act");
+	lua_pop(gL, 2);
 
 	PushFunctionTable(gL, "Npc", NpcFunctionTable, FUNCTION_TABLE_NPC_SIZE, FALSE);
 	lua_newtable(gL);
@@ -850,6 +968,10 @@ BOOL InitModScript(void)
 	lua_setfield(gL, -3, "Command");
 	lua_pop(gL, 2);
 
+	PushFunctionTable(gL, "Back", BackFunctionTable, FUNCTION_TABLE_BACK_SIZE, FALSE);
+	luaL_getmetatable(gL, "BackMeta");
+	lua_setmetatable(gL, -2);
+	lua_pop(gL, 1);
 
 	PushFunctionTable(gL, "Player", PlayerFunctionTable, FUNCTION_TABLE_PLAYER_SIZE, FALSE);
 	luaL_getmetatable(gL, "PlayerMeta");
@@ -863,6 +985,7 @@ BOOL InitModScript(void)
 		const char* error = lua_tostring(gL, -1);
 		ErrorLog(error, 0);
 		printf("ERROR: %s\n", error);
+		MessageBoxA(ghWnd, error, "ModScript Startup Error", MB_OK);
 		return FALSE;
 	}
 

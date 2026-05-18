@@ -2,6 +2,7 @@
 // Public domain
 #pragma once
 
+#include <cstdio>
 #include <ddraw.h>
 #include <dinput.h>
 #include <dsound.h>
@@ -25,14 +26,20 @@ static auto& exeDataPath = *reinterpret_cast<char(*)[MAX_PATH]>(0x49E220);
 #define BOSS_MAX 20
 #define BULLET_MAX 0x40
 #define CARET_MAX 0x40
-#define MAX_STRIP ((240 / 16) + 1)
+#define MAX_STRIP ((WINDOW_HEIGHT / 16) + 1)
+
+// These only work in 4:3
 #define FADE_WIDTH	(((320 - 1) / 16) + 1)
 #define FADE_HEIGHT	(((320 - 1) / 16) + 1)
+
 #define PXM_BUFFER_SIZE 0x4B000
+#define MAXTRACK 16
+#define MAXMELODY 8
+#define MAXDRAM 8
 #define NPC_MAX 0x200
 #define STAGE_MAX 8
 #define SE_MAX 160
-#define TSC_BUFFER_SIZE 0x5000
+#define TSC_BUFFER_SIZE (*(int*)0x421545)
 #define VALUEVIEW_MAX 0x10
 
 // Input key detection
@@ -52,13 +59,29 @@ static int& gKeyUp = *reinterpret_cast<int*>(0x493634);
 static int& gKeyRight = *reinterpret_cast<int*>(0x493638);
 static int& gKeyDown = *reinterpret_cast<int*>(0x49363C);
 
-#define KEY_ALT_LEFT 0x10000
-#define KEY_ALT_DOWN 0x20000
-#define KEY_ALT_RIGHT 0x40000
-#define KEY_ALT_UP 0x180000
-#define KEY_L 0x80000
-#define KEY_PLUS 0x100000
-#define KEY_ESCAPE 0x8000
+enum KeyBind
+{
+	KEY_LEFT =      0x00000001,
+	KEY_RIGHT =     0x00000002,
+	KEY_UP =        0x00000004,
+	KEY_DOWN =      0x00000008,
+	KEY_MAP =       0x00000010,
+	KEY_X =         0x00000020,
+	KEY_Z =         0x00000040,
+	KEY_ARMS =      0x00000080,
+	KEY_ARMSREV =   0x00000100,
+	KEY_SHIFT =     0x00000200,
+	KEY_F1 =        0x00000400,
+	KEY_F2 =        0x00000800,
+	KEY_ITEM =      0x00001000,
+	KEY_ESCAPE =	0x00008000,
+	KEY_ALT_LEFT =  0x00010000,
+	KEY_ALT_DOWN =  0x00020000,
+	KEY_ALT_RIGHT = 0x00040000,
+	KEY_ALT_UP =    0x00180000,
+	KEY_L =         0x00080000,
+	KEY_PLUS =      0x00100000
+};
 
 // Variables
 static HWND& ghWnd = *reinterpret_cast<HWND*>(0x49E458);
@@ -104,6 +127,7 @@ static HINSTANCE ghInstance = *reinterpret_cast<HINSTANCE*>(0x49E44C);
 #define quote_sprite_half_height (*(int*)0x49E690)
 #define gSelectedArms (*(int*)0x499C68)
 #define gSelectedItem (*(int*)0x499C6C)
+#define gArmsEnergyX (*(int*)0x48F040)
 #define music_fade_flag (*(int*)0x4A4E10)
 #define gStageNo (*(int*)0x4A57F0) // gStageNo
 #define bContinue (*(BOOL*)0x49E1E4)
@@ -199,6 +223,18 @@ enum SoundEffectNames
 	// To be continued
 	SND_EXPLOSION = 72
 	// To be continued
+};
+
+enum BackgroundType
+{
+	BACKGROUND_TYPE_STATIONARY = 0,   // Doesn't move at all
+	BACKGROUND_TYPE_MOVE_DISTANT = 1, // Moves at half the speed of the foreground
+	BACKGROUND_TYPE_MOVE_NEAR = 2,    // Moves at the same speed as the foreground
+	BACKGROUND_TYPE_WATER = 3,        // No background - draws a water foreground layer instead
+	BACKGROUND_TYPE_BLACK = 4,        // No background - just black
+	BACKGROUND_TYPE_AUTOSCROLL = 5,   // Constantly scrolls to the left (used by Ironhead)
+	BACKGROUND_TYPE_CLOUDS_WINDY = 6, // Fancy parallax scrolling, items are blown to the left (used by bkMoon)
+	BACKGROUND_TYPE_CLOUDS = 7        // Fancy parallax scrolling (used by bkFog)
 };
 
 enum Collisions

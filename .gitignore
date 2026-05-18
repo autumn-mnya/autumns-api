@@ -2,13 +2,18 @@
 /.vs
 /.vscode
 /build
+/build-release
+/build*
 /import/.vscode
 /Debug
 /Release
 mod.vcxproj.user
 *.exp
 *.pdb
+*.o
+build-for-win.sh
 
+CaveStory/savedata/Profile*
 CaveStory/fps
 CaveStory/mute
 CaveStory/Config.dat
@@ -20,3 +25,5 @@ CaveStory/error.log
 !CaveStory/lua.dll
 !external/lua/lib/lua.lib
 CaveStory/lua_savefile.txt
+!CaveStory/mods/mod_loader.dll
+!CaveStory/dsound.dll

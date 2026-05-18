@@ -273,6 +273,18 @@ static int lua_BulletTouchFloor(lua_State* L)
 	return 1;
 }
 
+static int lua_BulletTouchSurface(lua_State* L)
+{
+	BULLET* bul = *(BULLET**)luaL_checkudata(L, 1, "BulletMeta");
+
+	if (bul->flag & 0xF)
+		lua_pushboolean(L, 1);
+	else
+		lua_pushboolean(L, 0);
+
+	return 1;
+}
+
 static int lua_BulletTouchBottomSlopeRight(lua_State* L)
 {
 	BULLET* bul = *(BULLET**)luaL_checkudata(L, 1, "BulletMeta");
@@ -379,6 +391,51 @@ static int lua_ActCodeBullet(lua_State* L)
 	return 0;
 }
 
+static int lua_BulletInit(lua_State* L)
+{
+	InitBullet();
+	return 0;
+}
+
+static int lua_BulletActMain(lua_State* L)
+{
+	ActBullet();
+	return 0;
+}
+
+static int lua_BulletTileHitCode(lua_State* L)
+{
+	HitBulletMap();
+	return 0;
+}
+
+static int lua_BulletNpcHitCode(lua_State* L)
+{
+	HitNpCharBullet();
+	return 0;
+}
+
+static int lua_BulletBossHitCode(lua_State* L)
+{
+	HitBossBullet();
+	return 0;
+}
+
+static int lua_BulletPut(lua_State* L)
+{
+    int fx = (int)luaL_checknumber(L, 1);
+    int fy = (int)luaL_checknumber(L, 2);
+
+	PutBullet(fx, fy);
+	return 0;
+}
+
+static int lua_BulletGetEntries(lua_State* L)
+{
+	lua_pushnumber(L, (lua_Number)bullet_table_entries);
+	return 1;
+}
+
 FUNCTION_TABLE BulletFunctionTable[FUNCTION_TABLE_BULLET_SIZE] =
 {
 	{"GetByBufferIndex", lua_GetBulletByBufferIndex},
@@ -396,6 +453,7 @@ FUNCTION_TABLE BulletFunctionTable[FUNCTION_TABLE_BULLET_SIZE] =
 	{"TouchRightWall", lua_BulletTouchRightWall},
 	{"TouchCeiling", lua_BulletTouchCeiling},
 	{"TouchFloor", lua_BulletTouchFloor},
+	{"TouchSurface", lua_BulletTouchSurface},
 	{"TouchBottomSlopeLeft", lua_BulletTouchBottomSlopeLeft},
 	{"TouchBottomSlopeRight", lua_BulletTouchBottomSlopeRight},
 	{"TouchTopSlopeLeft", lua_BulletTouchTopSlopeLeft},
@@ -403,11 +461,20 @@ FUNCTION_TABLE BulletFunctionTable[FUNCTION_TABLE_BULLET_SIZE] =
 	{"TouchTile", lua_BulletTouchTile},
 	{"Move", lua_BulletMove},
 	{"Spawn", lua_SpawnBullet},
-	{"ActCode", lua_ActCodeBullet}
+	{"ActCode", lua_ActCodeBullet},
+	{"Init", lua_BulletInit},
+	{"ActMain", lua_BulletActMain},
+	{"TileHitCode", lua_BulletTileHitCode},
+	{"NpcHitCode", lua_BulletNpcHitCode},
+	{"BossHitCode", lua_BulletBossHitCode},
+	{"DrawMain", lua_BulletPut},
+	{"GetAmount", lua_BulletGetEntries},
 };
 
 int BulletActModScript(int code, int i)
 {
+	if (!gL)
+		return 1;
 	lua_getglobal(gL, "ModCS");
 	lua_getfield(gL, -1, "Bullet");
 	lua_getfield(gL, -1, "Act");

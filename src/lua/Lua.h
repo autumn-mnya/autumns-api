@@ -8,6 +8,19 @@ extern "C"
 #include <lua.h>
 }
 
+// LuaJIT compatibility
+#if LUA_VERSION_NUM < 502
+
+#define lua_seti(L,idx,n) lua_rawseti(L,idx,n)
+#define lua_geti(L,idx,n) lua_rawgeti(L,idx,n)
+#define lua_setuservalue(L,idx) lua_setfenv(L,idx)
+#define lua_getuservalue(L,idx) lua_getfenv(L,idx)
+#define lua_isinteger(L,idx) lua_isnumber(L,idx)
+
+#define lua_rawlen(L,i) lua_objlen(L,i)
+
+#endif
+
 typedef enum LuaDataType
 {
 	TYPE_NUMBER = 1,
@@ -17,7 +30,13 @@ typedef enum LuaDataType
 	TYPE_COLOR = 5,
 	TYPE_SURFACE = 6,
 	TYPE_NPC = 7,
-	TYPE_PIXEL = 8
+	TYPE_PIXEL = 8,
+	TYPE_BOOL = 9,
+	TYPE_SHORT = 10, // short
+	TYPE_USHORT = 11, // unsigned short
+	TYPE_U8 = 12, // unsigned char
+	TYPE_S8 = 13, // signed char
+	TYPE_PLAYER = 14,
 } LuaDataType;
 
 typedef struct STRUCT_TABLE
@@ -64,6 +83,8 @@ extern "C" __declspec(dllexport) BOOL ReloadModScript();
 #define DEFINE_MODSCRIPT_CALL(func_name, lua_field_name, lua_func_name, error_msg) \
 static inline BOOL func_name(void)                                               \
 {                                                                  \
+	if (!gL) \
+		return TRUE; \
 	lua_getglobal(gL, "ModCS");                                    \
 	lua_getfield(gL, -1, lua_field_name);                                  \
 	lua_getfield(gL, -1, lua_func_name);                           \
@@ -87,6 +108,66 @@ static inline BOOL func_name(void)                                              
 	return TRUE;                                                   \
 }
 
+#define DEFINE_MODSCRIPT_CALL_REPLACEMENT(func_name, lua_field_name, lua_func_name, error_msg) \
+static inline BOOL func_name(void)                                               \
+{                                                                  \
+	if (!gL) \
+		return TRUE; \
+	lua_getglobal(gL, "ModCS");                                    \
+	lua_getfield(gL, -1, lua_field_name);                                  \
+	lua_getfield(gL, -1, lua_func_name);                           \
+	                                                               \
+	if (lua_isnil(gL, -1))                                         \
+	{                                                              \
+		lua_settop(gL, 0);                                         \
+		return FALSE;                                              \
+	}                                                              \
+	                                                               \
+	if (lua_pcall(gL, 0, 0, 0) != LUA_OK)                          \
+	{                                                              \
+		const char* error = lua_tostring(gL, -1);                  \
+		ErrorLog(error, 0);                                        \
+		printf("ERROR: %s\n", error);                              \
+		MessageBoxA(ghWnd, error_msg, "ModScript Error", MB_OK);   \
+		return TRUE;                                              \
+	}                                                              \
+	                                                               \
+	lua_settop(gL, 0);                                             \
+	return TRUE;                                                   \
+}
+
+#define DEFINE_MODSCRIPT_CALL_LOOP_REPLACEMENT(func_name, lua_field_name, lua_func_name, error_msg) \
+static inline int func_name(void)                                               \
+{                                                                  \
+	if (!gL) \
+		return 1; \
+	lua_getglobal(gL, "ModCS");                                    \
+	lua_getfield(gL, -1, lua_field_name);                          \
+	lua_getfield(gL, -1, lua_func_name);                           \
+	                                                               \
+	if (lua_isnil(gL, -1))                                         \
+	{                                                              \
+		lua_settop(gL, 0);                                         \
+		return -1; /* signal fallback */                           \
+	}                                                              \
+	                                                               \
+	if (lua_pcall(gL, 0, 1, 0) != LUA_OK)                          \
+	{                                                              \
+		const char* error = lua_tostring(gL, -1);                  \
+		ErrorLog(error, 0);                                        \
+		printf("ERROR: %s\n", error);                              \
+		MessageBoxA(ghWnd, error_msg, "ModScript Error", MB_OK);   \
+		return 0;                                                  \
+	}                                                              \
+	                                                               \
+	int result = 1;                                                \
+	if (lua_isnumber(gL, -1))                                      \
+		result = (int)lua_tointeger(gL, -1);                        \
+	                                                               \
+	lua_settop(gL, 0);                                             \
+	return result;                                                 \
+}
+
 DEFINE_MODSCRIPT_CALL(GameInitModScript, "Game", "Init", "Couldn't execute game init function")
 DEFINE_MODSCRIPT_CALL(GameActModScript, "Game", "Act", "Couldn't execute game act function")
 DEFINE_MODSCRIPT_CALL(GameActModScript2, "Game", "Act2", "Couldn't execute game act2 function")
@@ -106,6 +187,21 @@ DEFINE_MODSCRIPT_CALL(GameDrawAbovePlayerModScript, "Game", "DrawAbovePlayer", "
 DEFINE_MODSCRIPT_CALL(ProfileSavingModScript, "Profile", "DuringSave", "Couldn't execute during save function")
 DEFINE_MODSCRIPT_CALL(ProfileLoadingModScript, "Profile", "DuringLoad", "Couldn't execute during load function")
 DEFINE_MODSCRIPT_CALL(StageOnTransferModScript, "Stage", "OnTransfer", "Couldn't execute stage transfer function")
+
+// Function replacements
+DEFINE_MODSCRIPT_CALL_REPLACEMENT(MyCharActModScript, "Player", "Act", "Couldn't execute player act element");
+DEFINE_MODSCRIPT_CALL_REPLACEMENT(MyCharPutModScript, "Player", "Put", "Couldn't execute player put element");
+DEFINE_MODSCRIPT_CALL_REPLACEMENT(MyCharAniModScript, "Player", "Animation", "Couldn't execute player animation element");
+DEFINE_MODSCRIPT_CALL_REPLACEMENT(MyCharHitModScript, "Player", "OnHit", "Couldn't execute player onhit element");
+DEFINE_MODSCRIPT_CALL_REPLACEMENT(MyCharHudLifeModScript, "Player", "HudLife", "Couldn't execute player hud life element");
+DEFINE_MODSCRIPT_CALL_REPLACEMENT(MyCharHudExpModScript, "Player", "HudExp", "Couldn't execute player hud exp element");
+DEFINE_MODSCRIPT_CALL_REPLACEMENT(MyCharHudAirModScript, "Player", "HudAir", "Couldn't execute player hud air element");
+DEFINE_MODSCRIPT_CALL_REPLACEMENT(MyCharHudArmsModScript, "Player", "HudArms", "Couldn't execute player hud arms element");
+
+// Different specifically for (int) loops
+DEFINE_MODSCRIPT_CALL_LOOP_REPLACEMENT(GamePauseModScript, "Game", "Pause", "Couldn't execute game pause element");
+DEFINE_MODSCRIPT_CALL_LOOP_REPLACEMENT(ItemInventoryModScript, "Item", "Inventory", "Couldn't execute inventory element");
+DEFINE_MODSCRIPT_CALL_LOOP_REPLACEMENT(MiniMapModScript, "MiniMap", "Act", "Couldn't execute minimap element");
 
 // Only include the macro in one place (header or .cpp)
 #define PROPER_MODSCRIPT_CALL(func_name, func_run) \

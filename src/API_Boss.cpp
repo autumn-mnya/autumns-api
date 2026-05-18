@@ -6,12 +6,21 @@
 #include <string>
 
 #include "API_Boss.h"
+#include "lua/Boss.h"
 
 #include "mod_loader.h"
 #include "cave_story.h"
 
 BOSSFUNCTION gpBossAPIFuncTbl[MAX_BOSS_TABLE_SIZE];
 size_t bossFuncCount = 0;
+
+void ActBossCode(int code_char)
+{
+	if (code_char <= 10)
+		gpBossFuncTbl[code_char]();
+	else
+		gpBossAPIFuncTbl[code_char - 10]();
+}
 
 #pragma runtime_checks("s", off)
 void CallBossActFunction(int code_char)
@@ -67,16 +76,29 @@ void CallBossActFunction(int code_char)
 
 void Replacement_ActBossChar()
 {
+    char errormsg[256];
 	int code_char;
+    int result;
 	int bos;
 
 	if (!(gBoss[0].cond & 0x80))
 		return;
 
-	code_char = gBoss[0].code_char;
+    code_char = gBoss[0].code_char;
 
-	// asm hack safety measure
-	CallBossActFunction(code_char);
+    result = BossActModScript(code_char, 0);
+
+    if (result == 1)
+    {
+        // asm hack safety measure
+        CallBossActFunction(code_char);
+    }
+    else if (result == 0)
+    {
+		sprintf(errormsg, "Couldn't execute Act function of BOSS ActNo. %d", code_char);
+		MessageBoxA(ghWnd, errormsg, "ModScript Error", MB_OK);
+		return;
+    }
 
 	for (bos = 0; bos < BOSS_MAX; ++bos)
 		if (gBoss[bos].shock)

@@ -159,17 +159,38 @@ static int lua_SoundCreate(lua_State* L)
 	}
 	
 	unsigned char* buffer = (unsigned char*)malloc(len);
+	
+	for (int i = 0; i < len; i++)
+	{
 
-	for (int i = 0; i < len; i++) {
-		if (lua_rawgeti(L, 2, (lua_Integer)i + 1) != LUA_TNUMBER) {
+	#ifdef MODCS_LUAJIT
+
+		lua_rawgeti(L, 2, (lua_Integer)i + 1);
+
+		if (!lua_isnumber(L, -1)) {
 			free(buffer);
 			luaL_error(L, "Sample %d was not a number", i + 1);
 			return 0;
 		}
 
 		buffer[i] = lua_tonumber(L, -1);
-
 		lua_pop(L, 1);
+
+	#else
+
+		lua_rawgeti(L, 2, (lua_Integer)i + 1);
+
+		if (lua_type(L, -1) != LUA_TNUMBER) {
+			free(buffer);
+			luaL_error(L, "Sample %d was not a number", i + 1);
+			return 0;
+		}
+
+		buffer[i] = lua_tonumber(L, -1);
+		lua_pop(L, 1);
+
+	#endif
+
 	}
 
 	memset(&dsbd, 0, sizeof(dsbd));
@@ -230,6 +251,21 @@ static int lua_SoundDestroy(lua_State* L)
 	return 0;
 }
 
+static int lua_SoundSetNoise(lua_State* L)
+{
+    int no = (int)luaL_checknumber(L, 1);
+    int freq = (int)luaL_checknumber(L, 2);
+
+	SetNoise(no, freq);
+	return 0;
+}
+
+static int lua_SoundCutNoise(lua_State* L)
+{
+	CutNoise();
+	return 0;
+}
+
 FUNCTION_TABLE SoundFunctionTable[FUNCTION_TABLE_SOUND_SIZE] =
 {
 	{"Play", lua_SoundPlay},
@@ -238,7 +274,9 @@ FUNCTION_TABLE SoundFunctionTable[FUNCTION_TABLE_SOUND_SIZE] =
 	{"ChangeVolume", lua_SoundChangeVolume},
 	{"ChangePan", lua_SoundChangePan},
 	{"Create", lua_SoundCreate},
-	{"Destroy", lua_SoundDestroy}
+	{"Destroy", lua_SoundDestroy},
+	{"SetNoise", lua_SoundSetNoise},
+	{"EndNoise", lua_SoundCutNoise},
 };
 
 static int lua_OrganyaPlay(lua_State* L)

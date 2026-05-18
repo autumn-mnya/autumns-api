@@ -289,10 +289,14 @@ static int lua_CreateSurface(lua_State* L)
 		int w = (int)luaL_checknumber(L, 2);
 		int h = (int)luaL_checknumber(L, 3);
 
+		BOOL makeGeneric = FALSE;
+		if (lua_gettop(L) >= 4)
+			makeGeneric = (BOOL)lua_toboolean(L, 4);
+
 		luaL_getmetatable(L, "SurfaceMeta");
 		lua_setmetatable(L, -2);
 
-		if (!MakeSurface_Generic(w, h, (SurfaceID)id, FALSE))
+		if (!MakeSurface_Generic(w, h, (SurfaceID)id, makeGeneric))
 			luaL_error(L, "Error in making generic surface with ID %d", id);
 		return 1;
 	}
@@ -304,6 +308,21 @@ static int lua_CreateSurface(lua_State* L)
 	}
 
 	luaL_error(L, "bad argument #2 to 'Create' (number or string expected, got %s)", luaL_typename(L, 2));
+	return 0;
+}
+
+static int lua_CreateSurfaceResource(lua_State* L)
+{
+	int id = (int)luaL_checknumber(L, 1);
+
+	lua_pushnumber(L, id);
+
+	const char* path = luaL_checkstring(L, 2);
+	if (!MakeSurface_Resource(path, (SurfaceID)id))
+		luaL_error(L, "Error in making surface from resource %s with ID %d", path, id);
+	return 1;
+
+	luaL_error(L, "bad argument #2 to 'CreateResource' (number or string expected, got %s)", luaL_typename(L, 2));
 	return 0;
 }
 
@@ -357,6 +376,7 @@ static int lua_ReleaseSurface(lua_State* L)
 FUNCTION_TABLE SurfaceFunctionTable[FUNCTION_TABLE_SURFACE_SIZE] =
 {
 	{"Create", lua_CreateSurface},
+	{"CreateResource", lua_CreateSurfaceResource},
 	{"LoadBitmap", lua_LoadBitmap2Surface},
 	{"Screenshot", lua_Screenshot2Surface},
 	{"Release", lua_ReleaseSurface}
