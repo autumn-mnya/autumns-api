@@ -100,7 +100,7 @@ static inline BOOL func_name(void)                                              
 		const char* error = lua_tostring(gL, -1);                  \
 		ErrorLog(error, 0);                                        \
 		printf("ERROR: %s\n", error);                              \
-		MessageBoxA(ghWnd, error_msg, "ModScript Error", MB_OK);   \
+		MessageBoxA(ghWnd, error, "ModScript Error", MB_OK);   \
 		return FALSE;                                              \
 	}                                                              \
 	                                                               \
@@ -128,7 +128,7 @@ static inline BOOL func_name(void)                                              
 		const char* error = lua_tostring(gL, -1);                  \
 		ErrorLog(error, 0);                                        \
 		printf("ERROR: %s\n", error);                              \
-		MessageBoxA(ghWnd, error_msg, "ModScript Error", MB_OK);   \
+		MessageBoxA(ghWnd, error, "ModScript Error", MB_OK);   \
 		return TRUE;                                              \
 	}                                                              \
 	                                                               \
@@ -156,7 +156,7 @@ static inline int func_name(void)                                               
 		const char* error = lua_tostring(gL, -1);                  \
 		ErrorLog(error, 0);                                        \
 		printf("ERROR: %s\n", error);                              \
-		MessageBoxA(ghWnd, error_msg, "ModScript Error", MB_OK);   \
+		MessageBoxA(ghWnd, error, "ModScript Error", MB_OK);   \
 		return 0;                                                  \
 	}                                                              \
 	                                                               \

@@ -13,7 +13,7 @@ extern "C"
 int lua_BulletIndex(lua_State* L);
 int lua_BulletNextIndex(lua_State* L);
 
-#define FUNCTION_TABLE_BULLET_SIZE 31
+#define FUNCTION_TABLE_BULLET_SIZE 32
 extern FUNCTION_TABLE BulletFunctionTable[FUNCTION_TABLE_BULLET_SIZE];
 
 int BulletActModScript(int code, int i);

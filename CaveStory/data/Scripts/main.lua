@@ -1,5 +1,7 @@
 require("ActMyChar")
 require("AnimationMyChar")
+require("Bullet")
+require("Caret")
 require("DamageMyChar")
 require("Escape")
 require("MiniMap")
@@ -17,6 +19,12 @@ require("NpcAct160")
 require("NpcAct180")
 require("NpcAct200")
 require("NpcAct220")
+require("NpcAct240")
+require("NpcAct260")
+require("NpcAct280")
+require("NpcAct300")
+require("NpcAct320")
+require("NpcAct340")
 require("PutMyChar")
 
 ModCS.Mod.SetStart(13, 10, 8, 94)
@@ -60,7 +68,6 @@ function ModCS.Mod.Init()
 end
 
 function ModCS.Game.Act()
-    ModCSLog(ModCS.Const.EQUIP_AIR_TANK)
 end
 
 function ModCS.Game.Init()

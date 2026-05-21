@@ -345,6 +345,19 @@ static int lua_BulletTouchTile(lua_State* L)
 	return 1;
 }
 
+static int lua_BulCheckHitFlag(lua_State* L)
+{
+	BULLET* bul = *(BULLET**)luaL_checkudata(L, 1, "BulletMeta");
+	int flagID = (int)luaL_checknumber(L, 2);
+
+	if (bul->flag & flagID)
+		lua_pushboolean(L, 1);
+	else
+		lua_pushboolean(L, 0);
+
+	return 1;
+}
+
 static int lua_BulletMove(lua_State* L)
 {
 	BULLET* bul = *(BULLET**)luaL_checkudata(L, 1, "BulletMeta");
@@ -459,6 +472,7 @@ FUNCTION_TABLE BulletFunctionTable[FUNCTION_TABLE_BULLET_SIZE] =
 	{"TouchTopSlopeLeft", lua_BulletTouchTopSlopeLeft},
 	{"TouchTopSlopeRight", lua_BulletTouchTopSlopeRight},
 	{"TouchTile", lua_BulletTouchTile},
+	{"HitFlag", lua_BulCheckHitFlag},
 	{"Move", lua_BulletMove},
 	{"Spawn", lua_SpawnBullet},
 	{"ActCode", lua_ActCodeBullet},
@@ -498,6 +512,7 @@ int BulletActModScript(int code, int i)
 
 		ErrorLog(error, 0);
 		printf("ERROR: %s\n", error);
+		MessageBoxA(ghWnd, error, "Bullet Act ModScript Error", MB_OK);
 		return FALSE;
 	}
 

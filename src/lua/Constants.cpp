@@ -29,6 +29,10 @@ typedef struct
 	size_t limit_offset;
 } CONSTANT_TABLE;
 
+#define MODE_OPENING 1
+#define MODE_TITLE 2
+#define MODE_ACTION 3
+
 #define CAVE_CONST(x) \
     { #x, CONST_STATIC, (x), 0 }
 
@@ -48,6 +52,11 @@ static const CONSTANT_TABLE ConstantTable[] =
 	CAVE_CONST(SE_MAX),
 	CAVE_CONST(STAGE_MAX),
 	CAVE_CONST(VALUEVIEW_MAX),
+
+	// Game Modes
+	CAVE_CONST(MODE_OPENING),
+	CAVE_CONST(MODE_TITLE),
+	CAVE_CONST(MODE_ACTION),
 
 	// Background IDs
 	CAVE_CONST(BACKGROUND_TYPE_STATIONARY),

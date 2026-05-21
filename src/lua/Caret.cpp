@@ -263,6 +263,7 @@ int CaretActModScript(int code, int i)
 
 		ErrorLog(error, 0);
 		printf("ERROR: %s\n", error);
+		MessageBoxA(ghWnd, error, "Caret Act ModScript Error", MB_OK);
 		return FALSE;
 	}
 

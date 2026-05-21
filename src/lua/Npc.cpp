@@ -739,8 +739,24 @@ static int lua_NpcDestroyChar(lua_State* L)
 	int y = (int)luaL_checknumber(L, 2);
 	int w = (int)luaL_checknumber(L, 3);
 	int num = (int)luaL_checknumber(L, 4);
+	int dir = (int)luaL_optnumber(L, 5, 0);
 
-	SetDestroyNpChar(x * 0x200, y * 0x200, w * 0x200, num);
+	if (dir == 1)
+		SetDestroyNpCharUp(x * 0x200, y * 0x200, w * 0x200, num);
+	else
+		SetDestroyNpChar(x * 0x200, y * 0x200, w * 0x200, num);
+
+	return 0;
+}
+
+static int lua_NpcDestroyCharUp(lua_State* L)
+{
+	int x = (int)luaL_checknumber(L, 1);
+	int y = (int)luaL_checknumber(L, 2);
+	int w = (int)luaL_checknumber(L, 3);
+	int num = (int)luaL_checknumber(L, 4);
+
+	SetDestroyNpCharUp(x * 0x200, y * 0x200, w * 0x200, num);
 
 	return 0;
 }
@@ -969,6 +985,7 @@ int NpcActModScript(int char_code, int i)
 
 		ErrorLog(error, 0);
 		printf("ERROR: %s\n", error);
+		MessageBoxA(ghWnd, error, "Npc Act ModScript Error", MB_OK);
 		return FALSE;
 	}
 
