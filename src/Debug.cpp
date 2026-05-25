@@ -49,13 +49,15 @@ enum DebugOptionsMain
     CHANGE_MUSIC,
     CHANGE_FLAG,
     CHANGE_SKIPFLAG,
+    SPAWN_BULLET,
+    SPAWN_CARET,
     SPAWN_ENTITY,
     RUN_TSC_EVENT,
     SHOW_HITBOXES,
     DEBUG_OPTIONS_END,
 };
 
-#define DEBUG_OPTIONS_PER_PAGE 24
+#define DEBUG_OPTIONS_PER_PAGE 25
 #define DEBUG_PAGE_COUNT ((DEBUG_OPTIONS_END + DEBUG_OPTIONS_PER_PAGE - 1) / DEBUG_OPTIONS_PER_PAGE)
 
 int gDebugMenuPage = 0;
@@ -79,7 +81,12 @@ int musicChosen = 0;
 int flagChosen = 0;
 int skipflagChosen = 0;
 int sceneflagChosen = 0;
+int bulletChosen = 0;
+int bulletDir = 0;
+int caretChosen = 0;
+int caretDir = 0;
 int entityChosen = 0;
+int entityDir = 0;
 int tsceventChosen = 0;
 bool showHitboxes = false;
 
@@ -110,6 +117,8 @@ const char* modeMainOptions[] = {
     "Change Music to",
     "Set/Unset Flag",
     "Set/Unset SkipFlag",
+    "Spawn Bullet of Type",
+    "Spawn Caret of Type",
     "Spawn Entity of Type",
     "Run Tsc Event",
     "Show Hitboxes",
@@ -614,8 +623,16 @@ void DebugModeMain()
                     GetSkipFlag(skipflagChosen) ? "True" : "False");
                 break;
 
+            case SPAWN_BULLET:
+                sprintf(buffer, "%s: %d (Dir %d)", modeMainOptions[i], bulletChosen, bulletDir);
+                break;
+
+            case SPAWN_CARET:
+                sprintf(buffer, "%s: %d (Dir %d)", modeMainOptions[i], caretChosen, caretDir);
+                break;
+
             case SPAWN_ENTITY:
-                sprintf(buffer, "%s: %d", modeMainOptions[i], entityChosen);
+                sprintf(buffer, "%s: %d (Dir %d)", modeMainOptions[i], entityChosen, entityDir);
                 break;
 
             case RUN_TSC_EVENT:
@@ -718,6 +735,12 @@ void DoDebugActionLR(int mode, int pos, int dir)
                 case CHANGE_SKIPFLAG:
                     skipflagChosen += dir;
                     break;
+                case SPAWN_BULLET:
+                    bulletChosen += dir;
+                    break;
+                case SPAWN_CARET:
+                    caretChosen += dir;
+                    break;
                 case SPAWN_ENTITY:
                     entityChosen += dir;
                     break;
@@ -766,6 +789,12 @@ void DoDebugActionReset(int mode, int pos)
                     break;
                 case CHANGE_SKIPFLAG:
                     skipflagChosen = 0;
+                    break;
+                case SPAWN_BULLET:
+                    bulletChosen = 0;
+                    break;
+                case SPAWN_CARET:
+                    caretChosen = 0;
                     break;
                 case SPAWN_ENTITY:
                     entityChosen = 0;
@@ -922,9 +951,17 @@ void DoDebugActionOK(int mode, int pos)
                     else
                         SetSkipFlag(skipflagChosen);
                     break;
+            
+                case SPAWN_BULLET:
+                    SetBullet(bulletChosen, gMC.x, gMC.y - (0x32 * 0x200), bulletDir);
+                    break;
+
+                case SPAWN_CARET:
+                    SetCaret(gMC.x, gMC.y - (0x32 * 0x200), caretChosen, caretDir);
+                    break;
 
                 case SPAWN_ENTITY:
-                    SetNpChar(entityChosen, gMC.x, gMC.y - (0x32 * 0x200), 0, 0, 0, NULL, 0x100);
+                    SetNpChar(entityChosen, gMC.x, gMC.y - (0x32 * 0x200), 0, 0, entityDir, NULL, 0x100);
                     break;
 
                 case RUN_TSC_EVENT:
@@ -936,6 +973,40 @@ void DoDebugActionOK(int mode, int pos)
                         showHitboxes = false;
                     else
                         showHitboxes = true;
+                    break;
+            }
+        break;
+    }
+}
+
+void DoDebugActionItem(int mode, int pos)
+{
+    PlaySoundObject(1, SOUND_MODE_PLAY);
+    switch (mode)
+    {
+        case DEBUG_MAIN:
+            switch (pos)
+            {
+                case SPAWN_BULLET: // increment direction up to 4 and then wrap around
+                    if (bulletDir < 4)
+                        ++bulletDir;
+                    else
+                        bulletDir = 0;
+                    break;
+
+                case SPAWN_CARET: // increment direction up to 4 and then wrap around
+                    if (caretDir < 4)
+                        ++caretDir;
+                    else
+                        caretDir = 0;
+                    break;
+                
+                case SPAWN_ENTITY: // increment direction up to 4 and then wrap around
+                    if (entityDir < 4)
+                        ++entityDir;
+                    else
+                        entityDir = 0;
+
                     break;
             }
         break;
@@ -970,6 +1041,9 @@ void DebugMenu()
 
     if (gKeyTrg & gKeyCancel)
         DoDebugActionReset(gCurrentDebugMode, gDebugModePosition);
+
+    if (gKeyTrg & gKeyItem)
+        DoDebugActionItem(gCurrentDebugMode, gDebugModePosition);
 
     if (gKeyTrg & gKeyLeft)
         DoDebugActionLR(gCurrentDebugMode, gDebugModePosition, -1);
