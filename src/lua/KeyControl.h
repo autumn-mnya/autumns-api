@@ -10,9 +10,9 @@ extern "C"
 
 #include "Lua.h"
 
-void KeyCheck(lua_State* L, int Key, int KeyTrg, int button);
+void KeyCheck(lua_State* L, int Key, int KeyTrg, int button, int option);
 
-#define FUNCTION_TABLE_KEY_SIZE 24
+#define FUNCTION_TABLE_KEY_SIZE 47
 extern FUNCTION_TABLE KeyFunctionTable[FUNCTION_TABLE_KEY_SIZE];
 
 int KeyControlModScript(unsigned int vkey, bool down, bool repeat);

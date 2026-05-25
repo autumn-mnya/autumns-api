@@ -588,21 +588,21 @@ void UpdateAutPIInput()
 
 static int lua_KeyMouseLeft(lua_State* L)
 {
-	KeyCheck(L, mouseKey, mouseKeyTrg, KEY_LMOUSE);
+	KeyCheck(L, mouseKey, mouseKeyTrg, KEY_LMOUSE, 1);
 
 	return 1;
 }
 
 static int lua_KeyMouseRight(lua_State* L)
 {
-	KeyCheck(L, mouseKey, mouseKeyTrg, KEY_RMOUSE);
+	KeyCheck(L, mouseKey, mouseKeyTrg, KEY_RMOUSE, 1);
 
 	return 1;
 }
 
 static int lua_KeyMouseMiddle(lua_State* L)
 {
-	KeyCheck(L, mouseKey, mouseKeyTrg, KEY_MMOUSE);
+	KeyCheck(L, mouseKey, mouseKeyTrg, KEY_MMOUSE, 1);
 
 	return 1;
 }

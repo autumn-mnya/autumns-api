@@ -34,14 +34,15 @@ ModCS.Npc.Act[1] = function(npc)
             npc.cond = 0
         end
 
-        -- fix bug: pixel meant to limit speed here, but applied it to the X pos instead of xm.
-        -- if (npc.xm < -3) then
-        --  npc.xm = -3
+        -- the original code does this, which is probably a bug.
+        -- instead of limiting the npcs xm, pixel may have accidentally limited the npcs x position instead.
+        -- if (npc.x < -3) then
+        --     npc.x = -3
         -- end
 
-        -- Limit speed (oops, to the X position)
-        if (npc.x < -3) then
-            npc.x = -3
+        -- Limit speed
+        if (npc.xm < -3) then
+            npc.xm = -3
         end
 
         -- Bounce off walls

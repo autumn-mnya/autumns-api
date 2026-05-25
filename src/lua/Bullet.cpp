@@ -50,6 +50,8 @@ static STRUCT_TABLE BulletTable[] =
 	{"bits", offsetof(BULLET, bbits), TYPE_NUMBER}
 };
 
+int bullet_player_id = 0; // jank (changing this doesn't matter in autpi anyways)
+
 int lua_BulletIndex(lua_State* L)
 {
 	BULLET** bul = (BULLET**)luaL_checkudata(L, 1, "BulletMeta");
@@ -57,6 +59,12 @@ int lua_BulletIndex(lua_State* L)
 
 	if (ReadStructBasic(L, x, BulletTable, *bul, sizeof(BulletTable) / sizeof(STRUCT_TABLE)))
 		return 1;
+
+	if (strcmp(x, "player_id") == 0)
+	{
+		lua_pushnumber(L, bullet_player_id);
+		return 1;
+	}
 
 	lua_getglobal(L, "ModCS");
 	lua_getfield(L, -1, "Bullet");
@@ -72,6 +80,12 @@ int lua_BulletNextIndex(lua_State* L)
 	const char* x = luaL_checkstring(L, 2);
 
 	Write2StructBasic(L, x, BulletTable, *bul, sizeof(BulletTable) / sizeof(STRUCT_TABLE));
+
+	if (strcmp(x, "player_id") == 0)
+	{
+		bullet_player_id = (int)luaL_checknumber(L, 3);
+		return 0;
+	}
 
 	return 0;
 }
@@ -374,6 +388,7 @@ static int lua_SpawnBullet(lua_State* L)
 	int x = (int)(luaL_checknumber(L, 2) * 0x200);
 	int y = (int)(luaL_checknumber(L, 3) * 0x200);
 	int dir = (int)luaL_optnumber(L, 4, 0);
+	int player_id = (int)luaL_optnumber(L, 5, 0); // CSE2LE compatibility for multiplayer
 
 	int i = 0;
 
@@ -399,7 +414,7 @@ static int lua_ActCodeBullet(lua_State* L)
 	BULLET* bul = *(BULLET**)luaL_checkudata(L, 1, "BulletMeta");
 	int code_char = (int)luaL_optnumber(L, 2, bul->code_bullet);
 
-	ActBulletCode(bul, code_char);
+	ActBulletCode(bul, code_char); // in CSE2LE multiplayer, this uses the bullets player_id
 
 	return 0;
 }

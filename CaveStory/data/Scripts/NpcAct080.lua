@@ -130,7 +130,18 @@ ModCS.Npc.Act[80] = function(npc)
         npc.xm = -2
     end
 
-    -- Pixel accidentally capped the xm again, bug fix to use ym instead as probably intended
+    -- Pixel accidentally capped the xm again, here's a bug fix to use ym instead as probably intended
+    -- the original behavior is commented out below
+
+    -- Original games behavior, probably a bug.
+    -- if (npc.ym > 2.998046875) then
+    --     npc.xm = 2.998046875
+    -- end
+
+    -- if (npc.ym < -2.998046875) then
+    --     npc.xm = -2.998046875
+    -- end
+
     if (npc.ym > 2.998046875) then
         npc.ym = 2.998046875
     end
@@ -678,8 +689,15 @@ ModCS.Npc.Act[86] = function(npc)
             npc.cond = 0
         end
 
-        if (npc.x < -3) then
-            npc.x = -3
+        -- the original code does this, which is probably a bug.
+        -- instead of limiting the npcs xm, pixel may have accidentally limited the npcs x position instead.
+        -- if (npc.x < -3) then
+        --     npc.x = -3
+        -- end
+
+        -- Limit speed
+        if (npc.xm < -3) then
+            npc.xm = -3
         end
 
         if (npc:TouchLeftWall()) then
@@ -765,8 +783,15 @@ ModCS.Npc.Act[87] = function(npc)
             npc.cond = 0
         end
 
-        if (npc.x < -3) then
-            npc.x = -3
+        -- the original code does this, which is probably a bug.
+        -- instead of limiting the npcs xm, pixel may have accidentally limited the npcs x position instead.
+        -- if (npc.x < -3) then
+        --     npc.x = -3
+        -- end
+
+        -- Limit speed
+        if (npc.xm < -3) then
+            npc.xm = -3
         end
 
         if (npc:TouchLeftWall()) then

@@ -657,7 +657,7 @@ static int lua_NpcTgtKeyJump(lua_State* L)
 
 	lua_settop(L, 0);
 
-	KeyCheck(L, gKey, gKeyTrg, gKeyJump);
+	KeyCheck(L, gKey, gKeyTrg, gKeyJump, 1);
 
 	return 1;
 }
@@ -668,7 +668,7 @@ static int lua_NpcTgtKeyShot(lua_State* L)
 
 	lua_settop(L, 0);
 
-	KeyCheck(L, gKey, gKeyTrg, gKeyShot);
+	KeyCheck(L, gKey, gKeyTrg, gKeyShot, 1);
 
 	return 1;
 }
@@ -679,7 +679,7 @@ static int lua_NpcTgtKeyArms(lua_State* L)
 
 	lua_settop(L, 0);
 	
-	KeyCheck(L, gKey, gKeyTrg, gKeyArms);
+	KeyCheck(L, gKey, gKeyTrg, gKeyArms, 1);
 
 	return 1;
 }
@@ -690,7 +690,7 @@ static int lua_NpcTgtKeyArmsRev(lua_State* L)
 
 	lua_settop(L, 0);
 	
-	KeyCheck(L, gKey, gKeyTrg, gKeyArmsRev);
+	KeyCheck(L, gKey, gKeyTrg, gKeyArmsRev, 1);
 
 	return 1;
 }
@@ -701,7 +701,7 @@ static int lua_NpcTgtKeyItem(lua_State* L)
 
 	lua_settop(L, 0);
 	
-	KeyCheck(L, gKey, gKeyTrg, gKeyItem);
+	KeyCheck(L, gKey, gKeyTrg, gKeyItem, 1);
 
 	return 1;
 }
@@ -712,7 +712,7 @@ static int lua_NpcTgtKeyMap(lua_State* L)
 
 	lua_settop(L, 0);
 	
-	KeyCheck(L, gKey, gKeyTrg, gKeyMap);
+	KeyCheck(L, gKey, gKeyTrg, gKeyMap, 1);
 
 	return 1;
 }
@@ -723,7 +723,7 @@ static int lua_NpcTgtKeyOk(lua_State* L)
 
 	lua_settop(L, 0);
 	
-	KeyCheck(L, gKey, gKeyTrg, gKeyOk);
+	KeyCheck(L, gKey, gKeyTrg, gKeyOk, 1);
 
 	return 1;
 }
@@ -734,7 +734,7 @@ static int lua_NpcTgtKeyCancel(lua_State* L)
 
 	lua_settop(L, 0);
 	
-	KeyCheck(L, gKey, gKeyTrg, gKeyCancel);
+	KeyCheck(L, gKey, gKeyTrg, gKeyCancel, 1);
 
 	return 1;
 }
@@ -745,7 +745,7 @@ static int lua_NpcTgtKeyLeft(lua_State* L)
 
 	lua_settop(L, 0);
 	
-	KeyCheck(L, gKey, gKeyTrg, gKeyLeft);
+	KeyCheck(L, gKey, gKeyTrg, gKeyLeft, 1);
 
 	return 1;
 }
@@ -756,7 +756,7 @@ static int lua_NpcTgtKeyUp(lua_State* L)
 
 	lua_settop(L, 0);
 	
-	KeyCheck(L, gKey, gKeyTrg, gKeyUp);
+	KeyCheck(L, gKey, gKeyTrg, gKeyUp, 1);
 
 	return 1;
 }
@@ -767,7 +767,7 @@ static int lua_NpcTgtKeyRight(lua_State* L)
 
 	lua_settop(L, 0);
 	
-	KeyCheck(L, gKey, gKeyTrg, gKeyRight);
+	KeyCheck(L, gKey, gKeyTrg, gKeyRight, 1);
 
 	return 1;
 }
@@ -778,7 +778,7 @@ static int lua_NpcTgtKeyDown(lua_State* L)
 
 	lua_settop(L, 0);
 	
-	KeyCheck(L, gKey, gKeyTrg, gKeyDown);
+	KeyCheck(L, gKey, gKeyTrg, gKeyDown, 1);
 
 	return 1;
 }
@@ -789,7 +789,7 @@ static int lua_NpcTgtKeyShift(lua_State* L)
 
 	lua_settop(L, 0);
 	
-	KeyCheck(L, gKey, gKeyTrg, 0x200);
+	KeyCheck(L, gKey, gKeyTrg, KEY_SHIFT, 1);
 
 	return 1;
 }
@@ -800,7 +800,7 @@ static int lua_NpcTgtKeyPause(lua_State* L)
 
 	lua_settop(L, 0);
 	
-	KeyCheck(L, gKey, gKeyTrg, KEY_ESCAPE);
+	KeyCheck(L, gKey, gKeyTrg, KEY_ESCAPE, 1);
 
 	return 1;
 }

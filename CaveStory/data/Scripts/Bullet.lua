@@ -262,6 +262,8 @@ ModCS.Bullet.Act[6] = function(bul)
 end
 
 local function FireballBullet(bul, level)
+    local mychar = ModCS.Multiplayer.GetByID(bul.player_id) -- CSE2LE multiplayer compat, in freeware it just is the same as ModCS.Player
+
     local bBreak = false
 
     bul.count1 = bul.count1 + 1
@@ -291,16 +293,16 @@ local function FireballBullet(bul, level)
 
         if (bul.direct == 0) then
             bul.xm = -2
-        elseif (bul.direct == 1) then -- TODO: make this work with CSE2LE multiplayer
-            bul.xm = ModCS.Player.xm
+        elseif (bul.direct == 1) then
+            bul.xm = mychar.xm
 
-            if (ModCS.Player.xm < 0) then
+            if (mychar.xm < 0) then
                 bul.direct = 0
             else
                 bul.direct = 2
             end
 
-            if (ModCS.Player.direct == 0) then
+            if (mychar.direct == 0) then
                 bul.xm = bul.xm - 0.25
             else
                 bul.xm = bul.xm + 0.25
@@ -310,9 +312,9 @@ local function FireballBullet(bul, level)
         elseif (bul.direct == 2) then
             bul.xm = 2
         elseif (bul.direct == 3) then
-            bul.xm = ModCS.Player.xm
+            bul.xm = mychar.xm
 
-            if (ModCS.Player.xm < 0) then
+            if (mychar.xm < 0) then
                 bul.direct = 0
             else
                 bul.direct = 2
@@ -497,6 +499,8 @@ end
 
 local missile_inc = 0
 local function MissileBullet(bul, level)
+    local mychar = ModCS.Multiplayer.GetByID(bul.player_id) -- CSE2LE multiplayer compat, in freeware it just is the same as ModCS.Player
+
     local bHit = false
 
     bul.count1 = bul.count1 + 1
@@ -543,7 +547,7 @@ local function MissileBullet(bul, level)
     end
 
     if (bHit) then
-        ModCS.Bullet.Spawn(level + 15, bul.x, bul.y, 0)
+        ModCS.Bullet.Spawn(level + 15, bul.x, bul.y, 0, bul.player_id)
         bul.cond = 0
     end
 
@@ -558,7 +562,7 @@ local function MissileBullet(bul, level)
 
         if (level == 3) then
             if (bul.direct == 0 or bul.direct == 2) then
-                if (bul.y > ModCS.Player.y) then -- TODO: make work with CSE2LE multiplayer
+                if (bul.y > mychar.y) then
                     bul.ym = 0.5
                 else
                     bul.ym = -0.5
@@ -566,7 +570,7 @@ local function MissileBullet(bul, level)
 
                 bul.xm = ModCS.Game.Random2(-1, 1)
             elseif (bul.direct == 1 or bul.direct == 3) then
-                if (bul.x > ModCS.Player.x) then -- TODO: make work with CSE2LE multiplayer
+                if (bul.x > mychar.x) then
                     bul.xm = 0.5
                 else
                     bul.xm = -0.5
@@ -892,18 +896,20 @@ end
 
 -- Bubbler Level 3
 ModCS.Bullet.Act[21] = function(bul)
+    local mychar = ModCS.Multiplayer.GetByID(bul.player_id)
+
     bul.act_wait = bul.act_wait + 1
-    if (bul.act_wait > 100 or not ModCS.Key.Shoot(true)) then -- TODO: make this work with CSE2LE multiplayer somehow ???
+    if (bul.act_wait > 100 or not ModCS.Key.ShootID(bul.player_id, true)) then
         bul.cond = 0
         ModCS.Caret.Spawn(ModCS.Const.CARET_PROJECTILE_DISSIPATION, bul.x, bul.y, 0)
         ModCS.Sound.Play(100)
 
-        if (ModCS.Player.IsLookingUp()) then
-            ModCS.Bullet.Spawn(22, bul.x, bul.y, 1)
-        elseif (ModCS.Player.IsLookingDown()) then
-            ModCS.Bullet.Spawn(22, bul.x, bul.y, 3)
+        if (mychar:IsLookingUp()) then
+            ModCS.Bullet.Spawn(22, bul.x, bul.y, 1, bul.player_id)
+        elseif (mychar:IsLookingDown()) then
+            ModCS.Bullet.Spawn(22, bul.x, bul.y, 3, bul.player_id)
         else
-            ModCS.Bullet.Spawn(22, bul.x, bul.y, ModCS.Player.direct)
+            ModCS.Bullet.Spawn(22, bul.x, bul.y, mychar.direct, bul.player_id)
         end
 
         return
@@ -927,19 +933,19 @@ ModCS.Bullet.Act[21] = function(bul)
         end
     end
 
-    if (bul.x < ModCS.Player.x) then
+    if (bul.x < mychar.x) then
         bul.xm = bul.xm + 0.0625
     end
 
-    if (bul.x > ModCS.Player.x) then
+    if (bul.x > mychar.x) then
         bul.xm = bul.xm - 0.0625
     end
 
-    if (bul.y < ModCS.Player.y) then
+    if (bul.y < mychar.y) then
         bul.ym = bul.ym + 0.0625
     end
 
-    if (bul.y > ModCS.Player.y) then
+    if (bul.y > mychar.y) then
         bul.ym = bul.ym - 0.0625
     end
 
@@ -1044,10 +1050,648 @@ end
 
 -- Blade slashes
 ModCS.Bullet.Act[23] = function(bul)
-    bul.cond = 0
+    if (bul.act_no == 0) then
+        bul.act_no = 1
+        bul.y = bul.y - 12
+
+        if (bul.direct == 0) then
+            bul.x = bul.x + 16
+        else
+            bul.x = bul.x - 16
+        end
+        -- Fallthrough
+    end
+
+    if (bul.act_no == 1) then
+        bul.ani_wait = bul.ani_wait + 1
+        if (bul.ani_wait > 2) then
+            bul.ani_wait = 0
+            bul.ani_no = bul.ani_no + 1
+        end
+
+        if (bul.direct == 0) then
+            bul.x = bul.x - 2
+        else
+            bul.x = bul.x + 2
+        end
+
+        bul.y = bul.y + 2
+
+        if (bul.ani_no == 1) then
+            bul.damage = 2
+        else
+            bul.damage = 1
+        end
+
+        if (bul.ani_no > 4) then
+            bul.cond = 0
+            return
+        end
+    end
+
+    local rcLeft = {
+        ModCS.Rect.Create(0, 64, 24, 88),
+        ModCS.Rect.Create(24, 64, 48, 88),
+        ModCS.Rect.Create(48, 64, 72, 88),
+        ModCS.Rect.Create(72, 64, 96, 88),
+        ModCS.Rect.Create(96, 64, 120, 88),
+    }
+
+    local rcRight = {
+        ModCS.Rect.Create(0, 88, 24, 112),
+        ModCS.Rect.Create(24, 88, 48, 112),
+        ModCS.Rect.Create(48, 88, 72, 112),
+        ModCS.Rect.Create(72, 88, 96, 112),
+        ModCS.Rect.Create(96, 88, 120, 112),
+    }
+
+    if (bul.direct == 0) then
+        bul:SetRect(rcLeft[bul.ani_no+1])
+    else
+        bul:SetRect(rcRight[bul.ani_no+1])
+    end
 end
 
 -- Falling spike that deals 127 damage
 ModCS.Bullet.Act[24] = function(bul)
-    bul.cond = 0
+    local rc = ModCS.Rect.Create(0, 0, 0, 0)
+
+    bul.act_wait = bul.act_wait + 1
+    if (bul.act_wait > 2) then
+        bul.cond = 0
+    end
+
+    bul:SetRect(rc)
+end
+
+local super_missile_inc = 0
+local function SuperMissileBullet(bul, level)
+    local mychar = ModCS.Multiplayer.GetByID(bul.player_id) -- CSE2LE multiplayer compat, in freeware it just is the same as ModCS.Player
+
+    local bHit = false
+
+    bul.count1 = bul.count1 + 1
+    if (bul.count1 > bul.life_count) then
+        bul.cond = 0
+        ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, bul.x, bul.y, 0)
+        return
+    end
+
+    if (bul.life ~= 10) then
+        bHit = true
+    end
+
+    if (bul.direct == 0 and bul:TouchLeftWall()) then
+        bHit = true
+    end
+
+    if (bul.direct == 2 and bul:TouchRightWall()) then
+        bHit = true
+    end
+
+    if (bul.direct == 1 and bul:TouchCeiling()) then
+        bHit = true
+    end
+
+    if (bul.direct == 3 and bul:TouchFloor()) then
+        bHit = true
+    end
+
+    if (bul.direct == 0 and bul:TouchTopSlopeLeft()) then
+        bHit = true
+    end
+
+    if (bul.direct == 0 and bul:TouchBottomSlopeLeft()) then
+        bHit = true
+    end
+
+    if (bul.direct == 2 and bul:TouchTopSlopeRight()) then
+        bHit = true
+    end
+
+    if (bul.direct == 2 and bul:TouchBottomSlopeRight()) then
+        bHit = true
+    end
+
+    if (bHit) then
+        ModCS.Bullet.Spawn(level + 30, bul.x, bul.y, 0, bul.player_id)
+        bul.cond = 0
+    end
+
+    if (bul.act_no == 0) then
+        bul.act_no = 1
+
+        if (bul.direct == 0 or bul.direct == 2) then
+            bul.tgt_y = bul.y
+            bul.enemyhit_x = 8
+            bul.blockhit_x = 8
+        elseif (bul.direct == 1 or bul.direct == 3) then
+            bul.tgt_x = bul.x
+            bul.enemyhit_y = 8
+            bul.blockhit_y = 8
+        end
+
+        if (level == 3) then
+            if (bul.direct == 0 or bul.direct == 2) then
+                if (bul.y > mychar.y) then
+                    bul.ym = 0.5
+                else
+                    bul.ym = -0.5
+                end
+
+                bul.xm = ModCS.Game.Random2(-1, 1)
+            elseif (bul.direct == 1 or bul.direct == 3) then
+                if (bul.x > mychar.x) then
+                    bul.xm = 0.5
+                else
+                    bul.xm = -0.5
+                end
+
+                bul.ym = ModCS.Game.Random2(-1, 1)
+            end
+
+            super_missile_inc = super_missile_inc + 1
+            if (super_missile_inc % 3 == 0) then
+                bul.ani_no = 0x200
+            elseif (super_missile_inc % 3 == 1) then
+                bul.ani_no = 0x100
+            elseif (super_missile_inc % 3 == 2) then
+                bul.ani_no = 0xAA
+            end
+        else
+            bul.ani_no = 0x200
+        end
+        -- Fallthrough
+    end
+
+    if (bul.act_no == 1) then
+        if (bul.direct == 0) then
+            bul.xm = bul.xm + -(bul.ani_no/512)
+        elseif (bul.direct == 1) then
+            bul.ym = bul.ym + -(bul.ani_no/512)
+        elseif (bul.direct == 2) then
+            bul.xm = bul.xm + (bul.ani_no/512)
+        elseif (bul.direct == 3) then
+            bul.ym = bul.ym + (bul.ani_no/512)
+        end
+
+        if (level == 3) then
+            if (bul.direct == 0 or bul.direct == 2) then
+                if (bul.y < bul.tgt_y) then
+                    bul.ym = bul.ym + 0.125
+                else
+                    bul.ym = bul.ym - 0.125
+                end
+            elseif (bul.direct == 1 or bul.direct == 3) then
+                if (bul.x < bul.tgt_x) then
+                    bul.xm = bul.xm + 0.125
+                else
+                    bul.xm = bul.xm - 0.125
+                end
+            end
+        end
+
+        if (bul.xm < -10) then
+            bul.xm = -10
+        end
+
+        if (bul.xm > 10) then
+            bul.xm = 10
+        end
+
+        if (bul.ym < -10) then
+            bul.ym = -10
+        end
+
+        if (bul.ym > 10) then
+            bul.ym = 10
+        end
+
+        bul:Move()
+    end
+
+    bul.count2 = bul.count2 + 1
+    if (bul.count2 > 2) then
+        bul.count2 = 0
+
+        if (bul.direct == 0) then
+            ModCS.Caret.Spawn(ModCS.Const.CARET_EXHAUST, bul.x + 8, bul.y, 2)
+        elseif (bul.direct == 1) then
+            ModCS.Caret.Spawn(ModCS.Const.CARET_EXHAUST, bul.x, bul.y + 8, 3)
+        elseif (bul.direct == 2) then
+            ModCS.Caret.Spawn(ModCS.Const.CARET_EXHAUST, bul.x - 8, bul.y, 0)
+        elseif (bul.direct == 3) then
+            ModCS.Caret.Spawn(ModCS.Const.CARET_EXHAUST, bul.x, bul.y - 8, 1)
+        end
+    end
+
+    local rect1 = {
+        ModCS.Rect.Create(120, 96, 136, 112),
+        ModCS.Rect.Create(136, 96, 152, 112),
+        ModCS.Rect.Create(152, 96, 168, 112),
+        ModCS.Rect.Create(168, 96, 184, 112),
+    }
+
+    local rect2 = {
+        ModCS.Rect.Create(184, 96, 200, 112),
+        ModCS.Rect.Create(200, 96, 216, 112),
+        ModCS.Rect.Create(216, 96, 232, 112),
+        ModCS.Rect.Create(232, 96, 248, 112),
+    }
+
+    if (level == 1) then
+        bul:SetRect(rect1[bul.direct+1])
+    elseif (level == 2) then
+        bul:SetRect(rect2[bul.direct+1])
+    elseif (level == 3) then
+        bul:SetRect(rect1[bul.direct+1])
+    end
+end
+
+-- Super Missile Launcher Level 1
+ModCS.Bullet.Act[28] = function(bul)
+    SuperMissileBullet(bul, 1)
+end
+
+-- Super Missile Launcher Level 2
+ModCS.Bullet.Act[29] = function(bul)
+    SuperMissileBullet(bul, 2)
+end
+
+-- Super Missile Launcher Level 3
+ModCS.Bullet.Act[30] = function(bul)
+    SuperMissileBullet(bul, 3)
+end
+
+local function SuperMissileBomb(bul, level)
+    if (bul.act_no == 0) then
+        bul.act_no = 1
+
+        if (level == 1) then
+            bul.act_wait = 10
+        elseif (level == 2) then
+            bul.act_wait = 14
+        elseif (level == 3) then
+            bul.act_wait = 6
+        end
+
+        ModCS.Sound.Play(44)
+        -- Fallthrough
+    end
+
+    if (bul.act_no == 1) then
+        if (level == 1) then
+            if (bul.act_wait % 3 == 0) then
+                ModCS.Npc.Explode(bul.x + ModCS.Game.Random(-16, 16), bul.y + ModCS.Game.Random(-16, 16), bul.enemyhit_x, 2, 1)
+            end
+        elseif (level == 2) then
+            if (bul.act_wait % 3 == 0) then
+                ModCS.Npc.Explode(bul.x + ModCS.Game.Random(-32, 32), bul.y + ModCS.Game.Random(-32, 32), bul.enemyhit_x, 2, 1)
+            end
+        elseif (level == 3) then
+            if (bul.act_wait % 3 == 0) then
+                ModCS.Npc.Explode(bul.x + ModCS.Game.Random(-40, 40), bul.y + ModCS.Game.Random(-40, 40), bul.enemyhit_x, 2, 1)
+            end
+        end
+
+        bul.act_wait = bul.act_wait - 1
+        if (bul.act_wait < 0) then
+            bul.cond = 0
+        end
+    end
+end
+
+-- Super Missile Explosion Level 1
+ModCS.Bullet.Act[31] = function(bul)
+    SuperMissileBomb(bul, 1)
+end
+
+-- Super Missile Explosion Level 2
+ModCS.Bullet.Act[32] = function(bul)
+    SuperMissileBomb(bul, 2)
+end
+
+-- Super Missile Explosion Level 3
+ModCS.Bullet.Act[33] = function(bul)
+    SuperMissileBomb(bul, 3)
+end
+
+local function NemesisBullet(bul, level)
+    local rect = ModCS.Rect.Create(0, 0, 0, 0)
+
+    bul.count1 = bul.count1 + 1
+    if (bul.count1 > bul.life_count) then
+        bul.cond = 0
+        ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, bul.x, bul.y, 0)
+        return
+    end
+
+    if (bul.act_no == 0) then
+        bul.act_no = 1
+        bul.count1 = 0
+
+        if (bul.direct == 0) then
+            bul.xm = -8
+        elseif (bul.direct == 1) then
+            bul.ym = -8
+        elseif (bul.direct == 2) then
+            bul.xm = 8
+        elseif (bul.direct == 3) then
+            bul.ym = 8
+        end
+
+        if (level == 3) then
+            bul.xm = bul.xm / 3
+            bul.ym = bul.ym / 3
+        end
+    else
+        if (level == 1 and bul.count1 % 4 == 1) then
+            if (bul.direct == 0) then
+                ModCS.Npc.Spawn2(4, bul.x, bul.y, -1, ModCS.Game.Random2(-1, 1), 2)
+            elseif (bul.direct == 1) then
+                ModCS.Npc.Spawn2(4, bul.x, bul.y, ModCS.Game.Random2(-1, 1), -1, 2)
+            elseif (bul.direct == 2) then
+                ModCS.Npc.Spawn2(4, bul.x, bul.y, 1, ModCS.Game.Random2(-1, 1), 2)
+            elseif (bul.direct == 3) then
+                ModCS.Npc.Spawn2(4, bul.x, bul.y, ModCS.Game.Random2(-1, 1), 1, 2)
+            end
+        end
+
+        bul:Move()
+    end
+
+    bul.ani_no = bul.ani_no + 1
+    if (bul.ani_no > 1) then
+        bul.ani_no = 0
+    end
+
+    local rcL = {
+        ModCS.Rect.Create(0, 112, 32, 128),
+        ModCS.Rect.Create(0, 128, 32, 144),
+    }
+
+    local rcU = {
+        ModCS.Rect.Create(32, 112, 48, 144),
+        ModCS.Rect.Create(48, 112, 64, 144),
+    }
+
+    local rcR = {
+        ModCS.Rect.Create(64, 112, 96, 128),
+        ModCS.Rect.Create(64, 128, 96, 144),
+    }
+
+    local rcD = {
+        ModCS.Rect.Create(96, 112, 112, 144),
+        ModCS.Rect.Create(112, 112, 128, 144),
+    }
+
+    if (bul.direct == 0) then
+        rect = rcL[bul.ani_no+1]
+    elseif (bul.direct == 1) then
+        rect = rcU[bul.ani_no+1]
+    elseif (bul.direct == 2) then
+        rect = rcR[bul.ani_no+1]
+    elseif (bul.direct == 3) then
+        rect = rcD[bul.ani_no+1]
+    end
+
+    rect.top = rect.top + ((level - 1) / 2) * 32
+    rect.bottom = rect.bottom + ((level - 1) / 2) * 32
+    rect.left = rect.left + ((level - 1) % 2) * 128
+    rect.right = rect.right + ((level - 1) % 2) * 128
+
+    bul:SetRect(rect)
+end
+
+-- Nemesis Level 1
+ModCS.Bullet.Act[34] = function(bul)
+    NemesisBullet(bul, 1)
+end
+
+-- Nemesis Level 2
+ModCS.Bullet.Act[35] = function(bul)
+    NemesisBullet(bul, 2)
+end
+
+-- Nemesis Level 3
+ModCS.Bullet.Act[36] = function(bul)
+    NemesisBullet(bul, 3)
+end
+
+local function SpurBullet(bul, level)
+    bul.count1 = bul.count1 + 1
+    if (bul.count1 > bul.life_count) then
+        bul.cond = 0
+        ModCS.Caret.Spawn(ModCS.Const.CARET_SHOOT, bul.x, bul.y, 0)
+        return
+    end
+
+    if (bul.damage ~= 0 and bul.life ~= 100) then
+        bul.damage = 0
+    end
+
+    if (bul.act_no == 0) then
+        bul.act_no = 1
+
+        if (bul.direct == 0) then
+            bul.xm = -8
+        elseif (bul.direct == 1) then
+            bul.ym = -8
+        elseif (bul.direct == 2) then
+            bul.xm = 8
+        elseif (bul.direct == 3) then
+            bul.ym = 8
+        end
+
+        if (level == 1) then
+            if (bul.direct == 0) then
+                bul.enemyhit_y = 2
+            elseif (bul.direct == 1) then
+                bul.enemyhit_x = 2
+            elseif (bul.direct == 2) then
+                bul.enemyhit_y = 2
+            elseif (bul.direct == 3) then
+                bul.enemyhit_x = 2
+            end
+        elseif (level == 2) then
+            if (bul.direct == 0) then
+                bul.enemyhit_y = 4
+            elseif (bul.direct == 1) then
+                bul.enemyhit_x = 4
+            elseif (bul.direct == 2) then
+                bul.enemyhit_y = 4
+            elseif (bul.direct == 3) then
+                bul.enemyhit_x = 4
+            end
+        end
+    else
+        bul:Move()
+    end
+
+    local rect1 = {
+        ModCS.Rect.Create(128, 32, 144, 48),
+        ModCS.Rect.Create(144, 32, 160, 48),
+    }
+
+    local rect2 = {
+        ModCS.Rect.Create(160, 32, 176, 48),
+        ModCS.Rect.Create(176, 32, 192, 48),
+    }
+
+    local rect3 = {
+        ModCS.Rect.Create(128, 48, 144, 64),
+        ModCS.Rect.Create(144, 48, 160, 64),
+    }
+
+    bul.damage = bul.life
+
+    if (level == 1) then
+        if (bul.direct == 1 or bul.direct == 3) then
+            bul:SetRect(rect1[2])
+        else
+            bul:SetRect(rect1[1])
+        end
+    elseif (level == 2) then
+        if (bul.direct == 1 or bul.direct == 3) then
+            bul:SetRect(rect2[2])
+        else
+            bul:SetRect(rect2[1])
+        end
+    elseif (level == 3) then
+        if (bul.direct == 1 or bul.direct == 3) then
+            bul:SetRect(rect3[2])
+        else
+            bul:SetRect(rect3[1])
+        end
+    end
+
+    ModCS.Bullet.Spawn(39 + level, bul.x, bul.y, bul.direct, bul.player_id)
+end
+
+-- Spur Level 1
+ModCS.Bullet.Act[37] = function(bul)
+    SpurBullet(bul, 1)
+end
+
+-- Spur Level 2
+ModCS.Bullet.Act[38] = function(bul)
+    SpurBullet(bul, 2)
+end
+
+-- Spur Level 3
+ModCS.Bullet.Act[39] = function(bul)
+    SpurBullet(bul, 3)
+end
+
+local function SpurTailBullet(bul, level)
+    bul.count1 = bul.count1 + 1
+    if (bul.count1 > 20) then
+        bul.ani_no = bul.count1 - 20
+    end
+
+    if (bul.ani_no > 2) then
+        bul.cond = 0
+        return
+    end
+
+    if (bul.damage ~= 0 and bul.life ~= 100) then
+        bul.damage = 0
+    end
+
+    local rc_h_lv1 = {
+        ModCS.Rect.Create(192, 32, 200, 40),
+        ModCS.Rect.Create(200, 32, 208, 40),
+        ModCS.Rect.Create(208, 32, 216, 40),
+    }
+
+    local rc_v_lv1 = {
+        ModCS.Rect.Create(192, 40, 200, 48),
+        ModCS.Rect.Create(200, 40, 208, 48),
+        ModCS.Rect.Create(208, 40, 216, 48),
+    }
+
+    local rc_h_lv2 = {
+        ModCS.Rect.Create(216, 32, 224, 40),
+        ModCS.Rect.Create(224, 32, 232, 40),
+        ModCS.Rect.Create(232, 32, 240, 40),
+    }
+
+    local rc_v_lv2 = {
+        ModCS.Rect.Create(216, 40, 224, 48),
+        ModCS.Rect.Create(224, 40, 232, 48),
+        ModCS.Rect.Create(232, 40, 240, 48),
+    }
+
+    local rc_h_lv3 = {
+        ModCS.Rect.Create(240, 32, 248, 40),
+        ModCS.Rect.Create(248, 32, 256, 40),
+        ModCS.Rect.Create(256, 32, 264, 40),
+    }
+
+    local rc_v_lv3 = {
+        ModCS.Rect.Create(240, 32, 248, 40),
+        ModCS.Rect.Create(248, 32, 256, 40),
+        ModCS.Rect.Create(256, 32, 264, 40),
+    }
+
+    if (level == 1) then
+        if (bul.direct == 0 or bul.direct == 2) then
+            bul:SetRect(rc_h_lv1[bul.ani_no+1])
+        else
+            bul:SetRect(rc_v_lv1[bul.ani_no+1])
+        end
+    elseif (level == 2) then
+        if (bul.direct == 0 or bul.direct == 2) then
+            bul:SetRect(rc_h_lv2[bul.ani_no+1])
+        else
+            bul:SetRect(rc_v_lv2[bul.ani_no+1])
+        end
+    elseif (level == 3) then
+        if (bul.direct == 0 or bul.direct == 2) then
+            bul:SetRect(rc_h_lv3[bul.ani_no+1])
+        else
+            bul:SetRect(rc_v_lv3[bul.ani_no+1])
+        end
+    end
+end
+
+-- Spur Tail Level 1
+ModCS.Bullet.Act[40] = function(bul)
+    SpurTailBullet(bul, 1)
+end
+
+-- Spur Tail Level 2
+ModCS.Bullet.Act[41] = function(bul)
+    SpurTailBullet(bul, 2)
+end
+
+-- Spur Tail Level 3
+ModCS.Bullet.Act[42] = function(bul)
+    SpurTailBullet(bul, 3)
+end
+
+-- Curly's Nemesis (Same as normal Nemesis lv1)
+ModCS.Bullet.Act[43] = function(bul)
+    NemesisBullet(bul, 1)
+end
+
+-- Screen-nuke that kills all enemies
+ModCS.Bullet.Act[44] = function(bul)
+    bul.count1 = bul.count1 + 1
+    if (bul.count1 > bul.life_count) then
+        bul.cond = 0
+        return
+    end
+
+    bul.damage = 10000
+    bul.enemyhit_x = 1600
+    bul.enemyhit_y = 1600
+end
+
+-- Whimsical Star
+ModCS.Bullet.Act[45] = function(bul)
+    bul.count1 = bul.count1 + 1
+    if (bul.count1 > bul.life_count) then
+        bul.cond = 0
+    end
 end
