@@ -658,7 +658,8 @@ void InitMod(void)
     if (debug_write_tables_yaml)
         RegisterPreModeElement(WriteDebugTablesYaml);
 
-    RegisterGetTrgElement(AutPI_GetTrg_ForInput);
+    if (enable_old_mouse_code)
+        RegisterGetTrgElement(AutPI_GetTrg_ForInput);
 
     RegisterDrawFrameElement(Lua_FrameInit);
 
@@ -669,36 +670,50 @@ void InitMod(void)
     ModLoader_WriteCall((void*)0x4105E3, (void*)Replacement_ModeAction_AnimationMyChar);
 
     // DamageMyChar Calls
-    ModLoader_WriteCall((void*)0x4162F1, (void*)DamageMyChar_ModCS);
-    ModLoader_WriteCall((void*)0x4192DF, (void*)DamageMyChar_ModCS);
-    ModLoader_WriteCall((void*)0x419311, (void*)DamageMyChar_ModCS);
-    ModLoader_WriteCall((void*)0x419343, (void*)DamageMyChar_ModCS);
-    ModLoader_WriteCall((void*)0x419375, (void*)DamageMyChar_ModCS);
-    ModLoader_WriteCall((void*)0x4193B2, (void*)DamageMyChar_ModCS);
-    ModLoader_WriteCall((void*)0x4195DF, (void*)DamageMyChar_ModCS);
-    ModLoader_WriteCall((void*)0x419611, (void*)DamageMyChar_ModCS);
-    ModLoader_WriteCall((void*)0x41964E, (void*)DamageMyChar_ModCS);
+    if (replace_player_damage_function)
+    {
+        ModLoader_WriteCall((void*)0x4162F1, (void*)DamageMyChar_ModCS);
+        ModLoader_WriteCall((void*)0x4192DF, (void*)DamageMyChar_ModCS);
+        ModLoader_WriteCall((void*)0x419311, (void*)DamageMyChar_ModCS);
+        ModLoader_WriteCall((void*)0x419343, (void*)DamageMyChar_ModCS);
+        ModLoader_WriteCall((void*)0x419375, (void*)DamageMyChar_ModCS);
+        ModLoader_WriteCall((void*)0x4193B2, (void*)DamageMyChar_ModCS);
+        ModLoader_WriteCall((void*)0x4195DF, (void*)DamageMyChar_ModCS);
+        ModLoader_WriteCall((void*)0x419611, (void*)DamageMyChar_ModCS);
+        ModLoader_WriteCall((void*)0x41964E, (void*)DamageMyChar_ModCS);
+    }
     
-    ModLoader_WriteCall((void*)0x410838, (void*)Replacement_ModeAction_PutMyLife);
-    ModLoader_WriteCall((void*)0x410842, (void*)Replacement_ModeAction_PutArmsEnergy);
-    ModLoader_WriteCall((void*)0x41084E, (void*)Replacement_ModeAction_PutMyAir);
-    ModLoader_WriteCall((void*)0x410856, (void*)Replacement_ModeAction_PutActiveArmsList);
-    ModLoader_WriteCall((void*)0x410725, (void*)Replacement_ModeAction_CampLoop);
+    if (replace_player_hud_functions)
+    {
+        ModLoader_WriteCall((void*)0x410838, (void*)Replacement_ModeAction_PutMyLife);
+        ModLoader_WriteCall((void*)0x410842, (void*)Replacement_ModeAction_PutArmsEnergy);
+        ModLoader_WriteCall((void*)0x41084E, (void*)Replacement_ModeAction_PutMyAir);
+        ModLoader_WriteCall((void*)0x410856, (void*)Replacement_ModeAction_PutActiveArmsList);
+    }
+
+    if (replace_inventory_function)
+        ModLoader_WriteCall((void*)0x410725, (void*)Replacement_ModeAction_CampLoop);
 
     // Call_Escape() function calls
-    ModLoader_WriteCall((void*)0x401DF2, (void*)Replacement_Call_Escape_ModCS);
-    ModLoader_WriteCall((void*)0x40DC2A, (void*)Replacement_Call_Escape_ModCS);
-    ModLoader_WriteCall((void*)0x40F7CD, (void*)Replacement_Call_Escape_ModCS);
-    ModLoader_WriteCall((void*)0x40FF6A, (void*)Replacement_Call_Escape_ModCS);
-    ModLoader_WriteCall((void*)0x4104E8, (void*)Replacement_Call_Escape_ModCS);
-    ModLoader_WriteCall((void*)0x4146D8, (void*)Replacement_Call_Escape_ModCS);
-    ModLoader_WriteCall((void*)0x41488B, (void*)Replacement_Call_Escape_ModCS);
-    ModLoader_WriteCall((void*)0x4149F0, (void*)Replacement_Call_Escape_ModCS);
-    ModLoader_WriteCall((void*)0x41DAA0, (void*)Replacement_Call_Escape_ModCS);
+    if (replace_escape_menu_functions)
+    {
+        ModLoader_WriteCall((void*)0x401DF2, (void*)Replacement_Call_Escape_ModCS);
+        ModLoader_WriteCall((void*)0x40DC2A, (void*)Replacement_Call_Escape_ModCS);
+        ModLoader_WriteCall((void*)0x40F7CD, (void*)Replacement_Call_Escape_ModCS);
+        ModLoader_WriteCall((void*)0x40FF6A, (void*)Replacement_Call_Escape_ModCS);
+        ModLoader_WriteCall((void*)0x4104E8, (void*)Replacement_Call_Escape_ModCS);
+        ModLoader_WriteCall((void*)0x4146D8, (void*)Replacement_Call_Escape_ModCS);
+        ModLoader_WriteCall((void*)0x41488B, (void*)Replacement_Call_Escape_ModCS);
+        ModLoader_WriteCall((void*)0x4149F0, (void*)Replacement_Call_Escape_ModCS);
+        ModLoader_WriteCall((void*)0x41DAA0, (void*)Replacement_Call_Escape_ModCS);
+    }
 
     // MiniMapLoop() function calls
-    ModLoader_WriteCall((void*)0x410785, (void*)Replacement_ModeAction_MiniMapLoop);
-    ModLoader_WriteCall((void*)0x42444C, (void*)Replacement_ModeAction_MiniMapLoop);
+    if (replace_map_functions)
+    {
+        ModLoader_WriteCall((void*)0x410785, (void*)Replacement_ModeAction_MiniMapLoop);
+        ModLoader_WriteCall((void*)0x42444C, (void*)Replacement_ModeAction_MiniMapLoop);
+    }
 
     if (autpi_debug_mode == true)
     {

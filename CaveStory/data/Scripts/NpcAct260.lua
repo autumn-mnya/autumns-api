@@ -1043,25 +1043,1065 @@ ModCS.Npc.Act[267] = function(npc)
 end
 
 -- Igor (enemy)
+ModCS.Npc.Act[268] = function(npc)
+    local deg = 0
+    local xm = 0
+    local ym = 0
+
+    local rcLeft = {
+        ModCS.Rect.Create(0, 0, 40, 40),
+        ModCS.Rect.Create(40, 0, 80, 40),
+        ModCS.Rect.Create(80, 0, 120, 40),
+        ModCS.Rect.Create(0, 0, 40, 40),
+        ModCS.Rect.Create(120, 0, 160, 40),
+        ModCS.Rect.Create(0, 0, 40, 40),
+        ModCS.Rect.Create(40, 80, 80, 120),
+        ModCS.Rect.Create(0, 80, 40, 120),
+        ModCS.Rect.Create(240, 0, 280, 40),
+        ModCS.Rect.Create(280, 0, 320, 40),
+    }
+
+    local rcRight = {
+        ModCS.Rect.Create(0, 40, 40, 80),
+        ModCS.Rect.Create(40, 40, 80, 80),
+        ModCS.Rect.Create(80, 40, 120, 80),
+        ModCS.Rect.Create(0, 40, 40, 80),
+        ModCS.Rect.Create(120, 40, 160, 80),
+        ModCS.Rect.Create(0, 40, 40, 80),
+        ModCS.Rect.Create(160, 80, 200, 120),
+        ModCS.Rect.Create(120, 80, 160, 120),
+        ModCS.Rect.Create(240, 40, 280, 80),
+        ModCS.Rect.Create(280, 40, 320, 80),
+    }
+
+    if not (npc:TriggerBox(320, 240, 320, 240)) then
+        npc.act_no = 1
+    end
+
+    if (npc.act_no == 0) then
+        npc.act_no = 1
+        npc.y = npc.y + 8
+        -- Fallthrough
+    end
+
+    if (npc.act_no == 1) then
+        npc.ani_wait = npc.ani_wait + 1
+        if (npc.ani_wait > 20) then
+            npc.ani_wait = 0
+            npc.ani_no = npc.ani_no + 1
+        end
+
+        if (npc.ani_no > 1) then
+            npc.ani_no = 0
+        end
+
+        if (npc:TriggerBox(112, 112, 112, 48)) then
+            npc.act_no = 10
+        end
+
+        if (npc:IsHit()) then
+            npc.act_no = 10
+        end
+    elseif (npc.act_no == 10) then
+        npc.act_no = 11
+        npc.act_wait = 0
+        npc.ani_no = 0
+        npc.ani_wait = 0
+
+        if (npc.tgt_mc.x < npc.x) then
+            npc.direct = 0
+        else
+            npc.direct = 2
+        end
+        -- Fallthrough
+    end
+    
+    if (npc.act_no == 11) then
+        if (npc.direct == 0) then
+            npc.xm = -1
+        else
+            npc.xm = 1
+        end
+
+        if (npc.x < npc.tgt_mc.x + 64 and npc.x > npc.tgt_mc.x - 64) then
+            npc.act_no = 20
+            npc.act_wait = 0
+        end
+
+        if (npc.xm < 0 and npc:TouchLeftWall()) then
+            npc.act_no = 20
+            npc.act_wait = 0
+        end
+
+        if (npc.xm > 0 and npc:TouchRightWall()) then
+            npc.act_no = 20
+            npc.act_wait = 0
+        end
+
+        npc.ani_wait = npc.ani_wait + 1
+        if (npc.ani_wait > 4) then
+            npc.ani_wait = 0
+            npc.ani_no = npc.ani_no + 1
+        end
+
+        if (npc.ani_no > 5) then
+            npc.ani_no = 2
+        end
+    elseif (npc.act_no == 20) then
+        npc.xm = 0
+        npc.ani_no = 6
+
+        npc.act_wait = npc.act_wait + 1
+        if (npc.act_wait > 10) then
+            npc.act_no = 30
+            npc.ym = -2.998046875
+
+            if (npc.direct == 0) then
+                npc.xm = -1
+            else
+                npc.xm = 1
+            end
+            
+            ModCS.Sound.Play(108)
+        end
+    elseif (npc.act_no == 30) then
+        npc.ani_no = 7
+
+        if (npc:TouchFloor()) then
+            npc.act_no = 40
+            npc.act_wait = 0
+            ModCS.Camera.SetQuake(20)
+            ModCS.Sound.Play(26)
+        end
+    elseif (npc.act_no == 40) then
+        npc.xm = 0
+        npc.ani_no = 6
+
+        npc.act_wait = npc.act_wait + 1
+        if (npc.act_wait > 30) then
+            npc.act_no = 50
+        end
+    elseif (npc.act_no == 50) then
+        npc.act_no = 51
+        npc.act_wait = 0
+
+        if (npc.tgt_mc.x < npc.x) then
+            npc.direct = 0
+        else
+            npc.direct = 2
+        end
+        -- Fallthrough
+    end
+
+    if (npc.act_no == 51) then
+        npc.act_wait = npc.act_wait + 1
+        if (npc.act_wait > 30 and npc.act_wait % 4 == 1) then
+            if (npc.direct == 0) then
+                deg = 0x88
+            else
+                deg = 0xF8
+            end
+
+            deg = deg + ModCS.Game.Random(-0x10, 0x10)
+            ym = ModCS.Triangle.GetSin(deg) * 5
+            xm = ModCS.Triangle.GetCos(deg) * 5
+            ModCS.Npc.Spawn2(11, npc.x, npc.y + 4, xm, ym, 0)
+            ModCS.Sound.Play(12)
+        end
+
+        if (npc.act_wait < 50 and math.floor(npc.act_wait / 2) % 2 == 1) then
+            npc.ani_no = 9
+        else
+            npc.ani_no = 8
+        end
+
+        if (npc.act_wait > 82) then
+            npc.act_no = 10
+
+            if (npc.tgt_mc.x < npc.x) then
+                npc.direct = 0
+            else
+                npc.direct = 2
+            end
+        end
+    end
+
+    npc.ym = npc.ym + 0.1
+    if (npc.ym > 2.998046875) then
+        npc.ym = 2.998046875
+    end
+
+    npc:Move()
+
+    if (npc.direct == 0) then
+        npc:SetRect(rcLeft[npc.ani_no+1])
+    else
+        npc:SetRect(rcRight[npc.ani_no+1])
+    end
+end
 
 -- Red Bat (bouncing)
+ModCS.Npc.Act[269] = function(npc)
+    local rcLeft = {
+        ModCS.Rect.Create(232, 0, 248, 16),
+        ModCS.Rect.Create(248, 0, 264, 16),
+        ModCS.Rect.Create(248, 16, 264, 32),
+    }
+
+    local rcRight = {
+        ModCS.Rect.Create(232, 32, 248, 48),
+        ModCS.Rect.Create(248, 32, 264, 48),
+        ModCS.Rect.Create(248, 48, 264, 64),
+    }
+
+    if (npc.act_no == 0) then
+        npc.act_no = 1
+        npc.xm2 = npc.xm
+        npc.ym2 = npc.ym
+        -- Fallthrough
+    end
+
+    if (npc.act_no == 1) then
+        if (npc.xm2 < 0 and npc:TouchLeftWall()) then
+            npc.direct = 2
+            npc.xm2 = npc.xm2 * -1
+        elseif (npc.xm2 > 0 and npc:TouchRightWall()) then
+            npc.direct = 0
+            npc.xm2 = npc.xm2 * -1
+        elseif (npc.ym2 < 0 and npc:TouchCeiling()) then
+            npc.ym2 = npc.ym2 * -1
+        elseif (npc.ym2 > 0 and npc:TouchFloor()) then
+            npc.ym2 = npc.ym2 * -1
+        end
+
+        npc:Move2()
+
+        npc.ani_wait = npc.ani_wait + 1
+        if (npc.ani_wait > 2) then
+            npc.ani_wait = 0
+            npc.ani_no = npc.ani_no + 1
+        end
+
+        if (npc.ani_no > 2) then
+            npc.ani_no = 0
+        end
+    end
+
+    if (npc.direct == 0) then
+        npc:SetRect(rcLeft[npc.ani_no+1])
+    else
+        npc:SetRect(rcRight[npc.ani_no+1])
+    end
+end
 
 -- Doctor's blood (or "red energy")
+ModCS.Npc.Act[270] = function(npc)
+    local rc = {
+        ModCS.Rect.Create(170, 34, 174, 38),
+        ModCS.Rect.Create(170, 42, 174, 46),
+    }
+
+    if (npc.direct == 3 or npc.direct == 1) then
+        if (npc.direct == 3) then
+            npc.ym = npc.ym + 0.125
+        end
+
+        if (npc.direct == 1) then
+            npc.ym = npc.ym - 0.125
+        end
+
+        npc.act_wait = npc.act_wait + 1
+        
+        if (npc.ym > 2.998046875) then
+            npc.ym = 2.998046875
+        end
+
+        npc:Move()
+
+        if (npc.act_wait > 50) then
+            npc.cond = 0
+        end
+
+        if (npc:TouchTile()) then
+            npc.cond = 0
+        end
+    elseif (npc.direct == 2) then
+        if (npc.act_no == 0) then
+            npc.act_no = 1
+            npc:SetBit(3) -- Set ignore tile collision bit
+
+            npc.xm = ModCS.Game.Random2(-1, 1) * 3
+            npc.ym = ModCS.Game.Random2(-1, 1) * 3
+
+            npc.count1 = ModCS.Game.Random(0x10, 0x33)
+            npc.count2 = ModCS.Game.Random(0x80, 0x100)
+        end
+
+        if (npc.x < npc.pNpc.x) then
+            npc.xm = npc.xm + (1 / npc.count1)
+        end
+
+        if (npc.x > npc.pNpc.x) then
+            npc.xm = npc.xm - (1 / npc.count1)
+        end
+
+        if (npc.y < npc.pNpc.y) then
+            npc.ym = npc.ym + (1 / npc.count1)
+        end
+
+        if (npc.y > npc.pNpc.y) then
+            npc.ym = npc.ym - (1 / npc.count1)
+        end
+
+        if (npc.xm > ((npc.count2 * 2) / 512)) then
+            npc.xm = ((npc.count2 * 2) / 512)
+        end
+
+        if (npc.xm < -((npc.count2 * 2) / 512)) then
+            npc.xm = -((npc.count2 * 2) / 512)
+        end
+
+        if (npc.ym > ((npc.count2 * 3) / 512)) then
+            npc.ym = ((npc.count2 * 3) / 512)
+        end
+
+        if (npc.ym < -((npc.count2 * 3) / 512)) then
+            npc.ym = -((npc.count2 * 3) / 512)
+        end
+
+        npc:Move()
+    end
+
+    npc:SetRect(rc[ModCS.Game.Random(1, 2)])
+end
 
 -- Ironhead block
+ModCS.Npc.Act[271] = function(npc)
+    local a = 0
+    local rect = ModCS.Rect.Create(0, 0, 0, 0)
+    local view = npc:GetViewbox()
+    local hit = npc:GetHitbox()
+
+    if (npc.xm < 0 and npc.x < -16) then
+        npc:Vanish()
+        return
+    end
+
+    if (npc.xm > 0 and npc.x > (ModCS.Map.GetWidth() * 0x10) + (1 * 0x10)) then
+        npc:Vanish()
+        return
+    end
+
+    if (npc.act_no == 0) then
+        npc.act_no = 1
+
+        a = ModCS.Game.Random(0, 9)
+
+        if (a == 9) then
+            rect.left = 0
+            rect.right = 0x20
+            rect.top = 0x40
+            rect.bottom = 0x60
+
+            view.front = 16
+            view.back = 16
+            view.top = 16
+            view.bottom = 16
+
+            hit.front = 12
+            hit.back = 12
+            hit.top = 12
+            hit.bottom = 12
+            npc:SetRect(rect)
+            npc:SetViewbox(view)
+            npc:SetHitbox(hit)
+        else
+            rect.left = ((a % 3) * 16) + (7 * 16)
+            rect.top = (a / 3) * 16
+            rect.right = rect.left + 16
+            rect.bottom = rect.top + 16
+            npc:SetRect(rect)
+        end
+
+        if (npc.direct == 0) then
+            npc.xm = ModCS.Game.Random2(0.5, 1) * -2
+        else
+            npc.xm = ModCS.Game.Random2(0.5, 1) * 2
+        end
+
+        npc.ym = ModCS.Game.Random2(-1, 1)
+    end
+
+    if (npc.ym < 0 and npc.y - hit.top < 8) then
+        npc.ym = npc.ym * -1
+        ModCS.Caret.Spawn(ModCS.Const.CARET_TINY_PARTICLES, npc.x, npc.y - 8, 0)
+        ModCS.Caret.Spawn(ModCS.Const.CARET_TINY_PARTICLES, npc.x, npc.y - 8, 0)
+    end
+
+    if (npc.ym > 0 and npc.y + hit.bottom > 232) then
+        npc.ym = npc.ym * -1
+        ModCS.Caret.Spawn(ModCS.Const.CARET_TINY_PARTICLES, npc.x, npc.y + 8, 0)
+        ModCS.Caret.Spawn(ModCS.Const.CARET_TINY_PARTICLES, npc.x, npc.y + 8, 0)
+    end
+
+    npc:Move()
+end
 
 -- Ironhead block generator
+ModCS.Npc.Act[272] = function(npc)
+    if (npc.act_no == 0) then
+        npc.act_no = 1
+        npc.act_wait = ModCS.Game.Random(0, 200)
+        -- Fallthrough
+    end
+
+    if (npc.act_no == 1) then
+        if (npc.act_wait ~= 0) then
+            npc.act_wait = npc.act_wait - 1
+        else
+            npc.act_no = 0
+            ModCS.Npc.Spawn2(271, npc.x, npc.y + ModCS.Game.Random(-32, 32), 0, 0, npc.direct)
+        end
+    end
+end
 
 -- Droll projectile
+ModCS.Npc.Act[273] = function(npc)
+    local rc = {
+        ModCS.Rect.Create(248, 40, 272, 64),
+        ModCS.Rect.Create(272, 40, 296, 64),
+        ModCS.Rect.Create(296, 40, 320, 64),
+    }
+
+    if (npc.act_no == 0) then
+        npc.act_no = 1
+        -- Fallthrough
+    end
+
+    if (npc.act_no == 1) then
+        npc:Move()
+
+        if (npc:TouchTile()) then
+            ModCS.Npc.Spawn2(4, npc.x, npc.y, 0, 0, 0)
+            ModCS.Npc.Spawn2(4, npc.x, npc.y, 0, 0, 0)
+            ModCS.Npc.Spawn2(4, npc.x, npc.y, 0, 0, 0)
+            npc:Vanish()
+            return
+        end
+
+        npc.act_wait = npc.act_wait + 1
+        if (npc.act_wait % 5 == 0) then
+            ModCS.Sound.Play(110)
+        end
+
+        npc.ani_no = npc.ani_no + 1
+        if (npc.ani_no > 2) then
+            npc.ani_no = 0
+        end
+    end
+
+    npc:SetRect(rc[npc.ani_no+1])
+end
 
 -- Droll
+ModCS.Npc.Act[274] = function(npc)
+    local rcLeft = {
+        ModCS.Rect.Create(0, 0, 32, 40),
+        ModCS.Rect.Create(32, 0, 64, 40),
+        ModCS.Rect.Create(64, 0, 96, 40),
+        ModCS.Rect.Create(64, 80, 96, 120),
+        ModCS.Rect.Create(96, 80, 128, 120),
+        ModCS.Rect.Create(96, 0, 128, 40),
+    }
+
+    local rcRight = {
+        ModCS.Rect.Create(0, 40, 32, 80),
+        ModCS.Rect.Create(32, 40, 64, 80),
+        ModCS.Rect.Create(64, 40, 96, 80),
+        ModCS.Rect.Create(64, 120, 96, 160),
+        ModCS.Rect.Create(96, 120, 128, 160),
+        ModCS.Rect.Create(96, 40, 128, 80),
+    }
+
+    local deg = 0
+    local xm = 0
+    local ym = 0
+
+    if (npc.act_no == 0) then
+        npc.act_no = 1
+        npc.y = npc.y - 8
+        npc.tgt_x = npc.x
+        -- Fallthrough
+    end
+
+    if (npc.act_no == 1) then
+        npc.xm = 0
+        npc.act_no = 2
+        npc.ani_no = 0
+        -- Fallthrough
+    end
+
+    if (npc.act_no == 2) then
+        if (npc.x > npc.tgt_mc.x) then
+            npc.direct = 0
+        else
+            npc.direct = 2
+        end
+
+        npc.ani_wait = npc.ani_wait + 1
+        if (npc.ani_wait > 40) then
+            npc.ani_wait = 0
+            npc.ani_no = npc.ani_no + 1
+        end
+
+        if (npc.ani_no > 1) then
+            npc.ani_no = 0
+        end
+
+        if (npc:IsHit()) then
+            npc.act_no = 10
+        end
+    elseif (npc.act_no == 10) then
+        npc.act_no = 11
+        npc.ani_no = 2
+        npc.act_wait = 0
+        -- Fallthrough
+    end
+
+    if (npc.act_no == 11) then
+        npc.act_wait = npc.act_wait + 1
+        if (npc.act_wait > 10) then
+            npc.act_no = 12
+            npc.ani_no = 3
+            npc.ym = -3
+            npc.count1 = 0
+
+            if (npc.tgt_x > npc.x) then
+                npc.xm = 1
+            else
+                npc.xm = -1
+            end
+        end
+    elseif (npc.act_no == 12) then
+        if (npc.ym > 0) then
+            npc.ani_no = 4
+
+            if (npc.count1 == 0) then
+                npc.count1 = npc.count1 + 1
+                deg = ModCS.Triangle.GetArktan(npc.x - npc.tgt_mc.x, (npc.y - 10) - npc.tgt_mc.y)
+                ym = ModCS.Triangle.GetSin(deg) * 4
+                xm = ModCS.Triangle.GetCos(deg) * 4
+                ModCS.Npc.Spawn2(273, npc.x, npc.y - 10, xm, ym, 0)
+                ModCS.Sound.Play(39)
+            end
+        end
+
+        if (npc.ym > 1) then
+            npc.ani_no = 5
+        end
+
+        if (npc:TouchFloor()) then
+            npc.ani_no = 2
+            npc.act_no = 13
+            npc.act_wait = 0
+            npc.xm = 0
+        end
+    elseif (npc.act_no == 13) then
+        npc.xm = npc.xm / 2
+
+        npc.act_wait = npc.act_wait + 1
+        if (npc.act_wait > 10) then
+            npc.act_no = 1
+        end
+    end
+
+    npc.ym = npc.ym + 0.166015625
+    if (npc.ym > 2.998046875) then
+        npc.ym = 2.998046875
+    end
+
+    npc:Move()
+
+    if (npc.direct == 0) then
+        npc:SetRect(rcLeft[npc.ani_no+1])
+    else
+        npc:SetRect(rcRight[npc.ani_no+1])
+    end
+end
 
 -- Puppy (plantation)
+ModCS.Npc.Act[275] = function(npc)
+    local rcRight = {
+        ModCS.Rect.Create(272, 80, 288, 96),
+        ModCS.Rect.Create(288, 80, 304, 96),
+        ModCS.Rect.Create(272, 80, 288, 96),
+        ModCS.Rect.Create(304, 80, 320, 96),
+    }
+
+    if (npc.act_no == 0) then
+        npc.act_no = 1
+        npc.ani_no = 0
+        npc.ani_wait = 0
+        -- Fallthrough
+    end
+
+    if (npc.act_no == 1) then
+        if (ModCS.Game.Random(0, 120) == 10) then
+            npc.act_no = 2
+            npc.act_wait = 0
+            npc.ani_no = 1
+        end
+
+        if (npc:TriggerBox(64, 32, 64, 16)) then
+            npc.ani_wait = npc.ani_wait + 1
+            if (npc.ani_wait > 3) then
+                npc.ani_wait = 0
+                npc.ani_no = npc.ani_no + 1
+            end
+
+            if (npc.ani_no > 3) then
+                npc.ani_no = 2
+            end
+        end
+    elseif (npc.act_no == 2) then
+        npc.act_wait = npc.act_wait + 1
+        if (npc.act_wait > 8) then
+            npc.act_no = 1
+            npc.ani_no = 0
+        end
+    end
+
+    npc.ym = npc.ym + 0.125
+    if (npc.ym > 2.998046875) then
+        npc.ym = 2.998046875
+    end
+
+    npc:Move()
+
+    npc:SetRect(rcRight[npc.ani_no+1])
+end
 
 -- Red Demon
+ModCS.Npc.Act[276] = function(npc)
+    local rcLeft = {
+        ModCS.Rect.Create(0, 64, 32, 104),
+        ModCS.Rect.Create(32, 64, 64, 104),
+        ModCS.Rect.Create(64, 64, 96, 104),
+        ModCS.Rect.Create(96, 64, 128, 104),
+        ModCS.Rect.Create(128, 64, 160, 104),
+        ModCS.Rect.Create(160, 64, 192, 104),
+        ModCS.Rect.Create(192, 64, 224, 104),
+        ModCS.Rect.Create(224, 64, 256, 104),
+        ModCS.Rect.Create(256, 64, 288, 104),
+    }
+
+    local rcRight = {
+        ModCS.Rect.Create(0, 104, 32, 144),
+        ModCS.Rect.Create(32, 104, 64, 144),
+        ModCS.Rect.Create(64, 104, 96, 144),
+        ModCS.Rect.Create(96, 104, 128, 144),
+        ModCS.Rect.Create(128, 104, 160, 144),
+        ModCS.Rect.Create(160, 104, 192, 144),
+        ModCS.Rect.Create(192, 104, 224, 144),
+        ModCS.Rect.Create(224, 104, 256, 144),
+        ModCS.Rect.Create(256, 104, 288, 144),
+    }
+
+    local deg = 0
+    local xm = 0
+    local ym = 0
+
+    if (npc.act_no == 0) then
+        npc.act_no = 1
+        npc.y = npc.y - 8
+        -- Fallthrough
+    end
+
+    if (npc.act_no == 1) then
+        npc.xm = 0
+        npc.act_no = 2
+        npc.ani_no = 0
+        -- Fallthrough
+    end
+
+    if (npc.act_no == 2) then
+        if (npc.x > npc.tgt_mc.x) then
+            npc.direct = 0
+        else
+            npc.direct = 2
+        end
+
+        npc.ani_wait = npc.ani_wait + 1
+        if (npc.ani_wait > 20) then
+            npc.ani_wait = 0
+            npc.ani_no = npc.ani_no + 1
+        end
+
+        if (npc.ani_no > 1) then
+            npc.ani_no = 0
+        end
+
+        if (npc:IsHit()) then
+            npc.act_no = 10
+        end
+    elseif (npc.act_no == 10) then
+        npc.act_no = 11
+        npc.act_wait = 0
+        npc.ani_no = 3
+        npc:SetBit(5) -- Set shootable bit
+        -- Fallthrough
+    end
+
+    if (npc.act_no == 11) then
+        npc.act_wait = npc.act_wait + 1
+        if (npc.act_wait == 30 or npc.act_wait == 40 or npc.act_wait == 50) then
+            npc.ani_no = 4
+
+            deg = ModCS.Triangle.GetArktan(npc.x - npc.tgt_mc.x, npc.y - npc.tgt_mc.y)
+            ym = ModCS.Triangle.GetSin(deg) * 4
+            xm = ModCS.Triangle.GetCos(deg) * 4
+
+            ModCS.Npc.Spawn2(277, npc.x, npc.y, xm, ym, 0)
+            ModCS.Sound.Play(39)
+        elseif (npc.act_wait == 34 or npc.act_wait == 44 or npc.act_wait == 54) then
+            npc.ani_no = 3
+        end
+
+        if (npc.act_wait > 60) then
+            npc.act_no = 20
+            npc.act_wait = 0
+            npc.ani_no = 2
+        end
+    elseif (npc.act_no == 20) then
+        npc.act_wait = npc.act_wait + 1
+        if (npc.act_wait > 20) then
+            npc.act_no = 21
+            npc.act_wait = 0
+            npc.ani_no = 5
+            npc.ym = -2.998046875
+
+            if (npc.x < npc.tgt_mc.x) then
+                npc.xm = 0.5
+            else
+                npc.xm = -0.5
+            end
+        end
+    elseif (npc.act_no == 21) then
+        npc.act_wait = npc.act_wait + 1
+        if (npc.act_wait == 30 or npc.act_wait == 40 or npc.act_wait == 50) then
+            npc.ani_no = 6
+
+            deg = ModCS.Triangle.GetArktan(npc.x - npc.tgt_mc.x, npc.y - 10 - npc.tgt_mc.y)
+            ym = ModCS.Triangle.GetSin(deg) * 4
+            xm = ModCS.Triangle.GetCos(deg) * 4
+
+            ModCS.Npc.Spawn2(277, npc.x, npc.y - 10, xm, ym, 0)
+            ModCS.Sound.Play(39)
+        elseif (npc.act_wait == 34 or npc.act_wait == 44) then
+            npc.ani_no = 5
+        end
+
+        if (npc.act_wait > 53) then
+            npc.ani_no = 7
+        end
+
+        if (npc:TouchFloor()) then
+            npc.act_no = 22
+            npc.act_wait = 0
+            npc.ani_no = 2
+            ModCS.Camera.SetQuake(10)
+            ModCS.Sound.Play(26)
+        end
+    elseif (npc.act_no == 22) then
+        npc.xm = npc.xm / 2
+
+        npc.act_wait = npc.act_wait + 1
+        if (npc.act_wait > 22) then
+            npc.act_no = 10
+        end
+    elseif (npc.act_no == 50) then
+        npc:UnsetBit(5) -- Unset shootable bit
+        npc.damage = 0
+
+        if (npc:TouchFloor()) then
+            npc.act_no = 51
+            npc.ani_no = 2
+            ModCS.Camera.SetQuake(10)
+            ModCS.Npc.SpawnExp(npc.x, npc.y, 19)
+            ModCS.Npc.Explode(npc.x, npc.y, npc:GetViewbox().back, 8)
+            ModCS.Sound.Play(72)
+        end
+    elseif (npc.act_no == 51) then
+        npc.xm = (npc.xm * 7) / 8
+        npc.ani_no = 8
+    end
+
+    npc.ym = npc.ym + 0.0625
+    if (npc.ym > 2.998046875) then
+        npc.ym = 2.998046875
+    end
+
+    npc:Move()
+
+    if (npc.act_no < 50) then
+        if (npc.x < npc.tgt_mc.x) then
+            npc.direct = 2
+        else
+            npc.direct = 0
+        end
+    end
+
+    if (npc.direct == 0) then
+        npc:SetRect(rcLeft[npc.ani_no+1])
+    else
+        npc:SetRect(rcRight[npc.ani_no+1])
+    end
+end
 
 -- Red Demon projectile
+ModCS.Npc.Act[277] = function(npc)
+    local rc = {
+        ModCS.Rect.Create(128, 0, 152, 24),
+        ModCS.Rect.Create(152, 0, 176, 24),
+        ModCS.Rect.Create(176, 0, 200, 24),
+    }
+
+    if (npc.act_no == 0) then
+        npc.act_no = 1
+        -- Fallthrough
+    end
+
+    if (npc.act_no == 1) then
+        npc:Move()
+
+        if (npc:TouchTile()) then
+            ModCS.Npc.Spawn2(4, npc.x, npc.y, 0, 0, 0)
+            ModCS.Npc.Spawn2(4, npc.x, npc.y, 0, 0, 0)
+            ModCS.Npc.Spawn2(4, npc.x, npc.y, 0, 0, 0)
+            npc:Vanish()
+            return
+        end
+
+        npc.act_wait = npc.act_wait + 1
+        if (npc.act_wait % 5 == 0) then
+            ModCS.Sound.Play(110)
+        end
+
+        npc.ani_no = npc.ani_no + 1
+        if (npc.ani_no > 2) then
+            npc.ani_no = 0
+        end
+    end
+
+    npc:SetRect(rc[npc.ani_no+1])
+end
 
 -- Little family
+ModCS.Npc.Act[278] = function(npc)
+    local rcPapa = {
+        ModCS.Rect.Create(0, 120, 8, 128),
+        ModCS.Rect.Create(8, 120, 16, 128),
+    }
+
+    local rcMama = {
+        ModCS.Rect.Create(16, 120, 24, 128),
+        ModCS.Rect.Create(24, 120, 32, 128),
+    }
+
+    local rcKodomo = {
+        ModCS.Rect.Create(32, 120, 40, 128),
+        ModCS.Rect.Create(40, 120, 48, 128),
+    }
+
+    if (npc.act_no == 0) then
+        npc.act_no = 1
+        npc.ani_no = 0
+        npc.ani_wait = 0
+        npc.xm = 0
+        -- Fallthrough
+    end
+
+    if (npc.act_no == 1) then
+        if (ModCS.Game.Random(0, 60) == 1) then
+            npc.act_no = 2
+            npc.act_wait = 0
+            npc.ani_no = 1
+        end
+
+        if (ModCS.Game.Random(0, 60) == 1) then
+            npc.act_no = 10
+            npc.act_wait = 0 
+            npc.ani_no = 1
+        end
+    elseif (npc.act_no == 2) then
+        npc.act_wait = npc.act_wait + 1
+        if (npc.act_wait > 8) then
+            npc.act_no = 1
+            npc.ani_no = 0
+        end
+    elseif (npc.act_no == 10) then
+        npc.act_no = 11
+        npc.act_wait = ModCS.Game.Random(0, 16)
+        npc.ani_no = 0
+        npc.ani_wait = 0
+
+        if (ModCS.Game.Random(0, 9) % 2 == 1) then
+            npc.direct = 0
+        else
+            npc.direct = 2
+        end
+        -- Fallthrough
+    end
+
+    if (npc.act_no == 11) then
+        if (npc.direct == 0 and npc:TouchLeftWall()) then
+            npc.direct = 2
+        elseif (npc.direct == 2 and npc:TouchRightWall()) then
+            npc.direct = 0
+        end
+
+        if (npc.direct == 0) then
+            npc.xm = -0.5
+        else
+            npc.xm = 0.5
+        end
+
+        npc.ani_wait = npc.ani_wait + 1
+        if (npc.ani_wait > 4) then
+            npc.ani_wait = 0
+            npc.ani_no = npc.ani_no + 1
+        end
+
+        if (npc.ani_no > 1) then
+            npc.ani_no = 0
+        end
+
+        npc.act_wait = npc.act_wait + 1
+        if (npc.act_wait > 0x20) then
+            npc.act_no = 0
+        end
+    end
+
+    npc.ym = npc.ym + 0.0625
+    if (npc.ym > 2.998046875) then
+        npc.ym = 2.998046875
+    end
+
+    npc:Move()
+
+    if (npc.event == 200) then
+        npc:SetRect(rcPapa[npc.ani_no+1])
+    elseif (npc.event == 210) then
+        npc:SetRect(rcMama[npc.ani_no+1])
+    else
+        npc:SetRect(rcKodomo[npc.ani_no+1])
+    end
+
+end
 
 -- Falling block (large)
+ModCS.Npc.Act[279] = function(npc)
+    local rc = {
+        ModCS.Rect.Create(0, 16, 32, 48),
+        ModCS.Rect.Create(16, 0, 32, 16),
+    }
+
+    local rect = ModCS.Rect.Create(0, 0, 0, 0)
+
+    local view = npc:GetViewbox()
+    local hit = npc:GetHitbox()
+
+    local i = 0
+
+    if (npc.act_no == 0) then
+        if (npc.direct == 0) then
+            npc.act_no = 100
+            npc:SetBit(2) -- Set invulnerable bit
+            npc.ani_no = 0
+        elseif (npc.direct == 2) then
+            npc.act_no = 100
+            npc:SetBit(2) -- Set invulnerable bit
+            npc.ani_no = 1
+
+            view.back = 8
+            view.front = 8
+            view.top = 8
+            view.bottom = 8
+
+            hit.back = 8
+            hit.front = 8
+            hit.top = 8
+            hit.bottom = 8
+        elseif (npc.direct == 1) then
+            npc.ani_no = 0
+            npc.act_no = 10
+        end
+
+        -- if (npc.direct ~= 1) then
+        -- break (how do we translate this proper??)
+        
+        -- Fallthrough
+    end
+
+    if (npc.act_no == 10) then
+        npc.act_no = 11
+        npc.act_wait = 16
+        -- Fallthrough
+    end
+
+    if (npc.act_no == 11) then
+        npc.act_wait = npc.act_wait - 2
+
+        if (npc.act_wait <= 0) then
+            npc.act_no = 100
+            npc:SetBit(2) -- Set invulnerable bit
+        end
+    elseif (npc.act_no == 100) then
+        npc.ym = npc.ym + 0.125
+        if (npc.ym > 3.5) then
+            npc.ym = 3.5
+        end
+
+        if (npc.y > 128) then
+            npc:UnsetBit(3) -- Unset ignore tile collision bit
+        end
+
+        if (npc:TouchFloor()) then
+            npc.ym = -1
+            npc.act_no = 110
+            npc:SetBit(3) -- Set ignore tile collision bit
+            ModCS.Sound.Play(26)
+            ModCS.Camera.SetQuake(10)
+
+            for i = 0, 3 do
+                ModCS.Npc.Spawn2(4, npc.x + ModCS.Game.Random(-12, 12), npc.y + 16, ModCS.Game.Random2(-0.666015625, 0.666015625), ModCS.Game.Random2(-3, 0), 0)
+            end
+        end
+    elseif (npc.act_no == 110) then
+        npc.ym = npc.ym + 0.125
+
+        if (npc.y > (ModCS.Map.GetHeight() * 0x10) + (2 * 0x10)) then
+            npc.cond = 0
+            return
+        end
+    end
+
+    if (npc.tgt_mc.y > npc.y) then
+        npc.damage = 10
+    else
+        npc.damage = 0
+    end
+
+    npc:Move()
+    rect = rc[npc.ani_no+1]
+
+    if (npc.act_no == 11) then
+        rect.top = rect.top + npc.act_wait
+        rect.bottom = rect.bottom - npc.act_wait
+        view.top = 16 - npc.act_wait
+    end
+
+    npc:SetRect(rect)
+    npc:SetViewbox(view)
+    npc:SetHitbox(hit)
+end

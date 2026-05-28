@@ -390,7 +390,7 @@ ModCS.Npc.Act[82] = function(npc)
             npc.ani_no = 2
         end
     elseif (npc.act_no == 40) then
-        npc.act_no = 31
+        npc.act_no = 41
         npc.act_wait = 0
         -- Fallthrough
     end

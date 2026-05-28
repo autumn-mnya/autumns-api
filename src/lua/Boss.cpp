@@ -87,6 +87,25 @@ int lua_BossNextIndex(lua_State* L)
 	return 0;
 }
 
+static int lua_GetBossByBufferIndex(lua_State* L)
+{
+	int id = (int)luaL_checknumber(L, 1);
+	bool ignore_alive = lua_toboolean(L, 2);
+
+	if ((gBoss[id].cond & 0x80) || ignore_alive)
+	{
+		NPCHAR** boss = (NPCHAR**)lua_newuserdata(L, sizeof(NPCHAR*));
+		*boss = &gBoss[id];
+
+		luaL_getmetatable(L, "BossMeta");
+		lua_setmetatable(L, -2);
+
+		return 1;
+	}
+
+	return 0;
+}
+
 static int lua_BossInitLife(lua_State* L)
 {
 	InitBossLife();
@@ -129,6 +148,7 @@ static int lua_BossPut(lua_State* L)
 
 FUNCTION_TABLE BossFunctionTable[FUNCTION_TABLE_BOSS_SIZE] =
 {
+	{"GetByBufferIndex", lua_GetBossByBufferIndex},
     {"InitLife", lua_BossInitLife},
     {"DrawLife", lua_BossPutLife},
     {"Set", lua_BossInit},

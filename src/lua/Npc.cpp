@@ -114,10 +114,11 @@ int lua_NpcNextIndex(lua_State* L)
 static int lua_GetNpcByEvent(lua_State* L)
 {
 	int code_event = (int)luaL_checknumber(L, 1);
+	bool ignore_alive = lua_toboolean(L, 2);
 
 	for (int i = 0; i < NPC_MAX; ++i)
 	{
-		if ((gNPC[i].cond & 0x80) && gNPC[i].code_event == code_event)
+		if (((gNPC[i].cond & 0x80) || ignore_alive) && gNPC[i].code_event == code_event)
 		{
 			NPCHAR** npc = (NPCHAR**)lua_newuserdata(L, sizeof(NPCHAR*));
 			*npc = &gNPC[i];
@@ -135,10 +136,11 @@ static int lua_GetNpcByEvent(lua_State* L)
 static int lua_GetNpcByFlag(lua_State* L)
 {
 	int code_flag = (int)luaL_checknumber(L, 1);
+	bool ignore_alive = lua_toboolean(L, 2);
 
 	for (int i = 0; i < NPC_MAX; ++i)
 	{
-		if ((gNPC[i].cond & 0x80) && gNPC[i].code_flag == code_flag)
+		if (((gNPC[i].cond & 0x80) || ignore_alive) && gNPC[i].code_flag == code_flag)
 		{
 			NPCHAR** npc = (NPCHAR**)lua_newuserdata(L, sizeof(NPCHAR*));
 			*npc = &gNPC[i];
@@ -156,10 +158,11 @@ static int lua_GetNpcByFlag(lua_State* L)
 static int lua_GetNpcByID(lua_State* L)
 {
 	int code_char = (int)luaL_checknumber(L, 1);
+	bool ignore_alive = lua_toboolean(L, 2);
 
 	for (int i = 0; i < NPC_MAX; ++i)
 	{
-		if ((gNPC[i].cond & 0x80) && gNPC[i].code_char == code_char)
+		if (((gNPC[i].cond & 0x80) || ignore_alive) && gNPC[i].code_char == code_char)
 		{
 			NPCHAR** npc = (NPCHAR**)lua_newuserdata(L, sizeof(NPCHAR*));
 			*npc = &gNPC[i];
@@ -177,8 +180,9 @@ static int lua_GetNpcByID(lua_State* L)
 static int lua_GetNpcByBufferIndex(lua_State* L)
 {
 	int id = (int)luaL_checknumber(L, 1);
+	bool ignore_alive = lua_toboolean(L, 2);
 
-	if (gNPC[id].cond & 0x80)
+	if ((gNPC[id].cond & 0x80) || ignore_alive)
 	{
 		NPCHAR** npc = (NPCHAR**)lua_newuserdata(L, sizeof(NPCHAR*));
 		*npc = &gNPC[id];

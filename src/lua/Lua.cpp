@@ -582,7 +582,6 @@ void UpdateAutPIInput()
 		CHECK_KEY_STATE(mouseKey, VK_LBUTTON, KEY_LMOUSE);
 		CHECK_KEY_STATE(mouseKey, VK_RBUTTON, KEY_RMOUSE);
 		CHECK_KEY_STATE(mouseKey, VK_MBUTTON, KEY_MMOUSE);
-		// Create a vector that runs CHECK_KEY_STATE with user-inputed variables
 	}
 }
 
@@ -921,7 +920,8 @@ BOOL InitModScript(void)
 
 	PushFunctionTable(gL, "Credits", CreditsFunctionTable, FUNCTION_TABLE_CREDITS_SIZE, TRUE);
 	PushFunctionTable(gL, "Config", ConfigFunctionTable, FUNCTION_TABLE_CONFIG_SIZE, TRUE);
-	PushFunctionTable(gL, "Mouse", MouseKeyFunctionTable, FUNCTION_TABLE_MOUSE_KEY_SIZE, TRUE);
+	if (enable_old_mouse_code)
+		PushFunctionTable(gL, "Mouse", MouseKeyFunctionTable, FUNCTION_TABLE_MOUSE_KEY_SIZE, TRUE);
 	PushFunctionTable(gL, "Fade", FadeFunctionTable, FUNCTION_TABLE_FADE_SIZE, TRUE);
 	PushFunctionTable(gL, "Flash", FlashFunctionTable, FUNCTION_TABLE_FLASH_SIZE, TRUE);
 	PushFunctionTable(gL, "MiniMap", MiniMapFunctionTable, FUNCTION_TABLE_MINIMAP_SIZE, TRUE);

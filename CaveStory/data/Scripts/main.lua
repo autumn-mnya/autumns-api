@@ -126,3 +126,15 @@ function ModCSLog(...)
         file:close()
     end
 end
+
+function ModCS.Game.Act2()
+    if ModCS.Player.unit == 1 and ModCS.Game.CanControl() then
+        if (ModCS.Key.Left(true)) then
+            ModCS.Player.direct = 0
+        end
+
+        if (ModCS.Key.Right(true)) then
+            ModCS.Player.direct = 2
+        end
+    end
+end
