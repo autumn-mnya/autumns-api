@@ -22,71 +22,6 @@ extern "C"
 #include "../API_ModeOpening.h"
 #include "../API_ModeAction.h"
 
-// Boss table and Boss acting is unfinished for now, its too complicated for my eepy brain.. Sorry im stupid!
-// Maybe eventually!!
-
-static STRUCT_TABLE BossTable[] =
-{
-	{"x", offsetof(NPCHAR, x), TYPE_PIXEL},
-	{"y", offsetof(NPCHAR, y), TYPE_PIXEL},
-	{"xm", offsetof(NPCHAR, xm), TYPE_PIXEL},
-	{"ym", offsetof(NPCHAR, ym), TYPE_PIXEL},
-	{"xm2", offsetof(NPCHAR, xm2), TYPE_PIXEL},
-	{"ym2", offsetof(NPCHAR, ym2), TYPE_PIXEL},
-	{"tgt_x", offsetof(NPCHAR, tgt_x), TYPE_PIXEL},
-	{"tgt_y", offsetof(NPCHAR, tgt_y), TYPE_PIXEL},
-	{"tgt_1", offsetof(NPCHAR, tgt_x), TYPE_NUMBER},
-	{"tgt_2", offsetof(NPCHAR, tgt_y), TYPE_NUMBER},
-	{"id", offsetof(NPCHAR, code_char), TYPE_NUMBER},
-	{"flag", offsetof(NPCHAR, code_flag), TYPE_NUMBER},
-	{"event", offsetof(NPCHAR, code_event), TYPE_NUMBER},
-	{"surf", offsetof(NPCHAR, surf), TYPE_SURFACE},
-	{"hit_voice", offsetof(NPCHAR, hit_voice), TYPE_NUMBER},
-	{"destroy_voice", offsetof(NPCHAR, destroy_voice), TYPE_NUMBER},
-	{"life", offsetof(NPCHAR, life), TYPE_NUMBER},
-	{"exp", offsetof(NPCHAR, exp), TYPE_NUMBER},
-	{"smoke_size", offsetof(NPCHAR, size), TYPE_NUMBER},
-	{"direct", offsetof(NPCHAR, direct), TYPE_NUMBER},
-	{"ani_wait", offsetof(NPCHAR, ani_wait), TYPE_NUMBER},
-	{"ani_no", offsetof(NPCHAR, ani_no), TYPE_NUMBER},
-	{"count1", offsetof(NPCHAR, count1), TYPE_NUMBER},
-	{"count2", offsetof(NPCHAR, count2), TYPE_NUMBER},
-	{"act_no", offsetof(NPCHAR, act_no), TYPE_NUMBER},
-	{"act_wait", offsetof(NPCHAR, act_wait), TYPE_NUMBER},
-	{"damage", offsetof(NPCHAR, damage), TYPE_NUMBER},
-	{"pNpc", offsetof(NPCHAR, pNpc), TYPE_NPC},
-	{"cond", offsetof(NPCHAR, cond), TYPE_NUMBER},
-	{"hit_flag", offsetof(NPCHAR, flag), TYPE_NUMBER},
-	{"shock", offsetof(NPCHAR, shock), TYPE_NUMBER},
-	{"bits", offsetof(NPCHAR, bits), TYPE_NUMBER}
-};
-
-int lua_BossIndex(lua_State* L)
-{
-	NPCHAR** boss = (NPCHAR**)luaL_checkudata(L, 1, "BossMeta");
-	const char* x = luaL_checkstring(L, 2);
-
-	if (ReadStructBasic(L, x, BossTable, *boss, sizeof(BossTable) / sizeof(STRUCT_TABLE)))
-		return 1;
-
-	lua_getglobal(L, "ModCS");
-	lua_getfield(L, -1, "Boss");
-	lua_pushstring(L, x);
-	lua_rawget(L, -2);
-
-	return 1;
-}
-
-int lua_BossNextIndex(lua_State* L)
-{
-	NPCHAR** boss = (NPCHAR**)luaL_checkudata(L, 1, "BossMeta");
-	const char* x = luaL_checkstring(L, 2);
-
-	Write2StructBasic(L, x, BossTable, *boss, sizeof(BossTable) / sizeof(STRUCT_TABLE));
-
-	return 0;
-}
-
 static int lua_GetBossByBufferIndex(lua_State* L)
 {
 	int id = (int)luaL_checknumber(L, 1);
@@ -97,13 +32,21 @@ static int lua_GetBossByBufferIndex(lua_State* L)
 		NPCHAR** boss = (NPCHAR**)lua_newuserdata(L, sizeof(NPCHAR*));
 		*boss = &gBoss[id];
 
-		luaL_getmetatable(L, "BossMeta");
+		luaL_getmetatable(L, "NpcMeta");
 		lua_setmetatable(L, -2);
 
 		return 1;
 	}
 
 	return 0;
+}
+
+static int lua_BossCopy(lua_State* L)
+{
+    NPCHAR** source = (NPCHAR**)luaL_checkudata(L, 1, "NpcMeta");
+    NPCHAR** target = (NPCHAR**)luaL_checkudata(L, 2, "NpcMeta");
+    **target = **source;
+    return 0;
 }
 
 static int lua_BossInitLife(lua_State* L)
@@ -149,6 +92,7 @@ static int lua_BossPut(lua_State* L)
 FUNCTION_TABLE BossFunctionTable[FUNCTION_TABLE_BOSS_SIZE] =
 {
 	{"GetByBufferIndex", lua_GetBossByBufferIndex},
+	{"Copy", lua_BossCopy},
     {"InitLife", lua_BossInitLife},
     {"DrawLife", lua_BossPutLife},
     {"Set", lua_BossInit},
@@ -157,7 +101,6 @@ FUNCTION_TABLE BossFunctionTable[FUNCTION_TABLE_BOSS_SIZE] =
     {"DrawMain", lua_BossPut},
 };
 
-// unused for now, but exists
 int BossActModScript(int char_code, int i)
 {
 	if (!gL)
@@ -181,9 +124,9 @@ int BossActModScript(int char_code, int i)
 	}
 
 	NPCHAR** boss = (NPCHAR**)lua_newuserdata(gL, sizeof(NPCHAR*));
-	*boss = &gBoss[i];
+	*boss = &gBoss[0];
 
-	luaL_getmetatable(gL, "BossMeta");
+	luaL_getmetatable(gL, "NpcMeta");
 	lua_setmetatable(gL, -2);
 
 	if (lua_pcall(gL, 1, 0, 0) != LUA_OK)
@@ -192,6 +135,7 @@ int BossActModScript(int char_code, int i)
 
 		ErrorLog(error, 0);
 		printf("ERROR: %s\n", error);
+		MessageBoxA(ghWnd, error, "Boss Act ModScript Error", MB_OK);
 		return FALSE;
 	}
 

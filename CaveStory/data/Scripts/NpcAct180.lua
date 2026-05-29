@@ -1260,8 +1260,8 @@ ModCS.Npc.Act[199] = function(npc)
             npc.ym = 0.001953125
         end
 
-        npc.xm = npc.xm * (ModCS.Game.Random(4, 8) / 2)
-        npc.ym = npc.ym * (ModCS.Game.Random(4, 8) / 2)
+        npc.xm = npc.xm * (ModCS.Game.Random3(4, 8) / 2)
+        npc.ym = npc.ym * (ModCS.Game.Random3(4, 8) / 2)
     end
 
     npc.ani_wait = npc.ani_wait + 1

@@ -409,6 +409,24 @@ static int lua_SpawnBullet(lua_State* L)
 	return 1;
 }
 
+static int lua_BulIsActive(lua_State* L)
+{
+	int code_bullet = (int)luaL_checknumber(L, 1);
+
+	for (int i = 0; i < BULLET_MAX; ++i)
+	{
+		if (gBul[i].cond & 0x80)
+		{
+			if (gBul[i].code_bullet == code_bullet)
+				lua_pushboolean(L, 1);
+			else
+				lua_pushboolean(L, 0);
+		}
+	}
+
+	return 1;
+}
+
 static int lua_ActCodeBullet(lua_State* L)
 {
 	BULLET* bul = *(BULLET**)luaL_checkudata(L, 1, "BulletMeta");
@@ -490,6 +508,7 @@ FUNCTION_TABLE BulletFunctionTable[FUNCTION_TABLE_BULLET_SIZE] =
 	{"HitFlag", lua_BulCheckHitFlag},
 	{"Move", lua_BulletMove},
 	{"Spawn", lua_SpawnBullet},
+	{"IsActive", lua_BulIsActive},
 	{"ActCode", lua_ActCodeBullet},
 	{"Init", lua_BulletInit},
 	{"ActMain", lua_BulletActMain},

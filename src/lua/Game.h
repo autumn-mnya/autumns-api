@@ -16,7 +16,7 @@ enum {
 	MODE_ACTION = 3
 };
 
-#define FUNCTION_TABLE_GAME_SIZE 13
+#define FUNCTION_TABLE_GAME_SIZE 14
 extern FUNCTION_TABLE GameFunctionTable[FUNCTION_TABLE_GAME_SIZE];
 
 BOOL GameInitModScript(void);

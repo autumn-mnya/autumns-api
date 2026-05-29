@@ -414,7 +414,7 @@ ModCS.Npc.Act[5] = function(npc)
     if (npc.act_no == 0) then -- Initialize
         npc.y = npc.y + 3
         npc.act_no = 1
-        -- Fallthrough to npc.act_no 1, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 1) then -- Waiting
@@ -807,7 +807,7 @@ ModCS.Npc.Act[9] = function(npc)
     if (npc.act_no == 0) then
         npc.act_no = 1
         npc.ani_no = 2
-        -- Fallthrough to npc.act_no 1, so dont elseif here
+        -- Fallthrough
     end
 
     if (npc.act_no == 1) then
@@ -877,7 +877,7 @@ ModCS.Npc.Act[10] = function(npc)
 
     if (npc.act_no == 0) then
         npc.act_no = 1
-        -- Fallthrough to npc.act_no 1, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 1) then
@@ -1031,7 +1031,7 @@ ModCS.Npc.Act[12] = function(npc)
 
         npc.act_no = 1
         npc.ani_no = 0
-        -- Fallthrough to npc.act_no 1, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 1) then
@@ -1059,7 +1059,7 @@ ModCS.Npc.Act[12] = function(npc)
         npc.ani_no = 2
         npc.act_wait = 0
         npc.tgt_x = 0
-        -- Fallthrough to npc.act_no 11, so dont elseif here
+        -- Fallthrough
     end
 
     if (npc.act_no == 11) then
@@ -1100,7 +1100,7 @@ ModCS.Npc.Act[12] = function(npc)
         end
 
         ModCS.Sound.Play(72)
-        -- Fallthrough to npc.act_no 21, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 21) then
@@ -1147,7 +1147,7 @@ ModCS.Npc.Act[12] = function(npc)
         npc.act_no = 41
         npc.act_wait = 0
         npc.ani_no = 5
-        -- Fallthrough to npc.act_no 41, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 41) then
@@ -1169,7 +1169,7 @@ ModCS.Npc.Act[12] = function(npc)
         npc.act_no = 43
         npc.act_wait = 0
         npc.ani_no = 6
-        -- Fallthrough to npc.act_no 43, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 43) then
@@ -1186,7 +1186,7 @@ ModCS.Npc.Act[12] = function(npc)
         npc.act_no = 61
         npc.ani_no = 9
         npc.ani_wait = 0
-        -- Fallthrough to npc.act_no 61, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 61) then
@@ -1214,7 +1214,7 @@ ModCS.Npc.Act[12] = function(npc)
         npc.act_wait = 64
         ModCS.Sound.Play(29)
         npc.ani_no = 13
-        -- Fallthrough to npc.act_no 71, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 71) then
@@ -1240,7 +1240,7 @@ ModCS.Npc.Act[12] = function(npc)
         npc.act_no = 101
         npc.act_wait = 0
         npc.ani_no = 2
-        -- Fallthrough to npc.act_no 101, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 101) then
@@ -1423,7 +1423,7 @@ ModCS.Npc.Act[15] = function(npc)
             end
         end
 
-        -- Fallthrough to npc.act_no 1, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 1) then -- Idle
@@ -1484,7 +1484,7 @@ ModCS.Npc.Act[16] = function(npc)
             end
         end
 
-        -- Fallthrough to npc.act_no 1, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 1) then
@@ -1534,7 +1534,7 @@ ModCS.Npc.Act[17] = function(npc)
             end
         end
 
-        -- Fallthrough to npc.act_no 1, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 1) then
@@ -1629,7 +1629,7 @@ ModCS.Npc.Act[19] = function(npc)
         ModCS.Sound.Play(12)
         ModCS.Sound.Play(26)
         ModCS.Camera.SetQuake(30)
-        -- Fallthrough to npc.act_no 1, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 1) then

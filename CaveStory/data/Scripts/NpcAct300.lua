@@ -83,7 +83,7 @@ end
 
 -- Camera focus marker
 ModCS.Npc.Act[302] = function(npc)
-    local map_boss = ModCS.Npc.GetByBufferIndex(0, true)
+    local map_boss = ModCS.Boss.GetByBufferIndex(0, true)
 
     if (npc.act_no == 10) then
         npc.x = npc.tgt_mc.x
@@ -105,6 +105,8 @@ ModCS.Npc.Act[302] = function(npc)
         npc.x = npc.tgt_mc.x
         npc.y = npc.tgt_mc.y + 80
     elseif (npc.act_no == 100) then
+        npc.act_no = 101
+
         if (npc.direct ~= 0) then
             local foundNpc = ModCS.Npc.GetByEvent(npc.direct)
             if (foundNpc ~= nil) then
@@ -115,7 +117,10 @@ ModCS.Npc.Act[302] = function(npc)
         else
             npc.pNpc = map_boss
         end
-    elseif (npc.act_no == 101) then
+        -- Fallthrough
+    end
+    
+    if (npc.act_no == 101) then
         npc.x = (npc.tgt_mc.x + npc.pNpc.x) / 2
         npc.y = (npc.tgt_mc.y + npc.pNpc.y) / 2
     end
@@ -964,15 +969,857 @@ ModCS.Npc.Act[312] = function(npc)
 end
 
 -- Ma Pignon
+ModCS.Npc.Act[313] = function(npc)
+    local rcLeft = {
+        ModCS.Rect.Create(128, 0, 144, 16),
+        ModCS.Rect.Create(144, 0, 160, 16),
+        ModCS.Rect.Create(160, 0, 176, 16),
+        ModCS.Rect.Create(176, 0, 192, 16),
+        ModCS.Rect.Create(192, 0, 208, 16),
+        ModCS.Rect.Create(208, 0, 224, 16),
+        ModCS.Rect.Create(224, 0, 240, 16),
+        ModCS.Rect.Create(240, 0, 256, 16),
+        ModCS.Rect.Create(256, 0, 272, 16),
+        ModCS.Rect.Create(272, 0, 288, 16),
+        ModCS.Rect.Create(288, 0, 304, 16),
+        ModCS.Rect.Create(128, 0, 144, 16),
+        ModCS.Rect.Create(176, 0, 192, 16),
+        ModCS.Rect.Create(304, 0, 320, 16),
+    }
+
+    local rcRight = {
+        ModCS.Rect.Create(128, 16, 144, 32),
+        ModCS.Rect.Create(144, 16, 160, 32),
+        ModCS.Rect.Create(160, 16, 176, 32),
+        ModCS.Rect.Create(176, 16, 192, 32),
+        ModCS.Rect.Create(192, 16, 208, 32),
+        ModCS.Rect.Create(208, 16, 224, 32),
+        ModCS.Rect.Create(224, 16, 240, 32),
+        ModCS.Rect.Create(240, 16, 256, 32),
+        ModCS.Rect.Create(256, 16, 272, 32),
+        ModCS.Rect.Create(272, 16, 288, 32),
+        ModCS.Rect.Create(288, 16, 304, 32),
+        ModCS.Rect.Create(128, 16, 144, 32),
+        ModCS.Rect.Create(176, 16, 192, 32),
+        ModCS.Rect.Create(304, 16, 320, 32),
+    }
+
+    if (npc.act_no == 0) then
+        npc.act_no = 1
+        npc.ani_no = 0
+        npc.ani_wait = 0
+        npc.y = npc.y + 4
+        -- Fallthrough
+    end
+
+    if (npc.act_no == 1) then
+        npc.ym = npc.ym + 0.125
+
+        if (ModCS.Game.Random(0, 120) == 10) then
+            npc.act_no = 2
+            npc.act_wait = 0
+            npc.ani_no = 1
+        end
+
+        if (npc.x - 32 < npc.tgt_mc.x and npc.x + 32 > npc.tgt_mc.x) then
+            if (npc.x > npc.tgt_mc.x) then
+                npc.direct = 0
+            else
+                npc.direct = 2
+            end
+        end
+    elseif (npc.act_no == 2) then
+        npc.act_wait = npc.act_wait + 1
+        if (npc.act_wait > 8) then
+            npc.act_no = 1
+            npc.ani_no = 0
+        end
+    elseif (npc.act_no == 100) then
+        npc.act_no = 110
+        npc.act_wait = 0
+        npc.count1 = 0
+        npc:SetBit(5) -- Set shootable bit
+        -- Fallthrough
+    end
+
+    if (npc.act_no == 110) then
+        npc.damage = 1
+
+        if (npc.x > npc.tgt_mc.x) then
+            npc.direct = 0
+        else
+            npc.direct = 2
+        end
+
+        npc.ani_no = 0
+
+        npc.act_wait = npc.act_wait + 1
+        if (npc.act_wait > 4) then
+            npc.act_wait = 0
+            npc.act_no = 120
+
+            npc.count2 = npc.count2 + 1
+            if (npc.count2 > 12) then
+                npc.count2 = 0
+                npc.act_no = 300
+            end
+        end
+    elseif (npc.act_no == 120) then
+        npc.ani_no = 2
+        
+        npc.act_wait = npc.act_wait + 1
+        if (npc.act_wait > 4) then
+            npc.act_no = 130
+            npc.ani_no = 3
+            npc.xm = 2 * ModCS.Game.Random2(-1, 1)
+            npc.ym = -4
+            ModCS.Sound.Play(30)
+            npc.count1 = npc.count1 + 1
+        end
+    elseif (npc.act_no == 130) then
+        npc.ym = npc.ym + 0.25
+
+        if (npc.y > 128) then
+            npc:UnsetBit(3) -- Unset ignore tile collision bit
+        end
+
+        if (npc.xm < 0 and npc:TouchLeftWall()) then
+            npc.xm = npc.xm * -1
+        end
+
+        if (npc.xm > 0 and npc:TouchRightWall()) then
+            npc.xm = npc.xm * - 1
+        end
+
+        if (npc.x > npc.tgt_mc.x) then
+            npc.direct = 0
+        else
+            npc.direct = 2
+        end
+
+        if (npc.ym < -1) then
+            npc.ani_no = 3
+        elseif (npc.ym > 1) then
+            npc.ani_no = 4
+        else
+            npc.ani_no = 0
+        end
+
+        if (npc:TouchFloor()) then
+            npc.act_no = 140
+            npc.act_wait = 0
+            npc.ani_no = 2
+            npc.xm = 0
+        end
+
+        if (npc.count1 > 4 and npc.tgt_mc.y < npc.y + 4) then
+            npc.act_no = 200
+            npc.act_wait = 0
+            npc.xm = 0
+            npc.ym = 0
+        end
+    elseif (npc.act_no == 140) then
+        npc.ani_no = 2
+
+        npc.act_wait = npc.act_wait + 1
+        if (npc.act_wait > 4) then
+            npc.act_no = 110
+        end
+    elseif (npc.act_no == 200) then
+        npc.ani_no = 5
+
+        npc.act_wait = npc.act_wait + 1
+        if (npc.act_wait > 10) then
+            npc.act_no = 210
+            npc.ani_no = 6
+
+            if (npc.direct == 0) then
+                npc.xm = -2.998046875
+            else
+                npc.xm = 2.998046875
+            end
+
+            ModCS.Sound.Play(25)
+            npc:UnsetBit(5) -- Unset shootable bit
+            npc:SetBit(2) -- Set invulnerable bit
+            npc.damage = 10
+        end
+    elseif (npc.act_no == 210) then
+        npc.ani_no = npc.ani_no + 1
+        if (npc.ani_no > 7) then
+            npc.ani_no = 6
+        end
+
+        if (npc.xm < 0 and npc:TouchLeftWall()) then
+            npc.act_no = 220
+        end
+
+        if (npc.xm > 0 and npc:TouchRightWall()) then
+            npc.act_no = 220
+        end
+    elseif (npc.act_no == 220) then
+        npc.act_no = 221
+        npc.act_wait = 0
+        ModCS.Camera.SetQuake(16)
+        ModCS.Sound.Play(26)
+        npc.damage = 4
+        -- Fallthrough
+    end
+
+    if (npc.act_no == 221) then
+        npc.ani_no = npc.ani_no + 1
+        if (npc.ani_no > 7) then
+            npc.ani_no = 6
+        end
+
+        npc.act_wait = npc.act_wait + 1
+        if (npc.act_wait % 6 == 0) then
+            ModCS.Npc.Spawn2(314, ModCS.Game.Random(4, 16) * 0x10, 0x10, 0, 0, 0)
+        end
+
+        if (npc.act_wait > 30) then
+            npc.count1 = 0
+            npc.act_no = 130
+            npc:SetBit(5) -- Set shootable bit
+            npc:UnsetBit(2) -- Unset invulnerable bit
+            npc.damage = 3
+        end
+    elseif (npc.act_no == 300) then
+        npc.act_no = 301
+        npc.ani_no = 9
+
+        if (npc.x > npc.tgt_mc.x) then
+            npc.direct = 0
+        else
+            npc.direct = 2
+        end
+        -- Fallthrough
+    end
+
+    if (npc.act_no == 301) then
+        npc.ani_no = npc.ani_no + 1
+        if (npc.ani_no > 11) then
+            npc.ani_no = 9
+        end
+
+        if (npc.direct == 0) then
+            npc.xm = -2
+        else
+            npc.xm = 2
+        end
+
+        if (npc.tgt_mc.x > npc.x - 4 and npc.tgt_mc.x < npc.x + 4) then
+            npc.act_no = 310
+            npc.act_wait = 0
+            npc.ani_no = 2
+            npc.xm = 0
+        end
+    elseif (npc.act_no == 310) then
+        npc.ani_no = 2
+
+        npc.act_wait = npc.act_wait + 1
+        if (npc.act_wait > 4) then
+            npc.act_no = 320
+            npc.ani_no = 12
+            npc.ym = -4
+            ModCS.Sound.Play(25)
+            npc:SetBit(3) -- Set ignore tile collision bit
+            npc:UnsetBit(5) -- Unset shootable bit
+            npc:SetBit(2) -- Set invulnerable bit
+            npc.damage = 10
+        end
+    elseif (npc.act_no == 320) then
+        npc.ani_no = npc.ani_no + 1
+        if (npc.ani_no > 13) then
+            npc.ani_no = 12
+        end
+
+        if (npc.y < 16) then
+            npc.act_no = 330
+        end
+    elseif (npc.act_no == 330) then
+        npc.ym = 0
+        npc.act_no = 331
+        npc.act_wait = 0
+        ModCS.Camera.SetQuake(16)
+        ModCS.Sound.Play(26)
+        -- Fallthrough
+    end
+
+    if (npc.act_no == 331) then
+        npc.ani_no = npc.ani_no + 1
+        if (npc.ani_no > 13) then
+            npc.ani_no = 12
+        end
+
+        npc.act_wait = npc.act_wait + 1
+        if (npc.act_wait % 6 == 0) then
+            ModCS.Npc.Spawn2(315, ModCS.Game.Random(4, 16) * 0x10, 0, 0, 0, 0)
+        end
+
+        if (npc.act_wait > 30) then
+            npc.count1 = 0
+            npc.act_no = 130
+            npc:SetBit(5) -- Set shootable bit
+            npc:UnsetBit(2) -- Unset invulnerable bit
+            npc.damage = 3
+        end
+    elseif (npc.act_no == 500) then
+        npc:UnsetBit(5) -- Unset shootable bit
+        npc.act_no = 501
+        npc.act_wait = 0
+        npc.ani_no = 9
+        npc.tgt_x = npc.x
+        npc.damage = 0
+        ModCS.Npc.KillEveryID(315, true)
+        -- Fallthrough
+    end
+
+    if (npc.act_no == 501) then
+        npc.ym = npc.ym + 0.0625
+
+        npc.act_wait = npc.act_wait + 1
+        if (npc.act_wait % 2 == 1) then
+            npc.x = npc.tgt_x
+        else
+            npc.x = npc.tgt_x + 1
+        end
+    end
+
+    if npc.act_no > 100 and npc.act_no < 500 and npc.act_no ~= 210 and npc.act_no ~= 320 then
+        local bullets = {13, 14, 15, 16, 17, 18, 23, 25, 26, 27, 28, 29, 30, 31, 32, 33}
+        local active = false
+
+        for _, id in ipairs(bullets) do
+            if ModCS.Bullet.IsActive(id) then
+                active = true
+                break
+            end
+        end
+
+        if active then
+            npc:UnsetBit(5)
+            npc:SetBit(2)
+        else
+            npc:SetBit(5)
+            npc:UnsetBit(2)
+        end
+    end
+
+    if (npc.ym > 2.998046875) then
+        npc.ym = 2.998046875
+    end
+
+    npc:Move()
+
+    if (npc.direct == 0) then
+        npc:SetRect(rcLeft[npc.ani_no+1])
+    else
+        npc:SetRect(rcRight[npc.ani_no+1])
+    end
+end
 
 -- Ma Pignon rock
+ModCS.Npc.Act[314] = function(npc)
+    local rc = {
+        ModCS.Rect.Create(64, 64, 80, 80),
+        ModCS.Rect.Create(80, 64, 96, 80),
+        ModCS.Rect.Create(96, 64, 112, 80),
+    }
+
+    if (npc.act_no == 0) then
+        npc.count2 = 0
+        npc.act_no = 100
+        npc:SetBit(2) -- Set invulnerable bit
+        npc.ani_no = ModCS.Game.Random(0, 2)
+        -- Fallthrough
+    end
+
+    if (npc.act_no == 100) then
+        npc.ym = npc.ym + 0.125
+
+        if (npc.y > 128) then
+            npc:UnsetBit(3) -- Unset ignore tile collision bit
+        end
+
+        if (npc:TouchFloor()) then
+            local i = 0
+
+            npc.ym = -1
+            npc.act_no = 110
+            npc:SetBit(3) -- Set ignore tile collision bit
+            ModCS.Sound.Play(12)
+            ModCS.Camera.SetQuake(10)
+
+            for i = 0, 1 do
+                ModCS.Npc.Spawn2(4, npc.x + ModCS.Game.Random(-12, 12), npc.y + 16, ModCS.Game.Random2(-0.666015625, 0.666015625), ModCS.Game.Random2(-3, 0), 0)
+            end
+        end
+    elseif (npc.act_no == 110) then
+        npc.ym = npc.ym + 0.125
+
+        if (npc.y > (ModCS.Map.GetHeight() * 0x10) + (2 * 0x10)) then
+            npc.cond = 0
+            return
+        end
+    end
+
+    npc.ani_wait = npc.ani_wait + 1
+    if (npc.ani_wait > 6) then
+        npc.ani_wait = npc.ani_wait + 1
+        npc.ani_no = npc.ani_no + 1
+    end
+
+    if (npc.ani_no > 2) then
+        npc.ani_no = 0
+    end
+
+    if (npc.tgt_mc.y > npc.y) then
+        npc.damage = 10
+    else
+        npc.damage = 0
+    end
+
+    npc:Move()
+
+    npc:SetRect(rc[npc.ani_no+1])
+end
 
 -- Ma Pignon clone
+ModCS.Npc.Act[315] = function(npc)
+    local rcLeft = {
+        ModCS.Rect.Create(128, 0, 144, 16),
+        ModCS.Rect.Create(160, 0, 176, 16),
+        ModCS.Rect.Create(176, 0, 192, 16),
+        ModCS.Rect.Create(192, 0, 208, 16),
+    }
+
+    local rcRight = {
+        ModCS.Rect.Create(128, 16, 144, 32),
+        ModCS.Rect.Create(160, 16, 176, 32),
+        ModCS.Rect.Create(176, 16, 192, 32),
+        ModCS.Rect.Create(192, 16, 208, 32),
+    }
+
+    if (npc.act_no == 0) then
+        npc.ani_no = 3
+        npc.ym = npc.ym + 0.25
+
+        if (npc.y > 128) then
+            npc.act_no = 130
+            npc:UnsetBit(3) -- Unset ignore tile collision bit
+        end
+    elseif (npc.act_no == 100) then
+        npc.act_no = 110
+        npc.act_wait = 0
+        npc.count1 = 0
+        npc:SetBit(5) -- Set shootable bit
+        -- Fallthrough
+    end
+
+    if (npc.act_no == 110) then
+        if (npc.x > npc.tgt_mc.x) then
+            npc.direct = 0
+        else
+            npc.direct = 2
+        end
+        
+        npc.ani_no = 0
+
+        npc.act_wait = npc.act_wait + 1
+        if (npc.act_wait > 4) then
+            npc.act_wait = 0
+            npc.act_no = 120
+        end
+    elseif (npc.act_no == 120) then
+        npc.ani_no = 1
+
+        npc.act_wait = npc.act_wait + 1
+        if (npc.act_wait > 4) then
+            npc.act_no = 130
+            npc.ani_no = 3
+            npc.xm = 2 * ModCS.Game.Random2(-1, 1)
+            npc.ym = -4
+            ModCS.Sound.Play(30)
+        end
+    elseif (npc.act_no == 130) then
+        npc.ym = npc.ym + 0.25
+
+        if (npc.xm < 0 and npc:TouchLeftWall()) then
+            npc.xm = npc.xm * -1
+        end
+
+        if (npc.xm > 0 and npc:TouchRightWall()) then
+            npc.xm = npc.xm * -1
+        end
+
+        if (npc.x > npc.tgt_mc.x) then
+            npc.direct = 0
+        else
+            npc.direct = 2
+        end
+
+        if (npc.ym < -1) then
+            npc.ani_no = 2
+        elseif (npc.ym > 1) then
+            npc.ani_no = 0
+        else
+            npc.ani_no = 3
+        end
+
+        if (npc:TouchFloor()) then
+            npc.act_no = 140
+            npc.act_wait = 0
+            npc.ani_no = 1
+            npc.xm = 0
+        end
+    elseif (npc.act_no == 140) then
+        npc.ani_no = 1
+        
+        npc.act_wait = npc.act_wait + 1
+        if (npc.act_wait > 4) then
+            npc.act_no = 110
+            npc:SetBit(5) -- Set shootable bit
+        end
+    end
+
+    if (npc.act_no > 100) then
+        local bullets = {13, 14, 15, 16, 17, 18, 23, 25, 26, 27, 28, 29, 30, 31, 32, 33}
+        local active = false
+
+        for _, id in ipairs(bullets) do
+            if ModCS.Bullet.IsActive(id) then
+                active = true
+                break
+            end
+        end
+
+        if active then
+            npc:UnsetBit(5)
+            npc:SetBit(2)
+        else
+            npc:SetBit(5)
+            npc:UnsetBit(2)
+        end
+    end
+
+    npc.count2 = npc.count2 + 1
+    if (npc.count2 > 300) then
+        npc:Vanish()
+    else
+        if (npc.ym > 2.998046875) then
+            npc.ym = 2.998046875
+        end
+
+        npc:Move()
+
+        if (npc.direct == 0) then
+            npc:SetRect(rcLeft[npc.ani_no+1])
+        else
+            npc:SetRect(rcRight[npc.ani_no+1])
+        end
+    end
+end
 
 -- Bute (dead)
+ModCS.Npc.Act[316] = function(npc)
+    local rcLeft = {
+        ModCS.Rect.Create(248, 32, 272, 56),
+        ModCS.Rect.Create(272, 32, 296, 56),
+        ModCS.Rect.Create(296, 32, 320, 56),
+    }
+
+    local rcRight = {
+        ModCS.Rect.Create(248, 56, 272, 80),
+        ModCS.Rect.Create(272, 56, 296, 80),
+        ModCS.Rect.Create(296, 56, 320, 80),
+    }
+
+    local view = npc:GetViewbox()
+
+    if (npc.act_no == 0) then
+        npc:UnsetBit(5) -- Unset shootable bit
+        npc:UnsetBit(3) -- Unset ignore tile collision bit
+        npc.damage = 0
+        npc.act_no = 1
+        npc.ani_no = 0
+        view.front = 12
+        view.back = 12
+        view.top = 12
+        npc.ym = -1
+
+        if (npc.direct == 0) then
+            npc.xm = 0.5
+        else
+            npc.xm = -0.5
+        end
+
+        ModCS.Sound.Play(50)
+    elseif (npc.act_no == 1) then
+        if (npc:TouchFloor()) then
+            npc.ani_no = 1
+            npc.ani_wait = 0
+            npc.act_no = 2
+            npc.act_wait = 0
+        end
+    elseif (npc.act_no == 2) then
+        npc.xm = 8 * npc.xm / 9
+
+        npc.ani_wait = npc.ani_wait + 1
+        if (npc.ani_wait > 3) then
+            npc.ani_wait = 0
+            npc.ani_no = npc.ani_no + 1
+        end
+
+        if (npc.ani_no > 2) then
+            npc.ani_no = 1
+        end
+
+        npc.act_wait = npc.act_wait + 1
+        if (npc.act_wait > 50) then
+            npc:KillOnNextFrame()
+        end
+    end
+
+    npc.ym = npc.ym + 0.0625
+    if (npc.ym > 2.998046875) then
+        npc.ym = 2.998046875
+    end
+
+    npc:Move()
+
+    if (npc.direct == 0) then
+        npc:SetRect(rcLeft[npc.ani_no+1])
+    else
+        npc:SetRect(rcRight[npc.ani_no+1])
+    end
+
+    npc:SetViewbox(view)
+end
 
 -- Mesa
+ModCS.Npc.Act[317] = function(npc)
+    local rcLeft = {
+        ModCS.Rect.Create(0, 80, 32, 120),
+        ModCS.Rect.Create(32, 80, 64, 120),
+        ModCS.Rect.Create(64, 80, 96, 120),
+        ModCS.Rect.Create(96, 80, 128, 120),
+    }
+
+    local rcRight = {
+        ModCS.Rect.Create(0, 120, 32, 160),
+        ModCS.Rect.Create(32, 120, 64, 160),
+        ModCS.Rect.Create(64, 120, 96, 160),
+        ModCS.Rect.Create(96, 120, 128, 160),
+    }
+
+    if (npc.act_no == 0) then
+        npc.act_no = 1
+        npc.y = npc.y - 8
+        npc.tgt_x = npc.x
+        -- Fallthrough
+    end
+
+    if (npc.act_no == 1) then
+        npc.xm = 0
+        npc.act_no = 2
+        npc.ani_no = 0
+        npc.count1 = 0
+        -- Fallthrough
+    end
+
+    if (npc.act_no == 2) then
+        if (npc.x > npc.tgt_mc.x) then
+            npc.direct = 0
+        else
+            npc.direct = 2
+        end
+
+        npc.ani_wait = npc.ani_wait + 1
+        if (npc.ani_wait > 40) then
+            npc.ani_wait = 0
+            npc.ani_no = npc.ani_no + 1
+        end
+
+        if (npc.ani_no > 1) then
+            npc.ani_no = 0
+        end
+
+        npc.count1 = npc.count1 + 1
+        if (npc:TriggerBox(320, 160, 320, 160) and npc.count1 > 50) then
+            npc.act_no = 10
+        end
+    elseif (npc.act_no == 10) then
+        npc.act_no = 11
+        npc.act_wait = 0
+        npc.ani_no = 2
+        ModCS.Npc.Spawn3(319, npc.x, npc.y, 0, 0, 0, npc)
+        -- Fallthrough
+    end
+
+    if (npc.act_no == 11) then
+        npc.act_wait = npc.act_wait + 1
+        if (npc.act_wait > 50) then
+            npc.act_wait = 0
+            npc.act_no = 12
+            npc.ani_no = 3
+            ModCS.Sound.Play(39)
+        end
+    elseif (npc.act_no == 12) then
+        npc.act_wait = npc.act_wait + 1
+        if (npc.act_wait > 20) then
+            npc.act_no = 1
+        end
+    end
+
+    npc.ym = npc.ym + 0.166015625
+    if (npc.ym > 2.998046875) then
+        npc.ym = 2.998046875
+    end
+
+    npc:Move()
+
+    if (npc.direct == 0) then
+        npc:SetRect(rcLeft[npc.ani_no+1])
+    else
+        npc:SetRect(rcRight[npc.ani_no+1])
+    end
+
+    if (npc.life <= 936) then
+        npc.id = 318
+        npc.act_no = 0
+    end
+end
 
 -- Mesa (dead)
+ModCS.Npc.Act[318] = function(npc)
+    local rcLeft = {
+        ModCS.Rect.Create(224, 80, 256, 120),
+        ModCS.Rect.Create(256, 80, 288, 120),
+        ModCS.Rect.Create(288, 80, 320, 120),
+    }
+
+    local rcRight = {
+        ModCS.Rect.Create(224, 120, 256, 160),
+        ModCS.Rect.Create(256, 120, 288, 160),
+        ModCS.Rect.Create(288, 120, 320, 160),
+    }
+
+    if (npc.act_no == 0) then
+        npc:UnsetBit(5) -- Unset shootable bit
+        npc:UnsetBit(3) -- Unset ignore tile collision bit
+        npc:UnsetBit(0) -- Unset 'solid soft' bit
+        npc.damage = 0
+        npc.act_no = 1
+        npc.ani_no = 0
+        npc.ym = -1
+
+        if (npc.direct == 0) then
+            npc.xm = 0.125
+        else
+            npc.xm = -0.125
+        end
+
+        ModCS.Sound.Play(54)
+    elseif (npc.act_no == 1) then
+        if (npc:TouchFloor()) then
+            npc.ani_no = 1
+            npc.ani_wait = 0
+            npc.act_no = 2
+            npc.act_wait = 0
+        end
+    elseif (npc.act_no == 2) then
+        npc.xm = 8 * npc.xm / 9
+
+        npc.ani_wait = npc.ani_wait + 1
+        if (npc.ani_wait > 3) then
+            npc.ani_wait = 0
+            npc.ani_no = npc.ani_no + 1
+        end
+
+        if (npc.ani_no > 2) then
+            npc.ani_no = 1
+        end
+
+        npc.act_wait = npc.act_wait + 1
+        if (npc.act_wait > 50) then
+            npc:KillOnNextFrame()
+        end
+    end
+
+    npc.ym = npc.ym + 0.0625
+    if (npc.ym > 2.998046875) then
+        npc.ym = 2.998046875
+    end
+
+    npc:Move()
+
+    if (npc.direct == 0) then
+        npc:SetRect(rcLeft[npc.ani_no+1])
+    else
+        npc:SetRect(rcRight[npc.ani_no+1])
+    end
+end
 
 -- Mesa block
+ModCS.Npc.Act[319] = function(npc)
+    local rc = {
+        ModCS.Rect.Create(16, 0, 32, 16),
+        ModCS.Rect.Create(16, 0, 32, 16),
+        ModCS.Rect.Create(96, 80, 112, 96),
+    }
+
+    if (npc.act_no == 0) then
+        npc.y = npc.pNpc.y + 10
+
+        if (npc.pNpc.direct == 0) then
+            npc.x = npc.pNpc.x + 7
+        else
+            npc.x = npc.pNpc.x - 7
+        end
+
+        if (npc.pNpc.id == 318) then
+            ModCS.Npc.Explode(npc.x, npc.y, 0, 3)
+            npc.cond = 0
+            return
+        end
+
+        if (npc.pNpc.ani_no ~= 2) then
+            npc.act_no = 2
+            npc.act_wait = 0
+            npc.ym = -2
+            npc.y = npc.pNpc.y - 4
+
+            if (npc.pNpc.direct == 0) then
+                npc.xm = -2
+            else
+                npc.xm = 2
+            end
+        end
+    elseif (npc.act_no == 2) then
+        npc.act_wait = npc.act_wait + 1
+        if (npc.act_wait == 4) then
+            npc:UnsetBit(3) -- Unset ignore tile collision bit
+        end
+
+        npc.ym = npc.ym + 0.08203125
+        if (npc.ym > 2.998046875) then
+            npc.ym = 2.998046875
+        end
+
+        npc:Move()
+
+        if (npc:TouchFloor()) then
+            ModCS.Sound.Play(12)
+            ModCS.Npc.Explode(npc.x, npc.y, 0, 3)
+            npc.cond = 0
+        end
+    end
+
+    npc.ani_no = npc.ani_no + 1
+    if (npc.ani_no > 2) then
+        npc.ani_no = 0
+    end
+
+    npc:SetRect(rc[npc.ani_no+1])
+end

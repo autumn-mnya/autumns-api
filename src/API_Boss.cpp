@@ -10,6 +10,7 @@
 
 #include "mod_loader.h"
 #include "cave_story.h"
+#include "ModSettings.h"
 
 BOSSFUNCTION gpBossAPIFuncTbl[MAX_BOSS_TABLE_SIZE];
 size_t bossFuncCount = 0;
@@ -88,7 +89,7 @@ void Replacement_ActBossChar()
 
     result = BossActModScript(code_char, 0);
 
-    if (result == 1)
+    if (result == 1 && !disable_vanilla_boss_code)
     {
         // asm hack safety measure
         CallBossActFunction(code_char);

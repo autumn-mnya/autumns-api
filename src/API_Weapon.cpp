@@ -9,6 +9,7 @@
 
 #include "mod_loader.h"
 #include "cave_story.h"
+#include "ModSettings.h"
 #include "Main.h"
 
 #include "lua/ArmsItem.h"
@@ -535,7 +536,7 @@ void Replacement_ShootBullet(void)
 
 	result = ShootActModScript(gArmsData[gSelectedArms].code);
 
-	if (result == 1)
+	if (result == 1 && !disable_vanilla_shoot_code)
 	{
 		switch (gArmsData[gSelectedArms].code)
 		{
@@ -616,24 +617,6 @@ void Replacement_ShootBullet(void)
 	}
 
 	return;
-}
-
-
-// Old
-void ReplacementForShootBullet()
-{
-	char errormsg[256];
-	int result;
-
-	result = ShootActModScript(gArmsData[gSelectedArms].code);
-
-	if (result == 1)
-		ShootBullet();
-	else if (result == 0)
-	{
-		sprintf(errormsg, "Couldn't execute Shoot function of Weapon %d", gArmsData[gSelectedArms].code);
-		MessageBoxA(ghWnd, errormsg, "ModScript Error", MB_OK);
-	}
 }
 
 void ActBulletCode(BULLET* bul, int code)
@@ -836,7 +819,7 @@ BOOL Replacement_ActBullet(void)
 
 			result = BulletActModScript(code, i);
 
-			if (result == 1)
+			if (result == 1 && !disable_vanilla_bullet_code)
 				ActBulletCode(&gBul[i], code);
 			else if (result == 0)
 			{

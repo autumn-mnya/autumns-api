@@ -23,6 +23,11 @@ bool enable_old_mouse_code = false;
 bool use_mode_overhaul = false;
 bool autpi_debug_mode = false;
 bool skip_loadgenericdata = false;
+bool disable_vanilla_npc_code = false;
+bool disable_vanilla_boss_code = false;
+bool disable_vanilla_caret_code = false;
+bool disable_vanilla_bullet_code = false;
+bool disable_vanilla_shoot_code = false;
 
 void InitMod_Settings()
 {
@@ -37,4 +42,9 @@ void InitMod_Settings()
 	use_mode_overhaul = ModLoader_GetSettingBool("Use Mode Overhaul", false);
 	autpi_debug_mode = ModLoader_GetSettingBool("Debug Mode", false);
 	skip_loadgenericdata = ModLoader_GetSettingBool("Skip Asset Loading", false);
+	disable_vanilla_npc_code = ModLoader_GetSettingBool("Disable Vanilla Npc Code", false);
+	disable_vanilla_boss_code = ModLoader_GetSettingBool("Disable Vanilla Map Boss Code", false);
+	disable_vanilla_caret_code = ModLoader_GetSettingBool("Disable Vanilla Caret Code", false);
+	disable_vanilla_bullet_code = ModLoader_GetSettingBool("Disable Vanilla Bullet Code", false);
+	disable_vanilla_shoot_code = ModLoader_GetSettingBool("Disable Vanilla Shoot Code", false);
 }

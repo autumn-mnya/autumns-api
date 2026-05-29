@@ -10,6 +10,7 @@
 
 #include "mod_loader.h"
 #include "cave_story.h"
+#include "ModSettings.h"
 
 // Global variables
 NPCFUNCTION gpEntityFuncTbl[MAX_NPC_TABLE_SIZE];
@@ -114,7 +115,7 @@ void Replacement_ActNpChar(void)
 
 			result = NpcActModScript(code_char, i);
 
-			if (result == 1)
+			if (result == 1 && !disable_vanilla_npc_code)
 			{
 				CallNPCActFunction(&gNPC[i]);
 			}

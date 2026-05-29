@@ -26,24 +26,7 @@
 
 #0500
 <DNP0500<MYD0002
-<KEY<MSGWelcome.<NOD<CLR
-<FAC0029I am Ballos.<NOD<CLRAges upon ages ago,
-in fear of enduring
-further punishment,<NOD<CLRI allowed my magic to
-run wild...<NOD<CLRThe magic became such that
-even its master's hands
-could not control it.<NOD<CLRAs I looked on, unable
-to quell its fiery rage,<NOD<CLRit took from me my loved
-ones, my children, my
-dearest wife...<NOD<CLRTheir cries of agony
-soared above the flames.<NOD<CLRI could not avert my
-eyes, so I merely gazed
-upon the spectacle...<NOD<CLRLaughing...<NOD<CLRJenka sealed me away,
-but my magic yet rages out
-of control even now.<NOD<CLRLong, long have I waited...<NOD<CLRWaited for the one who
-would finally subdue my
-magic's fury...<NOD<CLRNow, kill me!<NOD
-Or I--<NODshall kill YOU!!<NOD<CLO
+<KEY<MSG<FAC0029Let's get this over with.<NOD<CLO
 <CMU0004
 <ANP0402:0100:0900<FON0402:0016
 <BSL0900<ANP0900:0010:0000<END

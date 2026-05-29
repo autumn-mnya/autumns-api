@@ -196,6 +196,14 @@ static int lua_GetNpcByBufferIndex(lua_State* L)
 	return 0;
 }
 
+static int lua_NpcCopy(lua_State* L)
+{
+    NPCHAR** source = (NPCHAR**)luaL_checkudata(L, 1, "NpcMeta");
+    NPCHAR** target = (NPCHAR**)luaL_checkudata(L, 2, "NpcMeta");
+    **target = **source;
+    return 0;
+}
+
 static int lua_NpcSetRect(lua_State* L)
 {
 	NPCHAR* npc = *(NPCHAR**)luaL_checkudata(L, 1, "NpcMeta");
@@ -894,6 +902,7 @@ FUNCTION_TABLE NpcFunctionTable[FUNCTION_TABLE_NPC_SIZE] =
 	{"GetByFlag", lua_GetNpcByFlag},
 	{"GetByID", lua_GetNpcByID},
 	{"GetByBufferIndex", lua_GetNpcByBufferIndex},
+	{"Copy", lua_NpcCopy},
 	{"SetRect", lua_NpcSetRect},
 	{"OffsetRect", lua_NpcOffsetRect},
 	{"SetHitbox", lua_NpcSetHitbox},

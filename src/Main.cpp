@@ -585,7 +585,6 @@ void InitMod(void)
     ModLoader_WriteJump((void*)0x403F80, (void*)Replacement_SetBullet);
     ModLoader_WriteJump((void*)0x408FC0, (void*)Replacement_ActBullet);
     ModLoader_WriteJump((void*)0x41FE70, (void*)Replacement_ShootBullet);
-    // ModLoader_WriteCall((void*)0x4105A6, (void*)ReplacementForShootBullet);
 
     ModLoader_WriteCall((void*)0x40B42D, (void*)Replacement_RestoreSurfaces);
 

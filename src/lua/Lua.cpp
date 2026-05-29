@@ -368,7 +368,6 @@ static METATABLE_TABLE MetatableTable[] =
 	{"RectMeta", lua_RectIndex, lua_RectNextIndex},
 	{"ColorMeta", lua_ColorIndex, lua_ColorNextIndex},
 	{"NpcMeta", lua_NpcIndex, lua_NpcNextIndex},
-	{"BossMeta", lua_BossIndex, lua_BossNextIndex},
 	{"CaretMeta", lua_CaretIndex, lua_CaretNextIndex},
 	{"BulletMeta", lua_BulletIndex, lua_BulletNextIndex},
 	{"PlayerMeta", lua_PlayerIndex, lua_PlayerNextIndex},

@@ -95,17 +95,25 @@ static int lua_GameRandom(lua_State* L)
 	return 1;
 }
 
-static int lua_GameRandom2(lua_State* L) 
+static int lua_GameRandom2(lua_State* L)
 {
-    double min = luaL_checknumber(L, 1);
-    double max = luaL_checknumber(L, 2);
+	int min = (int)(luaL_checknumber(L, 1) * 0x200);
+    int max = (int)luaL_checknumber(L, 2) * 0x200;
 
-    int min_fp = (int)(min * 512.0);
-    int max_fp = (int)(max * 512.0);
+    int val = Random(min, max);
 
-    int val = Random(min_fp, max_fp);
+    lua_pushinteger(L, (lua_Number)val/512);
+    return 1;
+}
 
-    lua_pushnumber(L, (lua_Number)val / 512.0);
+static int lua_GameRandom3(lua_State* L)
+{
+	int min = (int)(luaL_checknumber(L, 1) * 0x200);
+    int max = (int)(luaL_checknumber(L, 2) * 0x200);
+
+    int val = Random(min, max);
+
+    lua_pushinteger(L, (lua_Number)val);
     return 1;
 }
 
@@ -152,6 +160,7 @@ FUNCTION_TABLE GameFunctionTable[FUNCTION_TABLE_GAME_SIZE] =
 	{"SetGameFlags", lua_GameSetGameFlags},
 	{"Random", lua_GameRandom},
 	{"Random2", lua_GameRandom2},
+	{"Random3", lua_GameRandom3},
 	{"SetBit", lua_GameSetBit},
 	{"UnsetBit", lua_GameUnsetBit},
 	{"CheckBit", lua_GameCheckBit},

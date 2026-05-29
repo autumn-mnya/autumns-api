@@ -247,6 +247,24 @@ static int lua_MapChangeTile(lua_State* L)
 	return 1;
 }
 
+static int lua_MapShiftTile(lua_State* L)
+{
+	int x = (int)luaL_checknumber(L, 1);
+	int y = (int)luaL_checknumber(L, 2);
+
+	ShiftMapParts(x, y);
+	return 0;
+}
+
+static int lua_MapDeleteTile(lua_State* L)
+{
+	int x = (int)luaL_checknumber(L, 1);
+	int y = (int)luaL_checknumber(L, 2);
+
+	DeleteMapParts(x, y);
+	return 0;
+}
+
 static int lua_MapPutName(lua_State* L)
 {
 	int should = 0;
@@ -267,6 +285,8 @@ FUNCTION_TABLE MapFunctionTable[FUNCTION_TABLE_MAP_SIZE] =
 	{"GetAttribute", lua_MapGetAttribute},
 	{"GetTile", lua_MapGetTileID},
 	{"ChangeTile", lua_MapChangeTile},
+	{"ShiftTile", lua_MapShiftTile},
+	{"DeleteTile", lua_MapDeleteTile},
 	{"PutName", lua_MapPutName},
 };
 

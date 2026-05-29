@@ -24,7 +24,7 @@ ModCS.Npc.Act[40] = function(npc)
         npc.act_no = 1
         npc.ani_no = 0
         npc.ani_wait = 0
-        -- Fallthrough to npc.act_no 1, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 1) then
@@ -51,7 +51,7 @@ ModCS.Npc.Act[40] = function(npc)
         npc.act_no = 4
         npc.ani_no = 2
         npc.ani_wait = 0
-        -- Fallthrough to npc.act_no 4, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 4) then
@@ -132,7 +132,7 @@ ModCS.Npc.Act[42] = function(npc)
         npc.ani_no = 0
         npc.ani_wait = 0
         npc.xm = 0
-        -- Fallthrough to npc.act_no 1, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 1) then
@@ -151,7 +151,7 @@ ModCS.Npc.Act[42] = function(npc)
         npc.act_no = 4
         npc.ani_no = 2
         npc.ani_wait = 0
-        -- Fallthrough to npc.act_no 4, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 4) then
@@ -178,7 +178,7 @@ ModCS.Npc.Act[42] = function(npc)
         npc.act_wait = 0
         npc.act_no = 7
         npc.ani_no = 7
-        -- Fallthrough to npc.act_no 7, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 7) then
@@ -199,7 +199,7 @@ ModCS.Npc.Act[42] = function(npc)
             npc.xm = -2
         end
 
-        -- Fallthrough to npc.act_no 9, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 9) then
@@ -222,7 +222,7 @@ ModCS.Npc.Act[42] = function(npc)
         npc.ani_no = 9
         npc.ani_wait = 0
         npc.xm = 0
-        -- Fallthrough to npc.act_no 12, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 12) then
@@ -250,7 +250,7 @@ ModCS.Npc.Act[42] = function(npc)
 
         npc.pNpc = foundNpc
 
-        -- Fallthrough to npc.act_no 14, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 14) then
@@ -277,7 +277,7 @@ ModCS.Npc.Act[42] = function(npc)
         ModCS.Npc.Spawn2(257, npc.x + 128, npc.y, 0, 0, 2)
         npc.xm = 0
         npc.ani_no = 0
-        -- Fallthrough to npc.act_no 16, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 16) then
@@ -292,7 +292,7 @@ ModCS.Npc.Act[42] = function(npc)
         npc.act_no = 21
         npc.ani_no = 2
         npc.ani_wait = 0
-        -- Fallthrough to npc.act_no 21, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 21) then
@@ -320,7 +320,7 @@ ModCS.Npc.Act[42] = function(npc)
         npc.act_no = 31
         npc.ani_no = 2
         npc.ani_wait = 0
-        -- Fallthrough to npc.act_no 31, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 31) then
@@ -403,7 +403,7 @@ ModCS.Npc.Act[44] = function(npc)
 
     if (npc.act_no == 0) then
         npc.act_no = 1
-        -- Fallthrough to npc.act_no 1, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 1) then
@@ -414,7 +414,7 @@ ModCS.Npc.Act[44] = function(npc)
         else
             npc.act_no = 2
         end
-        -- Fallthrough to npc.act_no 2, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 2) then
@@ -578,7 +578,7 @@ ModCS.Npc.Act[45] = function(npc)
 
         npc.xm2 = npc.xm
         npc.ym2 = npc.ym
-        -- Fallthrough to npc.act_no 1/2, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 1 or npc.act_no == 2) then
@@ -663,7 +663,7 @@ ModCS.Npc.Act[47] = function(npc)
         npc:UnsetBit(2) -- Unset invulnearable
         npc:UnsetBit(0) -- Unset solid (soft) collision
         npc:UnsetBit(3) -- Unset ignoring tile collision
-        -- Fallthrough to npc.act_no 1, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 1) then
@@ -826,7 +826,7 @@ ModCS.Npc.Act[49] = function(npc)
             npc.act_no = 1
         end
 
-        -- Fallthrough to npc.act_no 1, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 1) then
@@ -932,7 +932,7 @@ ModCS.Npc.Act[50] = function(npc)
         else
             npc.act_no = 1
         end
-        -- Fallthrough to npc.act_no 1, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 1) then
@@ -1031,7 +1031,7 @@ ModCS.Npc.Act[51] = function(npc)
             return
         end
 
-        -- Fallthrough to npc.act_no 1, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 1) then
@@ -1208,7 +1208,7 @@ ModCS.Npc.Act[53] = function(npc)
     if (npc.act_no == 0) then
         npc.act_no = 1
         npc.count1 = 10
-        -- Fallthrough to npc.act_no 1, so dont elseif here
+        -- Fallthrough
     end
 
     if (npc.act_no == 1) then
@@ -1276,7 +1276,7 @@ ModCS.Npc.Act[54] = function(npc)
         ModCS.Npc.Spawn3(53, 0, 0, 0.25, 0, npc.direct, npc, 0)
         npc.act_no = 1
         npc.ani_no = 1
-        -- Fallthrough to npc.act_no 1, so dont elseif here
+        -- Fallthrough
     end
 
     if (npc.act_no == 1) then
@@ -1383,7 +1383,7 @@ ModCS.Npc.Act[55] = function(npc)
         npc.act_no = 4
         npc.ani_no = 1
         npc.ani_wait = 0
-        -- Fallthrough to npc.act_no 4, so dont elseif here
+        -- Fallthrough
     end
 
     if (npc.act_no == 4) then
@@ -1542,7 +1542,7 @@ ModCS.Npc.Act[57] = function(npc)
         npc.count1 = 120
         npc.ani_no = ModCS.Game.Random(0, 1)
         npc.ani_wait = ModCS.Game.Random(0, 4)
-        -- Fallthrough to npc.act_no 1, so dont elseif here
+        -- Fallthrough
     end
 
     if (npc.act_no == 1) then
@@ -1868,7 +1868,7 @@ ModCS.Npc.Act[59] = function(npc)
 
     if (npc.act_no == 0) then
         npc.act_no = 1
-        -- Fallthrough to npc.act_no 1, so dont elseif here
+        -- Fallthrough
     end
 
     if (npc.act_no == 1) then

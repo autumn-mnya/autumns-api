@@ -10,6 +10,7 @@
 
 #include "mod_loader.h"
 #include "cave_story.h"
+#include "ModSettings.h"
 
 #include "lua/Caret.h"
 #include <yaml-cpp/yaml.h>
@@ -243,7 +244,7 @@ void Replacement_ActCaret(void)
 
 			result = CaretActModScript(code, i);
 
-			if (result == 1)
+			if (result == 1 && !disable_vanilla_caret_code)
 			{
 				CallCaretActFunction(code, &gCrt[i]);
 			}

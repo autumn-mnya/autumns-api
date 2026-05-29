@@ -107,7 +107,7 @@ ModCS.Npc.Act[24] = function(npc)
     if (npc.act_no == 0) then
         npc.y = npc.y + 3
         npc.act_no = 1
-        -- Fallthrough to npc.act_no 1, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 1) then
@@ -265,7 +265,7 @@ ModCS.Npc.Act[25] = function(npc)
         npc.ani_no = 0
         npc.ani_wait = 0
         npc.x = npc.x + 8
-        -- Fallthrough to npc.act_no 1, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 1) then
@@ -358,7 +358,7 @@ ModCS.Npc.Act[26] = function(npc)
 
         npc.act_no = 1
         npc.count1 = 120
-        -- Fallthrough to npc.act_no 1, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 1) then
@@ -491,7 +491,7 @@ ModCS.Npc.Act[28] = function(npc)
     if (npc.act_no == 0) then
         npc.y = npc.y + 3
         npc.act_no = 1
-        -- Fallthrough to npc.act_no 1, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 1) then
@@ -654,7 +654,7 @@ ModCS.Npc.Act[29] = function(npc)
         npc.act_no = 1
         npc.ani_no = 0
         npc.ani_wait = 0
-        -- Fallthrough to npc.act_no 1, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 1) then
@@ -685,7 +685,7 @@ ModCS.Npc.Act[30] = function(npc)
             npc.act_no = 1
             npc.ani_no = 0
             npc.ani_wait = 0
-            -- Fallthrough to npc.act_no 1, so dont elseif here
+            -- Fallthrough
         end
         
         if (npc.act_no == 1) then
@@ -738,7 +738,7 @@ ModCS.Npc.Act[31] = function(npc)
 
     if (npc.act_no == 0) then
         npc.act_no = 1
-        -- Fallthrough to npc.act_no 1, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 1) then
@@ -998,10 +998,9 @@ ModCS.Npc.Act[36] = function(npc)
     local deg
     local xm, ym
 
-    -- ai code
     if (npc.act_no == 0) then
         npc.act_no = 1
-        -- Fallthrough to npc.act_no 1, so dont elseif here
+        -- Fallthrough
     end
     
     if (npc.act_no == 1) then
@@ -1120,7 +1119,6 @@ ModCS.Npc.Act[36] = function(npc)
         end
     end
 
-    -- speed limit here
     if (npc.ym > 2.998046875) then
         npc.ym = 2.998046875
     end
@@ -1198,7 +1196,7 @@ ModCS.Npc.Act[38] = function(npc)
     elseif(npc.act_no == 10) then
         npc.act_no = 11
         ModCS.Npc.Explode(npc.x, npc.y, npc:GetViewbox().back, 8)
-        -- Fallthrough to npc.act_no 11, so dont elseif here
+        -- Fallthrough
     end
 
     if (npc.act_no == 11) then
