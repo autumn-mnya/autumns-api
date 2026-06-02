@@ -399,6 +399,11 @@ static void PutSquare(RECT src, unsigned long col)
 	}
 }
 
+// Hitbox code from tilderain's Cave Story NDS port
+// https://github.com/tilderain/CaveStoryNDS/blob/ds/src/Debug.cpp
+
+// (slightly altered, autpi just uses base game CortBox so no outlines.)
+// (i only did this because adding a custom CortBoxOutline function might break the SDL dll)
 static int Sub2Px(int coord)
 {
 	return (coord / 0x200);
