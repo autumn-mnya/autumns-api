@@ -492,7 +492,6 @@ ModCS.Boss.Act[3] = function(boss)
         hit.bottom = 24
         boss:SetHitbox(hit)
 
-        boss.bits = 0
         boss:SetBit(3) -- Set ignore tile collision bit
         boss:SetBit(9) -- Set run event when killed bit
         boss:SetBit(15) -- Set show damage # on hit bit
@@ -509,7 +508,6 @@ ModCS.Boss.Act[3] = function(boss)
         view1.back = 24
         view1.bottom = 24
         boss1:SetViewbox(view1)
-        boss1.bits = 0
         boss1:SetBit(3) -- Set ignore tile collision bit
 
         ModCS.Boss.Copy(boss1, boss2)
@@ -533,7 +531,6 @@ ModCS.Boss.Act[3] = function(boss)
         hit.bottom = 5
         boss3:SetHitbox(hit3)
 
-        boss3.bits = 0
         boss3:SetBit(3) -- Set ignore tile collision bit
         boss3.tgt_x_cs = 0
 
@@ -566,7 +563,6 @@ ModCS.Boss.Act[3] = function(boss)
         hit7.bottom = 16
         boss7:SetHitbox(hit7)
 
-        boss7.bits = 0
         boss7:SetBit(3) -- Set ignore tile collision bit
         boss7.smoke_size = 3
         boss7.ani_no = 0
@@ -591,7 +587,6 @@ ModCS.Boss.Act[3] = function(boss)
         hit9.bottom = 16
         boss9:SetHitbox(hit9)
 
-        boss9.bits = 0
         boss9:SetBit(0) -- Set solid soft bit
         boss9:SetBit(2) -- Set invulnerable bit
         boss9:SetBit(3) -- Set ignore tile collision bit
@@ -630,7 +625,6 @@ ModCS.Boss.Act[3] = function(boss)
         boss13:SetViewbox(view13)
         boss13.count1 = 9
         boss13.ani_no = 0
-        boss13.bits = 0
         boss13:SetBit(3) -- Set ignore tile collision bit
 
         ModCS.Boss.Copy(boss13, boss14)
@@ -640,7 +634,6 @@ ModCS.Boss.Act[3] = function(boss)
         boss14:SetViewbox(view14)
         boss14.count1 = 10
         boss14.ani_no = 1
-        boss14.bits = 0
         boss14:SetBit(3) -- Set ignore tile collision bit
 
         ModCS.Boss.Copy(boss13, boss15)
@@ -650,7 +643,6 @@ ModCS.Boss.Act[3] = function(boss)
         boss15:SetViewbox(view15)
         boss15.count1 = 11
         boss15.ani_no = 2
-        boss15.bits = 0
         boss15:SetBit(3) -- Set ignore tile collision bit
 
         ModCS.Boss.Copy(boss15, boss16)
@@ -660,7 +652,6 @@ ModCS.Boss.Act[3] = function(boss)
         boss16:SetViewbox(view16)
         boss16.count1 = 12
         boss16.ani_no = 3
-        boss16.bits = 0
         boss16:SetBit(3) -- Set ignore tile collision bit
 
         boss.act_no = 2

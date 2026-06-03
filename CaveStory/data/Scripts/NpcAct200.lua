@@ -1307,6 +1307,8 @@ ModCS.Npc.Act[217] = function(npc)
             npc.act_no = 42
         end
 
+        npc.xm = 1
+
         npc.ani_wait = npc.ani_wait + 1
         if (npc.ani_wait > 3) then
             npc.ani_wait = 0

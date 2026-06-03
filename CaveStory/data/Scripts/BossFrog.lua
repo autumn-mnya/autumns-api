@@ -112,7 +112,6 @@ ModCS.Boss.Act[2] = function(boss)
         boss.smoke_size = 3
         boss.exp = 1
         boss.event = 1000
-        boss.bits = 0
         boss:SetBit(9) -- Set event with killed bit
         boss:SetBit(15) -- Set show damage # when hit bit
         boss.life = 300
@@ -123,7 +122,7 @@ ModCS.Boss.Act[2] = function(boss)
         boss:SetRect(rcRight[1])
 
         boss1.cond = 0x80
-        boss1.cond = ModCS.Game.SetBit(boss1.cond, 0x10)
+        boss1.cond = ModCS.Game.SetBit(boss1.cond, 0x10) -- Set "all damage is directed towards main map boss" condition
 
         boss2.cond = 0x80
 

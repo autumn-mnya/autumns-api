@@ -147,7 +147,6 @@ ModCS.Boss.Act[1] = function(boss)
         hit.bottom = 16
         boss:SetHitbox(hit)
 
-        boss.bits = 0
         boss:SetBit(3) -- Set ignore tile collision bit
         boss:SetBit(9) -- Set run event when killed bit
         boss:SetBit(15) -- Set show damage # on hit bit
@@ -165,15 +164,13 @@ ModCS.Boss.Act[1] = function(boss)
         view1.bottom = 8
         boss1:SetViewbox(view1)
 
-        boss1.bits = 0
         boss1:SetBit(3) -- Set ignore tile collision bit
 
         boss2.cond = 0x80
 
         boss2:SetViewbox(view1)
 
-        boss2.bits = 0
-        boss2:SetBit(3)
+        boss2:SetBit(3) -- Set ignore tile collision bit
 
         boss1.direct = 0
         boss2.direct = 2
@@ -194,7 +191,6 @@ ModCS.Boss.Act[1] = function(boss)
         hit3.bottom = 8
         boss3:SetHitbox(hit3)
 
-        boss3.bits = 0
         boss3:SetBit(3) -- Set ignore tile collision bit
 
         boss3.x = boss.x - 16
@@ -208,8 +204,7 @@ ModCS.Boss.Act[1] = function(boss)
 
         boss4.hit_voice = 52
 
-        boss4.bits = 0
-        boss4:SetBit(3)
+        boss4:SetBit(3) -- Set ignore tile collision bit
 
         boss4.x = boss.x + 16
         boss4.y = boss.y

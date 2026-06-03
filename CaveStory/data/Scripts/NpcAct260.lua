@@ -1330,43 +1330,43 @@ ModCS.Npc.Act[270] = function(npc)
             npc.act_no = 1
             npc:SetBit(3) -- Set ignore tile collision bit
 
-            npc.xm = ModCS.Game.Random2(-1, 1) * 3
-            npc.ym = ModCS.Game.Random2(-1, 1) * 3
+            npc.xm_cs = ModCS.Game.Random(-0x200, 0x200) * 3
+            npc.ym_cs = ModCS.Game.Random(-0x200, 0x200) * 3
 
             npc.count1 = ModCS.Game.Random(0x10, 0x33)
             npc.count2 = ModCS.Game.Random(0x80, 0x100)
         end
 
-        if (npc.x < npc.pNpc.x) then
-            npc.xm = npc.xm + (1 / npc.count1)
+        if (npc.x_cs < npc.pNpc.x_cs) then
+            npc.xm_cs = npc.xm_cs + (0x200 / npc.count1)
         end
 
-        if (npc.x > npc.pNpc.x) then
-            npc.xm = npc.xm - (1 / npc.count1)
+        if (npc.x_cs > npc.pNpc.x_cs) then
+            npc.xm_cs = npc.xm_cs - (0x200 / npc.count1)
         end
 
-        if (npc.y < npc.pNpc.y) then
-            npc.ym = npc.ym + (1 / npc.count1)
+        if (npc.y_cs < npc.pNpc.y_cs) then
+            npc.ym_cs = npc.ym_cs + (0x200 / npc.count1)
         end
 
-        if (npc.y > npc.pNpc.y) then
-            npc.ym = npc.ym - (1 / npc.count1)
+        if (npc.y_cs > npc.pNpc.y_cs) then
+            npc.ym_cs = npc.ym_cs - (0x200 / npc.count1)
         end
 
-        if (npc.xm > ((npc.count2 * 2) / 512)) then
-            npc.xm = ((npc.count2 * 2) / 512)
+        if (npc.xm_cs > ((npc.count2 * 2))) then
+            npc.xm_cs = ((npc.count2 * 2))
         end
 
-        if (npc.xm < -((npc.count2 * 2) / 512)) then
-            npc.xm = -((npc.count2 * 2) / 512)
+        if (npc.xm_cs < -((npc.count2 * 2))) then
+            npc.xm_cs = -((npc.count2 * 2))
         end
 
-        if (npc.ym > ((npc.count2 * 3) / 512)) then
-            npc.ym = ((npc.count2 * 3) / 512)
+        if (npc.ym_cs > ((npc.count2 * 3))) then
+            npc.ym_cs = ((npc.count2 * 3))
         end
 
-        if (npc.ym < -((npc.count2 * 3) / 512)) then
-            npc.ym = -((npc.count2 * 3) / 512)
+        if (npc.ym_cs < -((npc.count2 * 3))) then
+            npc.ym_cs = -((npc.count2 * 3))
         end
 
         npc:Move()

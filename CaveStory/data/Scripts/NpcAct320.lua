@@ -209,7 +209,7 @@ ModCS.Npc.Act[322] = function(npc)
 end
 
 -- Bute (spinning)
-ModCS.Npc.Act[324] = function(npc)
+ModCS.Npc.Act[323] = function(npc)
     local rc = {
         ModCS.Rect.Create(216, 32, 232, 56),
         ModCS.Rect.Create(232, 32, 248, 56),

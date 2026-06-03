@@ -13,7 +13,6 @@ local function ActBossChar_Core_Face(map_boss, boss)
     if (boss.act_no == 10) then
         boss.act_no = 11
         boss.ani_no = 2
-        boss.bits = 0
         boss:SetBit(3) -- Set ignore solid bit
         view.front = 36
         view.top = 56
@@ -67,7 +66,6 @@ local function ActBossChar_Core_Tail(map_boss, boss)
     if (boss.act_no == 10) then
         boss.act_no = 11
         boss.ani_no = 0
-        boss.bits = 0
         boss:SetBit(3) -- Set ignore tile collision bit
         view.front = 44
         view.top = 56
@@ -269,7 +267,6 @@ ModCS.Boss.Act[4] = function(boss)
         boss.act_no = 10
         boss.exp = 1
         boss.cond = 0x80
-        boss.bits = 0
         boss:SetBit(2) -- Set invulnerable bit
         boss:SetBit(3) -- Set ignore tile collision bit
         boss:SetBit(15) -- Set show damage # bit
@@ -289,7 +286,6 @@ ModCS.Boss.Act[4] = function(boss)
         boss5.act_no = 10
 
         boss8.cond = 0x80
-        boss8.bits = 0
         boss8:SetBit(2) -- Set invulnerable bit
         boss8:SetBit(3) -- Set ignore tile collision bit
         view8.front = 0
@@ -318,7 +314,7 @@ ModCS.Boss.Act[4] = function(boss)
         boss10.count1 = 2
 
         ModCS.Boss.Copy(boss8, boss11)
-        boss11.cond = ModCS.Game.SetBit(boss11.cond, 0x10)
+        boss11.cond = ModCS.Game.SetBit(boss11.cond, 0x10) -- Set "all damage is directed towards main map boss" condition
         hit11 = boss11:GetHitbox()
         hit11.back = 20
         hit11.top = 20
@@ -328,7 +324,6 @@ ModCS.Boss.Act[4] = function(boss)
 
         boss1.cond = 0x80
         boss1.act_no = 10
-        boss1.bits = 0
         boss1:SetBit(2) -- Set invulnerable bit
         boss1:SetBit(3) -- Set ignore tile collision bit
         boss1:SetBit(5) -- Set shootable bit
