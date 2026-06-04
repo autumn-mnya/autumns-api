@@ -511,18 +511,6 @@ static int lua_GetSavePath(lua_State* L) {
 	return 1;
 }
 
-static int lua_SetModulePath(lua_State* L)
-{
-	strcpy(exeModulePath, luaL_checkstring(L, 1));
-	return 0;
-}
-
-static int lua_SetDataPath(lua_State* L)
-{
-	strcpy(exeDataPath, luaL_checkstring(L, 1));
-	return 0;
-}
-
 static int lua_FlipSystemTask(lua_State* L)
 {
 	if (Flip_SystemTask(ghWnd))
@@ -858,12 +846,6 @@ BOOL InitModScript(void)
 
 	lua_pushcfunction(gL, lua_GetSavePath);
 	lua_setfield(gL, -2, "GetSavePath");
-
-	lua_pushcfunction(gL, lua_SetModulePath);
-	lua_setfield(gL, -2, "SetModulePath");
-
-	lua_pushcfunction(gL, lua_SetDataPath);
-	lua_setfield(gL, -2, "SetDataPath");
 
 	lua_pushcfunction(gL, lua_FlipSystemTask);
 	lua_setfield(gL, -2, "SystemTask");
