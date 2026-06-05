@@ -189,6 +189,7 @@ DEFINE_MODSCRIPT_CALL(ProfileLoadingModScript, "Profile", "DuringLoad", "Couldn'
 DEFINE_MODSCRIPT_CALL(StageOnTransferModScript, "Stage", "OnTransfer", "Couldn't execute stage transfer function")
 
 // Function replacements
+DEFINE_MODSCRIPT_CALL_REPLACEMENT(MyCharOnHealModScript, "Player", "OnHeal", "Couldn't execute player onheal element");
 DEFINE_MODSCRIPT_CALL_REPLACEMENT(MyCharActModScript, "Player", "Act", "Couldn't execute player act element");
 DEFINE_MODSCRIPT_CALL_REPLACEMENT(MyCharPutModScript, "Player", "Put", "Couldn't execute player put element");
 DEFINE_MODSCRIPT_CALL_REPLACEMENT(MyCharAniModScript, "Player", "Animation", "Couldn't execute player animation element");

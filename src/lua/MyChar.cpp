@@ -518,6 +518,12 @@ static int lua_PlayerGetHitDamage(lua_State* L)
 	return 1;
 }
 
+static int lua_PlayerGetHealAmount(lua_State* L)
+{
+	lua_pushnumber(L, (lua_Number)healAmount);
+	return 1;
+}
+
 static int lua_PlayerSetCondBit(lua_State* L)
 {
 	int bit = (int)luaL_checknumber(L, 1);
@@ -851,6 +857,7 @@ FUNCTION_TABLE PlayerFunctionTable[FUNCTION_TABLE_PLAYER_SIZE] =
 	{"CheckCond", lua_PlayerCheckCondBit},
 	{"ProcessAir", lua_PlayerAirProcess},
 	{"GetHitDamage", lua_PlayerGetHitDamage},
+	{"GetHealAmount", lua_PlayerGetHealAmount},
 	{"Init", lua_PlayerInit},
 	{"ActMain", lua_PlayerActCode},
 	{"AniMain", lua_PlayerAniCode},

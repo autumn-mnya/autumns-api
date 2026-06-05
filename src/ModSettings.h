@@ -4,6 +4,7 @@
 
 extern bool debug_write_tables_binary;
 extern bool debug_write_tables_yaml;
+extern bool replace_player_heal_function;
 extern bool replace_player_damage_function;
 extern bool replace_player_hud_functions;
 extern bool replace_inventory_function;

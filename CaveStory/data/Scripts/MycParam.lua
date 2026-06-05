@@ -174,3 +174,12 @@ function ModCS.Player.HudArms()
         ModCS.Rect.Put(rect, x, 16, 12)
     end
 end
+
+function ModCS.Player.OnHeal()
+    ModCS.Player.life = ModCS.Player.life + ModCS.Player.GetHealAmount()
+    if (ModCS.Player.life > ModCS.Player.max_life) then
+        ModCS.Player.life = ModCS.Player.max_life
+    end
+
+    ModCS.Player.lifeBr = ModCS.Player.life
+end

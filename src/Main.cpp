@@ -681,6 +681,13 @@ void InitMod(void)
         ModLoader_WriteCall((void*)0x419611, (void*)DamageMyChar_ModCS);
         ModLoader_WriteCall((void*)0x41964E, (void*)DamageMyChar_ModCS);
     }
+
+    // AddLifeMyChar Calls
+    if (replace_player_heal_function)
+    {
+        ModLoader_WriteCall((void*)0x419216, (void*)AddLifeMyChar_ModCS);
+        ModLoader_WriteCall((void*)0x4226BD, (void*)AddLifeMyChar_ModCS);
+    }
     
     if (replace_player_hud_functions)
     {

@@ -11,6 +11,7 @@
 #include "mod_loader.h"
 #include "cave_story.h"
 
+int healAmount = 0;
 int damageAmount = 0;
 
 // 0x410541 - TRUE
@@ -72,4 +73,14 @@ void DamageMyChar_ModCS(int damage)
         return;
 
 	DamageMyChar(damage);
+}
+
+void AddLifeMyChar_ModCS(int life)
+{
+	healAmount = life;
+
+    if (MyCharOnHealModScript())
+        return;
+
+	AddLifeMyChar(life);
 }

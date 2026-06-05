@@ -14,6 +14,7 @@
 
 bool debug_write_tables_binary = false;
 bool debug_write_tables_yaml = false;
+bool replace_player_heal_function = true;
 bool replace_player_damage_function = true;
 bool replace_player_hud_functions = true;
 bool replace_inventory_function = true;
@@ -33,6 +34,7 @@ void InitMod_Settings()
 {
 	debug_write_tables_binary = ModLoader_GetSettingBool("Write Tables on Boot (TBL)", false);
 	debug_write_tables_yaml = ModLoader_GetSettingBool("Write Tables on Boot (YAML)", false);
+	replace_player_heal_function = ModLoader_GetSettingBool("Replace Player Heal function", true);
 	replace_player_damage_function = ModLoader_GetSettingBool("Replace Player Damage function", true);
 	replace_player_hud_functions = ModLoader_GetSettingBool("Replace Player Hud functions", true);
 	replace_inventory_function = ModLoader_GetSettingBool("Replace Inventory Menu function", true);

@@ -886,7 +886,7 @@ void DoDebugActionOK(int mode, int pos)
                     break;
 
                 case RESTORE_LIFE:
-                    AddLifeMyChar(1000);
+                    AddLifeMyChar_ModCS(1000);
                     FullArmsEnergy();
                     break;
 
