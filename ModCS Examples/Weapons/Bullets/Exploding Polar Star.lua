@@ -1,6 +1,6 @@
 --[[
 Exploding Polar Star port
-by ilikebreadtoomuch
+by aesci
 
 Free to use, no credit needed
 --]]

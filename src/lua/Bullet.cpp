@@ -44,7 +44,6 @@ static STRUCT_TABLE BulletTable[] =
 	{"enemyhit_y", offsetof(BULLET, enemyYL), TYPE_PIXEL},
 	{"blockhit_x", offsetof(BULLET, blockXL), TYPE_PIXEL},
 	{"blockhit_y", offsetof(BULLET, blockYL), TYPE_PIXEL},
-	// don't use
 	{"cond", offsetof(BULLET, cond), TYPE_NUMBER},
 	{"hit_flag", offsetof(BULLET, flag), TYPE_NUMBER},
 	{"bits", offsetof(BULLET, bbits), TYPE_NUMBER}

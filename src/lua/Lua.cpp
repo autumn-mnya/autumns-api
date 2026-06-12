@@ -58,7 +58,7 @@ extern "C"
 #include "ValueView.h"
 #include "Constants.h"
 
-// Credit for the majority of this goes to yasinbread and aikyuu. All I did was port it and add some extra stuff.
+// Credit for the majority of this goes to aesci and aikyuu. All I did was port it and add some extra stuff.
 
 lua_State* gL = NULL;
 

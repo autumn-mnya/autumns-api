@@ -1,6 +1,6 @@
 --[[
 Cave Story Beta Soap NPC
-by ilikebreadtoomuch
+by aesci
 
 Free to use, no credit needed
 --]]

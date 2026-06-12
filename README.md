@@ -9,8 +9,8 @@ This mod is using [Clownacy's Mod Loader](https://github.com/Clownacy/Cave-Story
 
 # ModCS
 
-Credits to yasinbread, and aikyuu.
-Yasinbread sent the source code of ModCS to me, and gave permission for it. The lua api credits go entirely to them, its awesome.
+Credits to aesci, and aikyuu.
+Aesci sent the source code of ModCS to me, and gave permission for it. The lua api credits go entirely to them, its awesome.
 
 # Building
 

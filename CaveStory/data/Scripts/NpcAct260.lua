@@ -2014,10 +2014,13 @@ ModCS.Npc.Act[279] = function(npc)
     local i = 0
 
     if (npc.act_no == 0) then
+        local done = false
+
         if (npc.direct == 0) then
             npc.act_no = 100
             npc:SetBit(2) -- Set invulnerable bit
             npc.ani_no = 0
+            done = true
         elseif (npc.direct == 2) then
             npc.act_no = 100
             npc:SetBit(2) -- Set invulnerable bit
@@ -2036,9 +2039,6 @@ ModCS.Npc.Act[279] = function(npc)
             npc.ani_no = 0
             npc.act_no = 10
         end
-
-        -- if (npc.direct ~= 1) then
-        -- break (how do we translate this proper??)
         
         -- Fallthrough
     end
