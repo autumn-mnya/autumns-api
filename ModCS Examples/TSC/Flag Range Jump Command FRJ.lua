@@ -1,6 +1,6 @@
 --[[
 Flag Range Jump command (<FRJ)
-by autumn_mnya
+by autpod
 
 Free to use, no credit needed
 

@@ -1,6 +1,6 @@
 --[[
 TRI Command to swap one item in inventory with another if it exists
-by autumn_mnya
+by autpod
 
 Free to use, no credit needed
 --]]

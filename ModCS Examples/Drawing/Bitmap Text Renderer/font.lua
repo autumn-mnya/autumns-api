@@ -1,6 +1,6 @@
 --[[
 Port of CSE2-Wii's Text Renderer to a lua script, allowing you to draw text using a simple bitmap without lagging the game or dealing with jank.
-by autumn_mnya
+by autpod
 
 Free to use, no credit needed
 
