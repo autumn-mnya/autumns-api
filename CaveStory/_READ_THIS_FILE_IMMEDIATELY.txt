@@ -1,0 +1,5 @@
+If you're wanting to use AutPI and downloaded the source code accidentally, Don't use this copy of Cave Story!!! It's for debugging the dll during development!!
+
+Install one of the Release zip files from the Github page instead.
+
+https://github.com/autumn-mnya/autumns-api/releases

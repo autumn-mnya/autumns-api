@@ -477,7 +477,7 @@ static int Print2Console(lua_State* L) {
 
 	for (int i = 1; i <= nargs; ++i) {
 		if (i > 1) {
-			printf("\t");
+			ModLoader_PrintDebug("\t");
 		}
 
 		const char* str = lua_tostring(L, i);
@@ -488,9 +488,9 @@ static int Print2Console(lua_State* L) {
 			str = lua_tostring(L, -1);
 		}
 
-		printf("%s", str);
+		ModLoader_PrintDebug("%s", str);
 	}
-	printf("\n");
+	ModLoader_PrintDebug("\n");
 
 	return 0;
 }
