@@ -461,7 +461,7 @@ int KeyControlModScript(unsigned int vkey, bool down, bool repeat) {
 		const char* error = lua_tostring(gL, -1);
 
 		ErrorLog(error, 0);
-		printf("ERROR: %s\n", error);
+		ModLoader_PrintDebug("ERROR: %s\n", error);
 		MessageBoxA(ghWnd, down ? "Couldn't execute key down function" : "Couldn't execute key up function", "ModScript Error", MB_OK);
 		return FALSE;
 	}

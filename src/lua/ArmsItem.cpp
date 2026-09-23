@@ -322,7 +322,7 @@ int ShootActModScript(int chr)
 		const char* error = lua_tostring(gL, -1);
 
 		ErrorLog(error, 0);
-		printf("ERROR: %s\n", error);
+		ModLoader_PrintDebug("ERROR: %s\n", error);
 		return 0;
 	}
 

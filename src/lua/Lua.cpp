@@ -65,22 +65,22 @@ lua_State* gL = NULL;
 void PrintStack(lua_State* L) {
 	int top = lua_gettop(L);
 	for (int i = 1; i <= top; i++) {
-		printf("%d\t%s\t", i, luaL_typename(L, i));
+		ModLoader_PrintDebug("%d\t%s\t", i, luaL_typename(L, i));
 		switch (lua_type(L, i)) {
 		case LUA_TNUMBER:
-			printf("%g\n", lua_tonumber(L, i));
+			ModLoader_PrintDebug("%g\n", lua_tonumber(L, i));
 			break;
 		case LUA_TSTRING:
-			printf("%s\n", lua_tostring(L, i));
+			ModLoader_PrintDebug("%s\n", lua_tostring(L, i));
 			break;
 		case LUA_TBOOLEAN:
-			printf("%s\n", (lua_toboolean(L, i) ? "true" : "false"));
+			ModLoader_PrintDebug("%s\n", (lua_toboolean(L, i) ? "true" : "false"));
 			break;
 		case LUA_TNIL:
-			printf("%s\n", "nil");
+			ModLoader_PrintDebug("%s\n", "nil");
 			break;
 		default:
-			printf("%p\n", lua_topointer(L, i));
+			ModLoader_PrintDebug("%p\n", lua_topointer(L, i));
 			break;
 		}
 	}
@@ -91,7 +91,7 @@ void SerenaAlert(lua_State* L, const char* warning)
 	lua_Debug d;
 	lua_getstack(L, 1, &d);
 	lua_getinfo(L, "nSl", &d);
-	printf("WARNING: %s at line %d\n", warning, d.currentline);
+	ModLoader_PrintDebug("WARNING: %s at line %d\n", warning, d.currentline);
 }
 
 BOOL ReadStructBasic(lua_State* L, const char* name, STRUCT_TABLE* table, void* data, int length)
@@ -461,14 +461,14 @@ static int lua_PutNumber(lua_State* L)
 static int lua_ModPrintString(lua_State* L)
 {
 	const char* string = luaL_checkstring(L, 1);
-	printf("%s\n", string);
+	ModLoader_PrintDebug("%s\n", string);
 	return 0;
 }
 
 static int lua_ModPrintVal(lua_State* L)
 {
 	int val = (int)luaL_checknumber(L, 1);
-	printf("%d\n", val);
+	ModLoader_PrintDebug("%d\n", val);
 	return 0;
 }
 
@@ -556,7 +556,7 @@ void GetCursorPosition(HWND hWnd)
 	{
 		if (ScreenToClient(hWnd, &cursorPos))
 		{
-			// printf("Cursor Position is: X = %ld, Y = %ld\n", cursorPos.x, cursorPos.y);
+			// ModLoader_PrintDebug("Cursor Position is: X = %ld, Y = %ld\n", cursorPos.x, cursorPos.y);
 		}
 	}
 }
@@ -965,7 +965,7 @@ BOOL InitModScript(void)
 	{
 		const char* error = lua_tostring(gL, -1);
 		ErrorLog(error, 0);
-		printf("ERROR: %s\n", error);
+		ModLoader_PrintDebug("ERROR: %s\n", error);
 		MessageBoxA(ghWnd, error, "ModScript Startup Error", MB_OK);
 		return FALSE;
 	}
@@ -1017,7 +1017,7 @@ void Lua_FrameInit()
 		const char* error = lua_tostring(gL, -1);
 
 		ErrorLog(error, 0);
-		printf("ERROR: %s\n", error);
+		ModLoader_PrintDebug("ERROR: %s\n", error);
 		MessageBoxA(ghWnd, "Couldn't execute frame init function", "ModScript Error", MB_OK);
 		return;
 	}

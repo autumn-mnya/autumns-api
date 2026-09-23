@@ -35,7 +35,7 @@ static int lua_TscRun(lua_State* L)
 	if (g_GameFlags & 4)
 	{
 		SerenaAlert(L, "ModCS.Tsc.Run used while TSC was running");
-		printf("Are you sure you did not mean to use ModCS.Tsc.Jump instead?\n");
+		ModLoader_PrintDebug("Are you sure you did not mean to use ModCS.Tsc.Jump instead?\n");
 	}
 	*/
 
@@ -52,7 +52,7 @@ static int lua_TscJump(lua_State* L)
 	if (!(g_GameFlags & 4))
 	{
 		SerenaAlert(L, "ModCS.Tsc.Jump used outside of running TSC");
-		printf("Are you sure you did not mean to use ModCS.Tsc.Run instead?\n");
+		ModLoader_PrintDebug("Are you sure you did not mean to use ModCS.Tsc.Run instead?\n");
 	}
 
 	if (!JumpTextScript(no))
@@ -228,7 +228,7 @@ int TSCCommandModScript(char command[4])
 
 		if (fcuking)
 		{
-			printf("WARNING: Defining TSC Command functions using ModCS.Tsc.CommandXXX (where XXX is the TSC Command) has been deprecated. It's recommended to define TSC Command functions in the ModCS.Tsc.Command namespace instead.\n");
+			ModLoader_PrintDebug("WARNING: Defining TSC Command functions using ModCS.Tsc.CommandXXX (where XXX is the TSC Command) has been deprecated. It's recommended to define TSC Command functions in the ModCS.Tsc.Command namespace instead.\n");
 			fcuking = FALSE;
 		}
 	}
@@ -242,7 +242,7 @@ int TSCCommandModScript(char command[4])
 		const char* error = lua_tostring(gL, -1);
 
 		ErrorLog(error, 0);
-		printf("ERROR: %s\n", error);
+		ModLoader_PrintDebug("ERROR: %s\n", error);
 		return -2;
 	}
 

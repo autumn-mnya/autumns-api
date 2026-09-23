@@ -246,7 +246,7 @@ int CaretActModScript(int code, int i)
 
 		if (fcuking)
 		{
-			printf("WARNING: Defining Caret Act functions using ModCS.Caret.ActX (where X is the Caret Type ID) has been deprecated. It's recommended to define Caret Act functions in the ModCS.Caret.Act array instead.\n");
+			ModLoader_PrintDebug("WARNING: Defining Caret Act functions using ModCS.Caret.ActX (where X is the Caret Type ID) has been deprecated. It's recommended to define Caret Act functions in the ModCS.Caret.Act array instead.\n");
 			fcuking = FALSE;
 		}
 	}
@@ -262,7 +262,7 @@ int CaretActModScript(int code, int i)
 		const char* error = lua_tostring(gL, -1);
 
 		ErrorLog(error, 0);
-		printf("ERROR: %s\n", error);
+		ModLoader_PrintDebug("ERROR: %s\n", error);
 		MessageBoxA(ghWnd, error, "Caret Act ModScript Error", MB_OK);
 		return FALSE;
 	}

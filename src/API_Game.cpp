@@ -19,6 +19,7 @@ DEFINE_ELEMENT_HANDLERS(ReleaseElementHandler, ReleaseElement)
 
 void PreModeCode()
 {
+    ModLoader_PrintDebug("%s. %d.%d.%d.%d\n", "AUTPI Version", autpiVer);
     ExecutePrePreModeElementHandlers(); // this name sucks lol but just trust me on it for now
     InitTextScript2();
     ExecutePreModeElementHandlers();

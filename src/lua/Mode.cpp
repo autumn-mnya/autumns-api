@@ -14,6 +14,7 @@ extern "C"
 #include <lualib.h>
 }
 
+#include "../mod_loader.h"
 #include "../cave_story.h"
 #include "Lua.h"
 #include "Game.h"
@@ -1035,7 +1036,7 @@ int ModeModScript(int mode_id)
     {
         const char* err = lua_tostring(gL, -1);
         ErrorLog(err, 0);
-        printf("ERROR: %s\n", err);
+        ModLoader_PrintDebug("ERROR: %s\n", err);
         lua_settop(gL, 0);
         return -1;
     }

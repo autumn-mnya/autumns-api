@@ -4,6 +4,8 @@
 
 #include "cave_story.h"
 
+#define autpiVer 1, 3, 0, 1
+
 extern int gCurrentGameMode; // if vanilla
 extern int gGameMode; // in mode overhaul
 extern char gSavesPath[MAX_PATH];

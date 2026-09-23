@@ -136,7 +136,7 @@ BOOL LoadCaretTableYaml(const char* name)
 		autpiCaretTable[i].view_top = entry[1].as<int>();
 	}
 
-	// printf("Loaded Caret Table as yaml format.\n");
+	// ModLoader_PrintDebug("Loaded Caret Table as yaml format.\n");
 
 	return TRUE;
 }
@@ -174,7 +174,7 @@ void LoadCaretTableOld()
 	// Close the file
 	fclose(fp);
 
-	printf("Loaded caret table from file\n");
+	ModLoader_PrintDebug("Loaded caret table from file\n");
 }
 
 #pragma runtime_checks("s", off)
@@ -282,7 +282,7 @@ void AutPI_AddCaret(CARETFUNCTION func, char* author, char* name) {
 	if (caretFuncCount < MAX_CARET_FUNC_TABLE_SIZE) {
 		// Add the new function to the end of the array
 		gpCaretAPIFuncTbl[caretFuncCount++] = func;
-		printf("Added CARET '%s:%s' to caret function table with ID %d.\n", author, name, caretFuncCount + 17);
+		ModLoader_PrintDebug("Added CARET '%s:%s' to caret function table with ID %d.\n", author, name, caretFuncCount + 17);
 	}
 	else {
 		fprintf(stderr, "Maximum CARET count reached. Cannot add more functions.\n");

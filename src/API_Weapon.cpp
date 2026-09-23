@@ -99,7 +99,7 @@ BOOL LoadLevelsTableBinary(const char* name)
 
 	fclose(fp);
 
-	// printf("Loaded Arms Table as binary format.\n");
+	// ModLoader_PrintDebug("Loaded Arms Table as binary format.\n");
 
 	return TRUE;
 }
@@ -220,7 +220,7 @@ void LoadLevelsTableOld()
 
 	fclose(fp);
 
-	printf("Loaded levels table from file\n");
+	ModLoader_PrintDebug("Loaded levels table from file\n");
 }
 
 BOOL LoadBulletTableBinary(const char* name)
@@ -413,7 +413,7 @@ void LoadBulletTableOld()
 
 	fclose(fp);
 
-	printf("Loaded bullet table from file\n");
+	ModLoader_PrintDebug("Loaded bullet table from file\n");
 }
 
 void Replacement_AddExpMyChar(int x)

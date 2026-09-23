@@ -111,7 +111,7 @@ void AutPI_AddBoss(BOSSFUNCTION func, char* author, char* name) {
     if (bossFuncCount < MAX_BOSS_TABLE_SIZE) {
         // Add the new function to the end of the array
         gpBossAPIFuncTbl[bossFuncCount++] = func;
-        printf("Added BOSS '%s:%s' to boss function table with ID %d.\n", author, name, bossFuncCount + 9);
+        ModLoader_PrintDebug("Added BOSS '%s:%s' to boss function table with ID %d.\n", author, name, bossFuncCount + 9);
     }
     else {
         fprintf(stderr, "Maximum BOSS count reached. Cannot add more functions.\n");

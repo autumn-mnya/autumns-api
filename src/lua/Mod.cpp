@@ -287,7 +287,7 @@ BOOL PreModeInitModScript(void)
 		const char* error = lua_tostring(gL, -1);
 
 		ErrorLog(error, 0);
-		printf("ERROR: %s\n", error);
+		ModLoader_PrintDebug("ERROR: %s\n", error);
 		MessageBoxA(ghWnd, "Couldn't execute mod init function", "ModScript Error", MB_OK);
 		return FALSE;
 	}

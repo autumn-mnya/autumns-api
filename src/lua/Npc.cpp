@@ -981,7 +981,7 @@ int NpcActModScript(int char_code, int i)
 
 		if (fcuking)
 		{
-			printf("WARNING: Defining NPC Act functions using ModCS.Npc.ActX (where X is the NPC Type ID) has been deprecated. It's recommended to define NPC Act functions in the ModCS.Npc.Act array instead.\n");
+			ModLoader_PrintDebug("WARNING: Defining NPC Act functions using ModCS.Npc.ActX (where X is the NPC Type ID) has been deprecated. It's recommended to define NPC Act functions in the ModCS.Npc.Act array instead.\n");
 			fcuking = FALSE;
 		}
 	}
@@ -997,7 +997,7 @@ int NpcActModScript(int char_code, int i)
 		const char* error = lua_tostring(gL, -1);
 
 		ErrorLog(error, 0);
-		printf("ERROR: %s\n", error);
+		ModLoader_PrintDebug("ERROR: %s\n", error);
 		MessageBoxA(ghWnd, error, "Npc Act ModScript Error", MB_OK);
 		return FALSE;
 	}

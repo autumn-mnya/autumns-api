@@ -47,7 +47,7 @@ static int CustomTSC(MLHookCPURegisters* regs, void* ud)
 	{
 		if (strncmp(where + 1, "AUTPITTESTCOMMAND", 3) == 0) // just a test command
 		{
-			printf("%s", "Why are you even running this command lol\n");
+			ModLoader_PrintDebug("%s", "Why are you even running this command lol\n");
 			gTS.p_read += 4;
 		}
 		else

@@ -232,7 +232,7 @@ void AutPI_AddEntity(NPCFUNCTION func, char* author, char* name) {
     if (entityFuncCount < MAX_NPC_TABLE_SIZE) {
         // Add the new function to the end of the array
         gpEntityFuncTbl[entityFuncCount++] = func;
-		printf("Added NPC '%s:%s' to entity function table with ID %d.\n", author, name, entityFuncCount + 360);
+		ModLoader_PrintDebug("Added NPC '%s:%s' to entity function table with ID %d.\n", author, name, entityFuncCount + 360);
     }
     else {
         fprintf(stderr, "Maximum NPC count reached. Cannot add more functions.\n");

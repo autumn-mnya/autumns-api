@@ -93,7 +93,7 @@ BOOL LoadStageTable(char* name)
 		free(file_buffer);
 	}
 
-	printf("Failed to load %s.tbl\n", name);
+	ModLoader_PrintDebug("Failed to load %s.tbl\n", name);
 	return FALSE;
 }
 

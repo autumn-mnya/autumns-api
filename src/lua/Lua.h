@@ -2,6 +2,7 @@
 
 #include <windows.h>
 #include "../cave_story.h"
+#include "../mod_loader.h"
 
 extern "C"
 {
@@ -99,7 +100,7 @@ static inline BOOL func_name(void)                                              
 	{                                                              \
 		const char* error = lua_tostring(gL, -1);                  \
 		ErrorLog(error, 0);                                        \
-		printf("ERROR: %s\n", error);                              \
+		ModLoader_PrintDebug("ERROR: %s\n", error);                              \
 		MessageBoxA(ghWnd, error, "ModScript Error", MB_OK);   \
 		return FALSE;                                              \
 	}                                                              \
@@ -127,7 +128,7 @@ static inline BOOL func_name(void)                                              
 	{                                                              \
 		const char* error = lua_tostring(gL, -1);                  \
 		ErrorLog(error, 0);                                        \
-		printf("ERROR: %s\n", error);                              \
+		ModLoader_PrintDebug("ERROR: %s\n", error);                              \
 		MessageBoxA(ghWnd, error, "ModScript Error", MB_OK);   \
 		return TRUE;                                              \
 	}                                                              \
@@ -155,7 +156,7 @@ static inline int func_name(void)                                               
 	{                                                              \
 		const char* error = lua_tostring(gL, -1);                  \
 		ErrorLog(error, 0);                                        \
-		printf("ERROR: %s\n", error);                              \
+		ModLoader_PrintDebug("ERROR: %s\n", error);                              \
 		MessageBoxA(ghWnd, error, "ModScript Error", MB_OK);   \
 		return 0;                                                  \
 	}                                                              \

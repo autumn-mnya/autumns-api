@@ -44,8 +44,6 @@
 
 #include "Debug.h"
 
-#define autpiVer 1, 3, 0, 1
-
 char gSavesPath[MAX_PATH];
 char gDebugSavesPath[MAX_PATH];
 int gCurrentGameMode = 0;
@@ -480,7 +478,6 @@ void WindowRectPath(char* p, const char* fm, const char* mp, const char* nm)
 void InitMod(void)
 {
     InitMod_Settings();
-    printf("%s. %d.%d.%d.%d\n", "AUTPI Version", autpiVer);
 
     // Main API
     ModLoader_WriteCall((void*)0x4124BE, (void*)SetPathCode);

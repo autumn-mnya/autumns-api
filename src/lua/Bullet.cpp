@@ -544,7 +544,7 @@ int BulletActModScript(int code, int i)
 		const char* error = lua_tostring(gL, -1);
 
 		ErrorLog(error, 0);
-		printf("ERROR: %s\n", error);
+		ModLoader_PrintDebug("ERROR: %s\n", error);
 		MessageBoxA(ghWnd, error, "Bullet Act ModScript Error", MB_OK);
 		return FALSE;
 	}
