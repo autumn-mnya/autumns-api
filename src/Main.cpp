@@ -44,7 +44,7 @@
 
 #include "Debug.h"
 
-#define autpiVer 1, 3, 0, 0
+#define autpiVer 1, 3, 0, 1
 
 char gSavesPath[MAX_PATH];
 char gDebugSavesPath[MAX_PATH];
