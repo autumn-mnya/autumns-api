@@ -4,7 +4,7 @@
 
 #include "cave_story.h"
 
-#define autpiVer 1, 3, 0, 1
+#define autpiVer 1, 3, 0, 2
 
 extern int gCurrentGameMode; // if vanilla
 extern int gGameMode; // in mode overhaul

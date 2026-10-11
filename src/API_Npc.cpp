@@ -16,37 +16,6 @@
 NPCFUNCTION gpEntityFuncTbl[MAX_NPC_TABLE_SIZE];
 size_t entityFuncCount = 0;
 
-void ActNpcCode(NPCHAR* npc, int code_char)
-{
-	if (code_char <= 360)
-		gpNpcFuncTbl[code_char](npc);
-	else
-		gpEntityFuncTbl[code_char - 361](npc);
-}
-
-void ChangeNpChar(NPCHAR* npc, int code_char)
-{
-	npc->bits &= ~(NPC_SOLID_SOFT | NPC_IGNORE_TILE_44 | NPC_INVULNERABLE | NPC_IGNORE_SOLIDITY | NPC_BOUNCY | NPC_SHOOTABLE | NPC_SOLID_HARD | NPC_REAR_AND_TOP_DONT_HURT | NPC_SHOW_DAMAGE);	// Clear these flags
-	npc->code_char = code_char;
-	npc->bits |= (*gNpcTable)[npc->code_char].bits;
-	npc->exp = (*gNpcTable)[npc->code_char].exp;
-	SetUniqueParameter(npc);
-	npc->cond |= 0x80;
-	npc->act_no = 0;
-	npc->act_wait = 0;
-	npc->count1 = 0;
-	npc->count2 = 0;
-	npc->ani_no = 0;
-	npc->ani_wait = 0;
-	npc->xm = 0;
-	npc->ym = 0;
-
-	if (code_char <= 360)
-		gpNpcFuncTbl[code_char](npc);
-	else
-		gpEntityFuncTbl[code_char](npc);
-}
-
 // Call this instead of calling any NPC act function directly
 #pragma runtime_checks("s", off)
 void CallNPCActFunction(NPCHAR* npc)
@@ -100,6 +69,61 @@ void CallNPCActFunction(NPCHAR* npc)
 }
 #pragma runtime_checks("s", restore)
 
+void ActNpcCode(NPCHAR* npc, int code_char)
+{
+	if (code_char <= 360)
+		gpNpcFuncTbl[code_char](npc);
+	else
+		gpEntityFuncTbl[code_char - 361](npc);
+}
+
+void ChangeNpChar(NPCHAR* npc, int code_char)
+{
+	npc->bits &= ~(NPC_SOLID_SOFT | NPC_IGNORE_TILE_44 | NPC_INVULNERABLE | NPC_IGNORE_SOLIDITY | NPC_BOUNCY | NPC_SHOOTABLE | NPC_SOLID_HARD | NPC_REAR_AND_TOP_DONT_HURT | NPC_SHOW_DAMAGE);	// Clear these flags
+	npc->code_char = code_char;
+	npc->bits |= (*gNpcTable)[npc->code_char].bits;
+	npc->exp = (*gNpcTable)[npc->code_char].exp;
+	SetUniqueParameter(npc);
+	npc->cond |= 0x80;
+	npc->act_no = 0;
+	npc->act_wait = 0;
+	npc->count1 = 0;
+	npc->count2 = 0;
+	npc->ani_no = 0;
+	npc->ani_wait = 0;
+	npc->xm = 0;
+	npc->ym = 0;
+
+	int i;
+	for (i = 0; i < NPC_MAX; ++i)
+	{
+		if (&gNPC[i] == npc)
+		{
+			break;
+		}
+	}
+
+	if (i == NPC_MAX) {
+		// Didn't find it...
+		CallNPCActFunction(npc);
+	}
+	else
+	{
+		int result;
+		char errormsg[256];
+
+		result = NpcActModScript(code_char, i);
+
+		if (result == 1)
+			gpNpcFuncTbl[code_char](npc);
+		else if (result == 0)
+		{
+			sprintf(errormsg, "Couldn't execute Act function of NPC ActNo. %d", code_char);
+			MessageBoxA(ghWnd, errormsg, "ModScript Error", MB_OK);
+		}
+	}
+}
+
 void Replacement_ActNpChar(void)
 {
 	int i;
@@ -134,6 +158,9 @@ void Replacement_ActNpChar(void)
 
 void Replacement_ChangeNpCharByEvent(int code_event, int code_char, int dir)
 {
+	int result = 0;
+	char errormsg[256];
+
 	int n;
 
 	for (n = 0; n < NPC_MAX; ++n)
@@ -171,16 +198,25 @@ void Replacement_ChangeNpCharByEvent(int code_event, int code_char, int dir)
 				gNPC[n].direct = dir;
 			}
 
-			if (code_char <= 360)
-				gpNpcFuncTbl[code_char](&gNPC[n]);
-			else
-				gpEntityFuncTbl[code_char - 361](&gNPC[n]);
+			result = NpcActModScript(code_char, n);
+
+			if (result == 1)
+				CallNPCActFunction(&gNPC[n]);
+			else if (result == 0)
+			{
+				sprintf(errormsg, "Couldn't execute Act function of NPC ActNo. %d", code_char);
+				MessageBoxA(ghWnd, errormsg, "ModScript Error", MB_OK);
+				return;
+			}
 		}
 	}
 }
 
 void Replacement_ChangeCheckableNpCharByEvent(int code_event, int code_char, int dir)
 {
+	int result;
+	char errormsg[256];
+
 	int n;
 
 	for (n = 0; n < NPC_MAX; ++n)
@@ -219,10 +255,16 @@ void Replacement_ChangeCheckableNpCharByEvent(int code_event, int code_char, int
 				gNPC[n].direct = (signed char)dir;
 			}
 
-			if (code_char <= 360)
-				gpNpcFuncTbl[code_char](&gNPC[n]);
-			else
-				gpEntityFuncTbl[code_char - 361](&gNPC[n]);
+			result = NpcActModScript(code_char, n);
+
+			if (result == 1)
+				CallNPCActFunction(&gNPC[n]);
+			else if (result == 0)
+			{
+				sprintf(errormsg, "Couldn't execute Act function of NPC ActNo. %d", code_char);
+				MessageBoxA(ghWnd, errormsg, "ModScript Error", MB_OK);
+				return;
+			}
 		}
 	}
 }
